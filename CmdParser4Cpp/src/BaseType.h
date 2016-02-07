@@ -1,25 +1,42 @@
 #pragma once
 
+#include "CmdParser4Cpp.h"
+
+
 namespace com {
 namespace codezeal {
 namespace commandline {
 
-template<typename T>
+typedef std::vector<std::string> VectorOfString;
+
 class BaseType
 {
 public:
+	virtual bool Parse( VectorOfString& allArguments, int argumentIx );
+
+	virtual ~BaseType() {}
+
+	int GetAvailableParameterCount() const { return myResults.size(); }
+
+protected:
 	BaseType( CmdParser4Cpp& parser, Argument& argument, int minParameterCount, int maxParameterCount );
 
+	virtual bool DoTypeParse( const std::string& parameter ) = 0;
+	virtual void RetrieveResult() = 0;
+
+	CmdParser4Cpp& myParser;
+	Argument& myArgument;
+	int myMinParameterCount;
+	int myMaxParameterCount;
+	VectorOfString myResults;
+
 private:
-	BaseType( const BaseType<T>& ) = delete;
+	bool HasEnoughParametersLeft( VectorOfString arguments, int argumentIx );
+	bool IsSucessfullyParsed() const;	
+
+	BaseType( const BaseType& ) = delete;
+	BaseType& operator=( const BaseType& ) = delete;
 };
-
-template<typename T>
-BaseType<T>::BaseType( CmdParser4Cpp& parser, Argument& argument, int minParameterCount, int maxParameterCount )
-{
-
-}
-
 
 } // END commandline
 } // END codezeal

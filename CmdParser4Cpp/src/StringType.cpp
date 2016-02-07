@@ -1,7 +1,6 @@
-#include "Constructor.h"
-#include "Argument.h"
-#include "CmdParser4Cpp.h"
 #include "StringType.h"
+#include "CmdParser4Cpp.h"
+#include "Argument.h"
 
 namespace com {
 namespace codezeal {
@@ -11,9 +10,8 @@ namespace commandline {
 //
 //
 //////////////////////////////////////////////////////////////////////////
-Constructor::Constructor( Argument& argument, CmdParser4Cpp& parser )
-	: myParser(parser),
-	myArgument(argument)
+StringType::StringType( CmdParser4Cpp& parser, Argument& argument, int minParameterCount, int maxParameterCount )
+	: BaseType( parser, argument, minParameterCount, maxParameterCount )
 {
 }
 
@@ -21,7 +19,7 @@ Constructor::Constructor( Argument& argument, CmdParser4Cpp& parser )
 //
 //
 //////////////////////////////////////////////////////////////////////////
-Constructor::~Constructor()
+StringType::~StringType()
 {
 }
 
@@ -29,32 +27,45 @@ Constructor::~Constructor()
 //
 //
 //////////////////////////////////////////////////////////////////////////
-const Constructor& 
-Constructor::AsString( int parameterCount ) const
+bool
+StringType::DoTypeParse( const std::string& parameter )
 {
-	return AsString( parameterCount, parameterCount );
+	bool res = parameter.length() > 0;
+
+	if( res ) {
+		myResults.push_back( parameter );
+	}
+
+	return res;
 }
 
 //////////////////////////////////////////////////////////////////////////
 //
 //
 //////////////////////////////////////////////////////////////////////////
-const Constructor&
-Constructor::AsString( int minimumParameterCount, int maximumParameterCount ) const
+void
+StringType::RetrieveResult()
 {
-	myArgument.SetArgumentType( new StringType( myParser, myArgument, minimumParameterCount, maximumParameterCount ) );
-	return *this;
+	myParser.SetResult( myArgument.GetPrimaryName(), this );
 }
 
 //////////////////////////////////////////////////////////////////////////
 //
 //
 //////////////////////////////////////////////////////////////////////////
-const Constructor&
-Constructor::WithAlias( const std::string& alias ) const
+const char*
+StringType::GetResult( int index, const char* defaultValue ) const
 {
-	myArgument.AddAlias( alias );
-	return *this;
+	// If we want to use a single return, we're forced to cast away
+	// the constness of the underlying std::string in myResults
+	// and that is worse than two returns.
+
+	if( myResults.size() >= index && index <= myResults.size() ) {
+		return myResults.at( index ).c_str();
+	}
+	else {
+		return defaultValue;
+	}
 }
 
 } // END commandline

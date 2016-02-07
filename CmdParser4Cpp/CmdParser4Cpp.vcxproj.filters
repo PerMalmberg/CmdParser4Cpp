@@ -27,12 +27,18 @@
     <ClCompile Include="src\SystemOutputParseResult.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\StringType.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BoolType.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BaseType.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Argument.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\BaseType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="dist\include\CmdParser4Cpp.h">
@@ -45,6 +51,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="dist\include\SystemOutputParseResult.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\StringType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BoolType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BaseType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

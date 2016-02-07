@@ -9,24 +9,48 @@ namespace com {
 namespace codezeal {
 namespace commandline {
 
+class BoolType;
+class StringType;
+
 class CmdParser4Cpp
 {
 public:
-	CmdParser4Cpp( const char* argumentPrefix, const IParseResult& parseResult );
+	CmdParser4Cpp( const char* argumentPrefix, IParseResult& parseResult );
 
 	virtual ~CmdParser4Cpp();
 
 	// Defines an argument with the provided argument name.
 	// Use the returned Constructor object to further define the argument properties.
-	const Constructor Accept( std::string argumentName );
+	const Constructor Accept( const std::string& argumentName );
 
 	// Parses the command line arguments
-	void Parse( int argc, char* argv[] );
+	bool Parse( const std::vector<std::string>& arguments );
+
+	void SetResult( const std::string& argumentName, const BoolType* type );
+	void SetResult( const std::string& argumentName, const StringType* type );
+
+	const std::string& GetArgumentPrefix() const { return myArgumentPrefix; }
+	IParseResult& GetMessagerParser() const { return myParseResult; }
+	int GetAvailableStringParameterCount( const std::string& argumentName ) const;
+	int GetAvailableBoolParameterCount( const std::string& argumentName ) const;
+	const char* GetString( const std::string& argumentName, int index = 0, const char* defaultValue = nullptr ) const;
+	bool GetBool( const std::string& argumentName, int index = 0, bool defaultValue = false ) const;
+	
+	template<typename ArgumentType, typename ValueType>
+	ValueType GetValue( std::unordered_map<std::string, ArgumentType> map, const std::string& argumentName, int index, ValueType defaultValue ) const;
+
+	
 	
 private:
 	std::string myArgumentPrefix;
-	const IParseResult& myParseResult;
+	IParseResult& myParseResult;
 	std::unordered_map<std::string, Argument*> myArguments;
+	std::unordered_map<std::string, const StringType*> myStringResults;
+	std::unordered_map<std::string, const BoolType*> myBoolResults;
+
+	void RemoveEmptyArguments( std::vector<std::string>& arguments );
+	template<typename ArgumentType>
+	int GetAvailableParameterCount( const std::string& argumentName, std::unordered_map<std::string, const ArgumentType*> map ) const;
 
 	// Precent copying
 	CmdParser4Cpp( const CmdParser4Cpp& ) = delete;

@@ -57,6 +57,8 @@
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</TreatWarningAsError>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Projectdir)dist\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Projectdir)dist\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Lib>
       <OutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
@@ -69,18 +71,23 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\BoolType.cpp" />
     <ClCompile Include="src\Argument.cpp" />
+    <ClCompile Include="src\BaseType.cpp" />
     <ClCompile Include="src\CmdParser4Cpp.cpp" />
     <ClCompile Include="src\Constructor.cpp" />
     <ClCompile Include="src\SystemOutputParseResult.cpp" />
+    <ClCompile Include="src\StringType.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\BoolType.h" />
     <ClInclude Include="src\Argument.h" />
     <ClInclude Include="src\BaseType.h" />
     <ClInclude Include="dist\include\CmdParser4Cpp.h" />
     <ClInclude Include="dist\include\Constructor.h" />
     <ClInclude Include="dist\include\IParseResult.h" />
     <ClInclude Include="dist\include\SystemOutputParseResult.h" />
+    <ClInclude Include="src\StringType.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 namespace com {
 namespace codezeal {
 namespace commandline {
@@ -17,6 +19,8 @@ public:
 
 	const Constructor& AsString( int parameterCount ) const;
 	const Constructor& AsString( int minimumParameterCount, int maximumParameterCount ) const;
+
+	const Constructor& WithAlias( const std::string& alias ) const;
 
 private:
 	CmdParser4Cpp& myParser;
