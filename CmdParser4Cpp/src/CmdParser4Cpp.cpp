@@ -172,7 +172,7 @@ CmdParser4Cpp::GetAvailableParameterCount( const std::string& argumentName, std:
 const char*
 CmdParser4Cpp::GetString( const std::string& argumentName, int index, const char* defaultValue ) const
 {
-	return GetValue<const StringType*, const char*>( myStringResults, argumentName, index, nullptr );
+	return GetValue<const StringType*, const char*>( myStringResults, argumentName, index, defaultValue );
 }
 
 //////////////////////////////////////////////////////////////////////////
