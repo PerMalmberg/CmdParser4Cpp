@@ -1,3 +1,6 @@
+// Copyright (c) 2016 Per Malmberg
+// Licensed under MIT, see LICENSE file. 
+
 #pragma once
 
 #include <string>
@@ -20,7 +23,13 @@ public:
 	const Constructor& AsString( int parameterCount ) const;
 	const Constructor& AsString( int minimumParameterCount, int maximumParameterCount ) const;
 
+	const Constructor& AsBoolean( int parameterCount ) const;
+	const Constructor& AsBoolean( int minimumParameterCount, int maximumParameterCount ) const;
+
+	const Constructor& AsSingleBoolean() const;
+
 	const Constructor& WithAlias( const std::string& alias ) const;
+	const Constructor& SetMandatory() const;
 
 private:
 	CmdParser4Cpp& myParser;

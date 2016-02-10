@@ -1,10 +1,12 @@
-// Command Parser4Cpp
-// Copyright (C) Per Malmberg 2016
+// Copyright (c) 2016 Per Malmberg
+// Licensed under MIT, see LICENSE file. 
 
+#include <algorithm>
 #include "CmdParser4Cpp.h"
 #include "Argument.h"
 #include "StringType.h"
 #include "BoolType.h"
+
 
 namespace com {
 namespace codezeal {
@@ -60,7 +62,7 @@ CmdParser4Cpp::Parse( const std::vector<std::string>& arguments )
 	std::vector<std::string> copy( arguments );
 	RemoveEmptyArguments( copy );
 
-	bool result = true; // // TODO: CheckConstraints( copy );
+	bool result = CheckConstraints( copy );
 
 	if( result ) {
 		// Let each argument have a go until there are no more arguments available.
@@ -79,14 +81,87 @@ CmdParser4Cpp::Parse( const std::vector<std::string>& arguments )
 			result = false;
 		}
 
-		/*
-		result &= checkMandatory();
-		result &= checkDependencies();
-		result &= checkMutualExclusion();
-		*/
+		
+		result &= CheckMandatory();
+		//result &= CheckDependencies();
+		//result &= CheckMutualExclusion();
+		
 
 	}
 	return result;
+}
+
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+bool
+CmdParser4Cpp::CheckConstraints( VectorOfString& arguments )
+{
+	bool res = true;
+
+	// Find all arguments with unlimited parameters on the command line.
+	std::vector<int> variable;
+	std::vector<int> argumentIndexs;
+
+	for( auto& a : myArguments ) {
+		int hitCount = 0;
+		int ix = a.second->FindArgument( arguments, hitCount );
+
+		if( ix >= 0 ) {
+			if( hitCount > 1 ) {
+				// Same argument multiple times - that's bad
+				res = false;
+				myParseResult.ArgumentSpecifiedMultipleTimes( a.second->GetPrimaryName() );
+			}
+			else if( a.second->HasVariableParameterCount() ) {
+				variable.push_back( ix );
+			}
+			else {
+				argumentIndexs.push_back( ix );
+			}
+		}
+	}
+
+	if( res && variable.size() > 1 ) {
+		res = false;
+		myParseResult.MultipleMultiArgumentsSpecified();
+	}
+
+	if( res && variable.size() == 1 ) {
+		// Check if the argument is last on the list
+		int max = variable.at( 0 );
+		for( auto curr : argumentIndexs ) {
+			max = std::max( max, curr );
+		}
+
+		if( variable.at( 0 ) < max ) {
+			res = false;
+			myParseResult.MultiArgumentsMustBePalcedLast();
+		}
+	}
+
+	return res;
+}
+
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+bool
+CmdParser4Cpp::CheckMandatory()
+{
+	bool res = true;
+
+	for( auto& arg : myArguments ) {
+		auto& a = *arg.second;
+		if( a.IsMandatory() && !a.IsSuccessFullyParsed() ) {
+			myParseResult.MissingMandatoryArgument( a.GetPrimaryName() );
+			res = false;
+		}
+	}
+
+	return res;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -191,7 +266,7 @@ CmdParser4Cpp::GetBool( const std::string& argumentName, int index, bool default
 //////////////////////////////////////////////////////////////////////////
 template<typename ArgumentType, typename ValueType>
 ValueType
-CmdParser4Cpp::GetValue( std::unordered_map<std::string, ArgumentType> map, const std::string& argumentName, int index, ValueType defaultValue ) const
+CmdParser4Cpp::GetValue( const std::unordered_map<std::string, ArgumentType>& map, const std::string& argumentName, int index, ValueType defaultValue ) const
 {
 	ValueType res = defaultValue;
 

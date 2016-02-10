@@ -1,3 +1,6 @@
+// Copyright (c) 2016 Per Malmberg
+// Licensed under MIT, see LICENSE file. 
+
 #include "SystemOutputParseResult.h"
 #include <iostream>
 #include <string>
@@ -42,10 +45,10 @@ SystemOutputParseResult::GetParseResult()
 //
 //
 //////////////////////////////////////////////////////////////////////////
-void 
-SystemOutputParseResult::UnknownArguments( std::vector<std::string> leftovers )
+void
+SystemOutputParseResult::UnknownArguments( const std::vector<std::string>& leftovers )
 {
-	std::string line = "Unknown arguments: ";
+	std::string line = "Unknown arguments:";
 	for( auto s : leftovers ) {
 		line.append( " " ).append( s );
 	}
@@ -57,7 +60,7 @@ SystemOutputParseResult::UnknownArguments( std::vector<std::string> leftovers )
 //
 //////////////////////////////////////////////////////////////////////////
 void
-SystemOutputParseResult::NotEnoughParameters( std::string argument, int minParameterCount )
+SystemOutputParseResult::NotEnoughParameters( const std::string& argument, int minParameterCount )
 {
 	std::string line = "Not enough parameters, argument '";
 	line.append( argument ).append( "' requires " ).append( std::to_string( minParameterCount ) );
@@ -69,13 +72,58 @@ SystemOutputParseResult::NotEnoughParameters( std::string argument, int minParam
 //
 //////////////////////////////////////////////////////////////////////////
 void
-SystemOutputParseResult::FailedToParseArgument( std::string argument )
+SystemOutputParseResult::FailedToParseArgument( const std::string& argument )
 {
 	std::string line = "Failed to parse argument '";
-	line.append( argument ).append("'");
+	line.append( argument ).append( "'" );
 	myLines.push_back( line );
 }
 
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+void
+SystemOutputParseResult::ArgumentSpecifiedMultipleTimes( const std::string& argument )
+{
+	std::string line = "The argument '";
+	line.append( argument );
+	line.append( "' is specified multiple times." );
+	myLines.push_back( line );
+}
+
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+void
+SystemOutputParseResult::MultipleMultiArgumentsSpecified()
+{
+	myLines.push_back( "Multiple arguments which allows for variable parameter count are specified on the command line." );
+}
+
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+void
+SystemOutputParseResult::MultiArgumentsMustBePalcedLast()
+{
+	myLines.push_back( "An argument that allows variable number of parameters must be places last on the command line." );
+}
+
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+void
+SystemOutputParseResult::MissingMandatoryArgument( const std::string& argument )
+{
+	std::string line = "The mandatory argument '";
+	line.append( argument );
+	line.append( "' is missing" );
+	myLines.push_back( line );
+}
 
 
 

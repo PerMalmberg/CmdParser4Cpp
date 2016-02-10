@@ -1,3 +1,6 @@
+// Copyright (c) 2016 Per Malmberg
+// Licensed under MIT, see LICENSE file. 
+
 #pragma once
 
 #include <vector>
@@ -14,9 +17,13 @@ public:
 
 	virtual std::string GetParseResult() = 0;
 
-	virtual void UnknownArguments( std::vector<std::string> leftovers ) = 0;
-	virtual void NotEnoughParameters( std::string argument, int minParameterCount ) = 0;
-	virtual void FailedToParseArgument( std::string argument ) = 0;
+	virtual void UnknownArguments( const std::vector<std::string>& leftovers ) = 0;
+	virtual void NotEnoughParameters( const std::string& argument, int minParameterCount ) = 0;
+	virtual void FailedToParseArgument( const std::string& argument ) = 0;
+	virtual void ArgumentSpecifiedMultipleTimes( const std::string& argument ) = 0;
+	virtual void MultipleMultiArgumentsSpecified() = 0;
+	virtual void MultiArgumentsMustBePalcedLast() = 0;
+	virtual void MissingMandatoryArgument( const std::string& argument ) = 0;
 };
 
 inline IParseResult::~IParseResult() {}

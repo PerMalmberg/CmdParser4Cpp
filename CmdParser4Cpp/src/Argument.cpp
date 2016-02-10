@@ -1,3 +1,6 @@
+// Copyright (c) 2016 Per Malmberg
+// Licensed under MIT, see LICENSE file. 
+
 #include "Argument.h"
 
 namespace com {
@@ -11,7 +14,8 @@ namespace commandline {
 Argument::Argument( const std::string& argumentName )
 	: myType( 0 ),
 	myExistsOnCommandLine( false ),
-	myNames()
+	myNames(),
+	myIsMandatory(false)
 {
 	myNames.push_back( argumentName );
 }

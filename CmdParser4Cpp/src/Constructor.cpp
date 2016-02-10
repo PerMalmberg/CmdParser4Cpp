@@ -1,7 +1,12 @@
+// Copyright (c) 2016 Per Malmberg
+// Licensed under MIT, see LICENSE file. 
+
 #include "Constructor.h"
 #include "Argument.h"
 #include "CmdParser4Cpp.h"
 #include "StringType.h"
+#include "BoolType.h"
+#include "SingleBoolType.h"
 
 namespace com {
 namespace codezeal {
@@ -51,9 +56,52 @@ Constructor::AsString( int minimumParameterCount, int maximumParameterCount ) co
 //
 //////////////////////////////////////////////////////////////////////////
 const Constructor&
+Constructor::AsBoolean( int parameterCount ) const
+{
+	return AsBoolean( parameterCount, parameterCount );
+}
+
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+const Constructor&
+Constructor::AsBoolean( int minimumParameterCount, int maximumParameterCount ) const
+{
+	myArgument.SetArgumentType( new BoolType( myParser, myArgument, minimumParameterCount, maximumParameterCount ) );
+	return *this;
+}
+
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+const Constructor&
+Constructor::AsSingleBoolean() const
+{
+	myArgument.SetArgumentType( new SingleBoolType( myParser, myArgument ) );
+	return *this;
+}
+
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+const Constructor&
 Constructor::WithAlias( const std::string& alias ) const
 {
 	myArgument.AddAlias( alias );
+	return *this;
+}
+
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+const Constructor&
+Constructor::SetMandatory() const
+{
+	myArgument.SetMandatory();
 	return *this;
 }
 

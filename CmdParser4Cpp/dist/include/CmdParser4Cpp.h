@@ -1,3 +1,6 @@
+// Copyright (c) 2016 Per Malmberg
+// Licensed under MIT, see LICENSE file. 
+
 #pragma once
 
 #include <string>
@@ -11,6 +14,8 @@ namespace commandline {
 
 class BoolType;
 class StringType;
+
+typedef std::vector<std::string> VectorOfString;
 
 class CmdParser4Cpp
 {
@@ -35,12 +40,12 @@ public:
 	int GetAvailableBoolParameterCount( const std::string& argumentName ) const;
 	const char* GetString( const std::string& argumentName, int index = 0, const char* defaultValue = nullptr ) const;
 	bool GetBool( const std::string& argumentName, int index = 0, bool defaultValue = false ) const;
-	
-	template<typename ArgumentType, typename ValueType>
-	ValueType GetValue( std::unordered_map<std::string, ArgumentType> map, const std::string& argumentName, int index, ValueType defaultValue ) const;
 
-	
-	
+	template<typename ArgumentType, typename ValueType>
+	ValueType GetValue( const std::unordered_map<std::string, ArgumentType>& map, const std::string& argumentName, int index, ValueType defaultValue ) const;
+
+
+
 private:
 	std::string myArgumentPrefix;
 	IParseResult& myParseResult;
@@ -51,8 +56,10 @@ private:
 	void RemoveEmptyArguments( std::vector<std::string>& arguments );
 	template<typename ArgumentType>
 	int GetAvailableParameterCount( const std::string& argumentName, std::unordered_map<std::string, const ArgumentType*> map ) const;
+	bool CheckConstraints( VectorOfString& args );
+	bool CheckMandatory();
 
-	// Precent copying
+	// Prevent copying
 	CmdParser4Cpp( const CmdParser4Cpp& ) = delete;
 	CmdParser4Cpp& operator=( const CmdParser4Cpp& ) = delete;
 };

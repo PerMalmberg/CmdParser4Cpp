@@ -1,3 +1,6 @@
+// Copyright (c) 2016 Per Malmberg
+// Licensed under MIT, see LICENSE file. 
+
 #include "BoolType.h"
 
 
@@ -78,7 +81,7 @@ BoolType::GetResult( int index, bool defaultValue ) const
 	bool res = defaultValue;
 
 	if( myResults.size() >= index && index <= myResults.size() ) {
-		return myResults.at( index ).compare( ONE );
+		return myResults.at( index ).compare( ONE ) == 0;
 	}
 	
 	return res;	

@@ -1,3 +1,6 @@
+// Copyright (c) 2016 Per Malmberg
+// Licensed under MIT, see LICENSE file. 
+
 #pragma once
 
 #include "CmdParser4Cpp.h"
@@ -7,8 +10,6 @@ namespace com {
 namespace codezeal {
 namespace commandline {
 
-typedef std::vector<std::string> VectorOfString;
-
 class BaseType
 {
 public:
@@ -17,6 +18,8 @@ public:
 	virtual ~BaseType() {}
 
 	int GetAvailableParameterCount() const { return myResults.size(); }
+	int HasVariableParameterCount() const { return myMinParameterCount != myMaxParameterCount; }
+	virtual bool IsSucessfullyParsed() const;
 
 protected:
 	BaseType( CmdParser4Cpp& parser, Argument& argument, int minParameterCount, int maxParameterCount );
@@ -31,8 +34,7 @@ protected:
 	VectorOfString myResults;
 
 private:
-	bool HasEnoughParametersLeft( VectorOfString arguments, int argumentIx );
-	bool IsSucessfullyParsed() const;	
+	bool HasEnoughParametersLeft( VectorOfString arguments, int argumentIx );		
 
 	BaseType( const BaseType& ) = delete;
 	BaseType& operator=( const BaseType& ) = delete;
