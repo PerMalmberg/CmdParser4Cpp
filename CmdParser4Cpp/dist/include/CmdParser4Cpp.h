@@ -7,6 +7,7 @@
 #include <unordered_map>
 #include "IParseResult.h"
 #include "Constructor.h"
+#include "IUsageFormatter.h"
 
 namespace com {
 namespace codezeal {
@@ -44,7 +45,7 @@ public:
 	template<typename ArgumentType, typename ValueType>
 	ValueType GetValue( const std::unordered_map<std::string, ArgumentType>& map, const std::string& argumentName, int index, ValueType defaultValue ) const;
 
-
+	void GetUsage( IUsageFormatter& formatter ) const;
 
 private:
 	std::string myArgumentPrefix;

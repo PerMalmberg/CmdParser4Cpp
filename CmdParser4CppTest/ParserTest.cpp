@@ -4,7 +4,8 @@
 #include "CppUnitTest.h"
 #include "CmdParser4Cpp.h"
 #include "SystemOutputParseResult.h"
-
+#include "SystemOutputUsageFormatter.H"
+#include <iostream>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace com::codezeal::commandline;
@@ -140,5 +141,37 @@ public:
 		Assert::IsTrue( strstr( s.c_str(), "The mandatory argument" ) != nullptr );
 	}
 
+	TEST_METHOD( testDescription )
+	{
+		IParseResult& msg = SystemOutputParseResult();
+
+		CmdParser4Cpp& p = CmdParser4Cpp( "/", msg );
+		p.Accept( "single" ).AsSingleBoolean().DescribedAs( "AAA BBBBB CCCCCCCCCCC DDDDDDDDDDDDDDE EEEEEEEEEEEEEEEE FFFFFFFFFFF GGGGGGGGGGGGGGG HHHHHHHHHHHH" );
+		p.Accept( "/bool" ).AsBoolean( 1 ).WithAlias( std::vector<std::string>( { "/B", "-B", "-b" } ) ).DescribedAs( "A Boolean value" ).SetMandatory();
+		p.Accept( "/string" ).AsString( 1 ).DescribedAs( "A string argument" );
+		p.Accept( "/goo" ).AsBoolean( 1 ).SetMandatory().DescribedAs( "Something something" );
+		p.Accept( "/aaa" ).AsString( 1 ).DescribedAs( "Jada Jada Jada" );
+		p.Accept( "/bbb" ).AsString( 1, Constructor::NO_PARAMETER_LIMIT ).DescribedAs( "A long non descriptive description without any meaning what so ever" );
+		Assert::IsTrue( p.Parse( std::vector<std::string>( { "/bool", "1", "single", "/goo", "true", "/aaa", "AAA", "/bbb", "123", "456", "789" } ) ) );
+		Assert::AreEqual( true, p.GetBool( "/bool" ) );
+		Assert::AreEqual( true, p.GetBool( "/goo" ) );
+		Assert::AreEqual( true, p.GetBool( "single", 0 ) );
+		Assert::AreEqual( "AAA", p.GetString( "/aaa", 0, "blah" ) );
+		Assert::AreEqual( "123", p.GetString( "/bbb", 0, "blah" ) );
+		Assert::AreEqual( "456", p.GetString( "/bbb", 1, "blah" ) );
+		Assert::AreEqual( "789", p.GetString( "/bbb", 2, "blah" ) );
+
+		SystemOutputUsageFormatter usage( "application name" );
+		p.GetUsage( usage );
+		std::string output = usage.ToString();
+		// Can't really 'test' the output string, so debug and verify correctness manually.
+	}
+
+
+
+	TEST_METHOD( testHidFromUsage )
+	{
+
+	}
 };
 }

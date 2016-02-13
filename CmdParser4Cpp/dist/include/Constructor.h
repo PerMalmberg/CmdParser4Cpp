@@ -4,6 +4,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 namespace com {
 namespace codezeal {
@@ -11,12 +12,15 @@ namespace commandline {
 
 class CmdParser4Cpp;
 class Argument;
+typedef std::vector<std::string> VectorOfString;
 
 // Class used for creating fluent initializations of the held argument.
 // This class is intentionally copyable!
 class Constructor
 {
 public:
+	static const int NO_PARAMETER_LIMIT;
+
 	Constructor( Argument& argument, CmdParser4Cpp& parser );
 	virtual ~Constructor();
 
@@ -29,7 +33,9 @@ public:
 	const Constructor& AsSingleBoolean() const;
 
 	const Constructor& WithAlias( const std::string& alias ) const;
+	const Constructor& WithAlias( const VectorOfString& alias ) const;
 	const Constructor& SetMandatory() const;
+	const Constructor& DescribedAs( const std::string& desc ) const;
 
 private:
 	CmdParser4Cpp& myParser;

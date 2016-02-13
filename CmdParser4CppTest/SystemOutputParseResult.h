@@ -4,9 +4,7 @@
 #pragma once
 #include "IParseResult.h"
 
-namespace com {
-namespace codezeal {
-namespace commandline {
+using namespace com::codezeal::commandline;
 
 class SystemOutputParseResult : public IParseResult
 {
@@ -26,7 +24,3 @@ public:
 private:
 	std::vector<std::string> myLines;
 };
-
-} // END commandline
-} // END codezeal
-} // com

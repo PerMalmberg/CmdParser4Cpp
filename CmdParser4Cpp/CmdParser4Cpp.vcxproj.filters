@@ -24,9 +24,6 @@
     <ClCompile Include="src\Constructor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\SystemOutputParseResult.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\StringType.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -53,9 +50,6 @@
     <ClInclude Include="dist\include\IParseResult.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="dist\include\SystemOutputParseResult.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\StringType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -66,6 +60,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\SingleBoolType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dist\include\IUsageFormatter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

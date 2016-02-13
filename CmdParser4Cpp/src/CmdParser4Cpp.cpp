@@ -279,6 +279,28 @@ CmdParser4Cpp::GetValue( const std::unordered_map<std::string, ArgumentType>& ma
 	return res;
 }
 
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+void
+CmdParser4Cpp::GetUsage( IUsageFormatter& formatter ) const
+{
+	for( const auto& pair : myArguments ) {
+		const auto& arg = *pair.second;
+		if( arg.IsMandatory() ) {
+			formatter.PrepareMandatory( arg.GetPrimaryName(), arg.HasVariableParameterCount(), arg.GetMaxParameterCount(), arg.GetAliases(), arg.GetDescription() );
+		}
+	}
+
+	for( const auto& pair : myArguments ) {
+		const auto& arg = *pair.second;
+		if( !arg.IsMandatory() ) {
+			formatter.PrepareMandatory( arg.GetPrimaryName(), arg.HasVariableParameterCount(), arg.GetMaxParameterCount(), arg.GetAliases(), arg.GetDescription() );
+		}
+	}
+}
+
 } // END commandline
 } // END codezeal
 } // com

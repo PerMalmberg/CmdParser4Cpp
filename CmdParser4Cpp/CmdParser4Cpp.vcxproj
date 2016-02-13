@@ -77,17 +77,16 @@
     <ClCompile Include="src\CmdParser4Cpp.cpp" />
     <ClCompile Include="src\Constructor.cpp" />
     <ClCompile Include="src\SingleBoolType.cpp" />
-    <ClCompile Include="src\SystemOutputParseResult.cpp" />
     <ClCompile Include="src\StringType.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="dist\include\IUsageFormatter.h" />
     <ClInclude Include="src\BoolType.h" />
     <ClInclude Include="src\Argument.h" />
     <ClInclude Include="src\BaseType.h" />
     <ClInclude Include="dist\include\CmdParser4Cpp.h" />
     <ClInclude Include="dist\include\Constructor.h" />
     <ClInclude Include="dist\include\IParseResult.h" />
-    <ClInclude Include="dist\include\SystemOutputParseResult.h" />
     <ClInclude Include="src\SingleBoolType.h" />
     <ClInclude Include="src\StringType.h" />
   </ItemGroup>

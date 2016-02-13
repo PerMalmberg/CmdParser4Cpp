@@ -15,7 +15,8 @@ Argument::Argument( const std::string& argumentName )
 	: myType( 0 ),
 	myExistsOnCommandLine( false ),
 	myNames(),
-	myIsMandatory(false)
+	myIsMandatory(false),
+	myDescription()
 {
 	myNames.push_back( argumentName );
 }
@@ -93,10 +94,28 @@ Argument::FindArgument( VectorOfString& allArguments, int& hitCount )
 //
 //
 //////////////////////////////////////////////////////////////////////////
-std::string
+const std::string&
 Argument::GetPrimaryName() const
 {
 	return myNames.at( 0 );
+}
+
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+const VectorOfString
+Argument::GetAliases() const
+{
+	VectorOfString aliasesOnly;
+	
+	if( myNames.size() > 0 ) {
+		for( auto it = myNames.begin() + 1; it != myNames.end(); ++it ) {
+			aliasesOnly.push_back( *it );
+		}
+	}
+	
+	return aliasesOnly;
 }
 
 } // END commandline

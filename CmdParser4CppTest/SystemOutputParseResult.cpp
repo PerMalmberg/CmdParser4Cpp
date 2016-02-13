@@ -5,9 +5,6 @@
 #include <iostream>
 #include <string>
 
-namespace com {
-namespace codezeal {
-namespace commandline {
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -125,8 +122,3 @@ SystemOutputParseResult::MissingMandatoryArgument( const std::string& argument )
 	myLines.push_back( line );
 }
 
-
-
-} // END commandline
-} // END codezeal
-} // com
