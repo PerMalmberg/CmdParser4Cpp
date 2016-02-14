@@ -32,7 +32,7 @@ CmdParser4Cpp::CmdParser4Cpp( const char* argumentPrefix, IParseResult& parseRes
 const Constructor
 CmdParser4Cpp::Accept( const std::string& argumentName )
 {
-	Argument* a = new Argument( argumentName );
+	Argument* a = new Argument( argumentName, myParseResult );
 	myArguments.insert( { argumentName, a } );
 	Constructor c( *a, *this );
 
@@ -83,8 +83,8 @@ CmdParser4Cpp::Parse( const std::vector<std::string>& arguments )
 
 		
 		result &= CheckMandatory();
-		//result &= CheckDependencies();
-		//result &= CheckMutualExclusion();
+		result &= CheckDependencies();
+		result &= CheckMutualExclusion();
 		
 
 	}
@@ -149,7 +149,7 @@ CmdParser4Cpp::CheckConstraints( VectorOfString& arguments )
 //
 //////////////////////////////////////////////////////////////////////////
 bool
-CmdParser4Cpp::CheckMandatory()
+CmdParser4Cpp::CheckMandatory() const
 {
 	bool res = true;
 
@@ -162,6 +162,49 @@ CmdParser4Cpp::CheckMandatory()
 	}
 
 	return res;
+}
+
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+bool
+CmdParser4Cpp::CheckDependencies() const
+{
+	bool res = true;
+
+	for( const auto& a : myArguments ) {
+		res &= a.second->CheckDependencies( myArguments );
+	}
+
+	return res;
+}
+
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+bool
+CmdParser4Cpp::CheckMutualExclusion() const
+{
+	bool result = true;
+	// We don't want to check blockers 'a' -> 'b', then 'b' -> 'a' as that will give the same error message twice
+
+	std::unordered_map<std::string, Argument*> testAgainst( myArguments );
+	std::unordered_map<std::string, Argument*> alreadyTested;
+
+	for( const auto& pair : myArguments ) {
+		const Argument& arg = *pair.second;
+		bool blocksFound = !arg.CheckMutualExclusion( testAgainst, alreadyTested );
+		if( blocksFound ) {
+			// Remove argument to prevent double checks
+			alreadyTested.insert( pair );
+			testAgainst.erase( pair.first );
+		}
+		result &= !blocksFound;
+	}
+
+	return result;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -208,9 +251,9 @@ CmdParser4Cpp::SetResult( const std::string& argumentName, const StringType* res
 //
 //////////////////////////////////////////////////////////////////////////
 int
-CmdParser4Cpp::GetAvailableStringParameterCount( const std::string& argumentName ) const
+CmdParser4Cpp::GetAvailableBoolParameterCount( const std::string& argumentName ) const
 {
-	return GetAvailableParameterCount<StringType>( argumentName, myStringResults );
+	return GetAvailableParameterCount( argumentName, myBoolResults );
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -218,9 +261,9 @@ CmdParser4Cpp::GetAvailableStringParameterCount( const std::string& argumentName
 //
 //////////////////////////////////////////////////////////////////////////
 int
-CmdParser4Cpp::GetAvailableBoolParameterCount( const std::string& argumentName ) const
+CmdParser4Cpp::GetAvailableStringParameterCount( const std::string& argumentName ) const
 {
-	return GetAvailableParameterCount<BoolType>( argumentName, myBoolResults );
+	return GetAvailableParameterCount( argumentName, myStringResults );
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -247,7 +290,7 @@ CmdParser4Cpp::GetAvailableParameterCount( const std::string& argumentName, std:
 const char*
 CmdParser4Cpp::GetString( const std::string& argumentName, int index, const char* defaultValue ) const
 {
-	return GetValue<const StringType*, const char*>( myStringResults, argumentName, index, defaultValue );
+	return GetValue( myStringResults, argumentName, index, defaultValue );
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -257,7 +300,17 @@ CmdParser4Cpp::GetString( const std::string& argumentName, int index, const char
 bool 
 CmdParser4Cpp::GetBool( const std::string& argumentName, int index, bool defaultValue ) const
 {
-	return GetValue<const BoolType*, bool>( myBoolResults, argumentName, index, defaultValue );
+	return GetValue( myBoolResults, argumentName, index, defaultValue );
+}
+
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+int
+CmdParser4Cpp::GetAvailableBooleanParameterCount( const std::string& argumentName ) const
+{
+	return GetAvailableParameterCount( argumentName, myBoolResults );
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -24,6 +24,10 @@ public:
 	virtual void MultipleMultiArgumentsSpecified() = 0;
 	virtual void MultiArgumentsMustBePalcedLast() = 0;
 	virtual void MissingMandatoryArgument( const std::string& argument ) = 0;
+	virtual void NoSuchArgumentDefined( const std::string& argument, const std::string& dependsOn ) = 0;
+	virtual void MissingDependentArgument( const std::string& argument, const std::string& dependsOn ) = 0;
+	virtual void NoSuchMutuallyExclusiveArgumentDefined( const std::string& argument, const std::string& missing ) = 0;
+	virtual void ArgumentsAreMutuallyExclusive( const std::string& argument, const std::string& blocker ) = 0;
 };
 
 inline IParseResult::~IParseResult() {}

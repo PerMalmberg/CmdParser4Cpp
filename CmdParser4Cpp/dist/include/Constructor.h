@@ -36,6 +36,8 @@ public:
 	const Constructor& WithAlias( const VectorOfString& alias ) const;
 	const Constructor& SetMandatory() const;
 	const Constructor& DescribedAs( const std::string& desc ) const;
+	const Constructor& DependsOn( const std::string& primaryName ) const;
+	const Constructor& BlockedBy( const std::string& primaryName ) const;
 
 private:
 	CmdParser4Cpp& myParser;

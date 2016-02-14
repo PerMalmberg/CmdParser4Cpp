@@ -11,12 +11,16 @@ namespace commandline {
 //
 //
 //////////////////////////////////////////////////////////////////////////
-Argument::Argument( const std::string& argumentName )
-	: myType( 0 ),
+Argument::Argument( const std::string& argumentName, IParseResult& parseResult )
+	: 
+	myParseResult( parseResult ),
+	myType( 0 ),
 	myExistsOnCommandLine( false ),
 	myNames(),
 	myIsMandatory(false),
-	myDescription()
+	myDescription(),
+	myDependencies(),
+	myBlocks()
 {
 	myNames.push_back( argumentName );
 }
@@ -116,6 +120,86 @@ Argument::GetAliases() const
 	}
 	
 	return aliasesOnly;
+}
+
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+void
+Argument::AddDependency( const std::string& primaryName )
+{
+	myDependencies.push_back( primaryName );
+}
+
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+bool
+Argument::CheckDependencies( std::unordered_map<std::string, Argument*> arguments ) const
+{
+	bool result = true;
+
+	// Only check if the current Argument has been parsed itself.
+	if( IsSuccessFullyParsed() ) {
+		for( const auto& dep : myDependencies ) {
+			const auto& dependsOn = arguments.find( dep );
+			if( dependsOn == arguments.end() ) {
+				// Can't find the argument, this is a programming error
+				myParseResult.NoSuchArgumentDefined( GetPrimaryName(), dep );
+				result = false;
+			}
+			else if( !(*dependsOn).second->IsSuccessFullyParsed() ) {
+				myParseResult.MissingDependentArgument( GetPrimaryName(), dep );
+				result = false;
+			}
+		}
+	}
+
+	return result;
+}
+
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+void
+Argument::AddBlockedBy( const std::string& blockedBy )
+{
+	myBlocks.push_back( blockedBy );
+}
+
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+bool 
+Argument::CheckMutualExclusion( const std::unordered_map<std::string, Argument*>& testAgainst, const std::unordered_map<std::string, Argument*>& alreadyTested ) const
+{
+	bool result = true;
+
+	// Only check if the current Argument has been parsed itself.
+	if( IsSuccessFullyParsed() ) {
+		for( const auto& blocker : myBlocks ) {
+			auto isTested = alreadyTested.find( blocker );
+			if( isTested == alreadyTested.end() ) {
+				// Not yet tested
+				const auto blockedBy = testAgainst.find( blocker );
+				if( blockedBy == testAgainst.end() ) {
+					// Can't find the argument, this is a programming error
+					myParseResult.NoSuchMutuallyExclusiveArgumentDefined( GetPrimaryName(), blocker );
+					result = false;
+				}
+				else if( (*blockedBy).second->IsSuccessFullyParsed() ) {
+					myParseResult.ArgumentsAreMutuallyExclusive( GetPrimaryName(), (*blockedBy).second->GetPrimaryName() );
+					result = false;
+				}
+			}
+		}
+	}
+
+	return result;
 }
 
 } // END commandline

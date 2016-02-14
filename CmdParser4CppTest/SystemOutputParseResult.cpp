@@ -4,6 +4,7 @@
 #include "SystemOutputParseResult.h"
 #include <iostream>
 #include <string>
+#include <sstream>
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -106,7 +107,7 @@ SystemOutputParseResult::MultipleMultiArgumentsSpecified()
 void
 SystemOutputParseResult::MultiArgumentsMustBePalcedLast()
 {
-	myLines.push_back( "An argument that allows variable number of parameters must be places last on the command line." );
+	myLines.push_back( "An argument that allows an unlimited variable number of parameters must be places last on the command line." );
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -120,5 +121,53 @@ SystemOutputParseResult::MissingMandatoryArgument( const std::string& argument )
 	line.append( argument );
 	line.append( "' is missing" );
 	myLines.push_back( line );
+}
+
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+void
+SystemOutputParseResult::NoSuchArgumentDefined( const std::string& argument, const std::string& dependsOn )
+{
+	std::stringstream line;
+	line << "Argument '" << argument << "' depends on '" << dependsOn << "', but no such argument is defined - contact the author of the application";
+	myLines.push_back( line.str() );
+}
+
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+void
+SystemOutputParseResult::MissingDependentArgument( const std::string& argument, const std::string& dependsOn )
+{
+	std::stringstream line;
+	line << "Argument '" << argument << "' depends on '" << dependsOn << "', but the latter is missing";
+	myLines.push_back( line.str() );
+}
+
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+void
+SystemOutputParseResult::NoSuchMutuallyExclusiveArgumentDefined( const std::string& argument, const std::string& missing )
+{
+	std::stringstream line;
+	line << "Argument '" << argument << "' is mutually exclusive to '" << missing << "', but no such argument is defined - contact the author of the application";
+	myLines.push_back( line.str() );
+}
+
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+void
+SystemOutputParseResult::ArgumentsAreMutuallyExclusive( const std::string& argument, const std::string& blocker )
+{
+	std::stringstream line;
+	line << "Arguments '" << argument << "' and '" << blocker << "' are mutually exclusive.";
+	myLines.push_back( line.str() );
 }
 

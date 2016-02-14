@@ -13,7 +13,7 @@ namespace commandline {
 class Argument
 {
 public:
-	Argument( const std::string& argumentName );
+	Argument( const std::string& argumentName, IParseResult& parseResult );
 	virtual ~Argument();
 
 	void SetArgumentType( BaseType* type );
@@ -27,6 +27,7 @@ public:
 
 	bool HasVariableParameterCount() const { return myType->HasVariableParameterCount(); }
 	int GetMaxParameterCount() const { return myType->GetMaxParameterCount(); }
+	int GetAvailableParameterCount() const { return myType->GetAvailableParameterCount(); }
 
 	void SetMandatory() { myIsMandatory = true; }
 	bool IsMandatory() const { return myIsMandatory; }
@@ -35,12 +36,21 @@ public:
 	void SetDescription( const std::string& desc ) { myDescription = desc; }
 	const std::string& GetDescription() const { return myDescription; }
 
+	void AddDependency( const std::string& primaryName );
+	bool CheckDependencies( std::unordered_map<std::string, Argument*> arguments ) const;
+
+	void AddBlockedBy( const std::string& blockedBy );
+	bool CheckMutualExclusion( const std::unordered_map<std::string, Argument*>& testAgainst, const std::unordered_map<std::string, Argument*>& alreadyTested ) const;
+
 private:
+	IParseResult& myParseResult;
 	BaseType* myType;
 	bool myExistsOnCommandLine;
 	VectorOfString myNames;
 	bool myIsMandatory;
 	std::string myDescription;
+	VectorOfString myDependencies;
+	VectorOfString myBlocks;
 	
 	Argument( const Argument& ) = delete;
 	Argument& operator=( const Argument& ) = delete;

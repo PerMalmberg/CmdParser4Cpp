@@ -41,6 +41,7 @@ public:
 	int GetAvailableBoolParameterCount( const std::string& argumentName ) const;
 	const char* GetString( const std::string& argumentName, int index = 0, const char* defaultValue = nullptr ) const;
 	bool GetBool( const std::string& argumentName, int index = 0, bool defaultValue = false ) const;
+	int GetAvailableBooleanParameterCount( const std::string& argumentName ) const;
 
 	template<typename ArgumentType, typename ValueType>
 	ValueType GetValue( const std::unordered_map<std::string, ArgumentType>& map, const std::string& argumentName, int index, ValueType defaultValue ) const;
@@ -57,8 +58,12 @@ private:
 	void RemoveEmptyArguments( std::vector<std::string>& arguments );
 	template<typename ArgumentType>
 	int GetAvailableParameterCount( const std::string& argumentName, std::unordered_map<std::string, const ArgumentType*> map ) const;
+	template<typename ArgumentType, typename ValueType>
+	int GetAvailableParameterCount( const std::unordered_map<std::string, ArgumentType>& map, const std::string& argumentName ) const;
 	bool CheckConstraints( VectorOfString& args );
-	bool CheckMandatory();
+	bool CheckMandatory() const;
+	bool CheckDependencies() const;
+	bool CheckMutualExclusion() const;
 
 	// Prevent copying
 	CmdParser4Cpp( const CmdParser4Cpp& ) = delete;

@@ -16,9 +16,9 @@ TEST_CLASS( CmdParser4CppTest )
 public:
 	TEST_METHOD( testParse )
 	{
-		IParseResult& msg = SystemOutputParseResult();
+		SystemOutputParseResult msg;
 
-		CmdParser4Cpp& p = CmdParser4Cpp( "-", msg );
+		CmdParser4Cpp p( "-", msg );
 		p.Accept( "-m" ).AsString( 2 );
 
 		Assert::IsTrue( p.Parse( std::vector<std::string>( { "-m", "", "one", "two" } ) ) );
@@ -33,9 +33,9 @@ public:
 
 	TEST_METHOD( testSpecifiedMultipleTimes )
 	{
-		IParseResult& msg = SystemOutputParseResult();
+		SystemOutputParseResult msg;
 
-		CmdParser4Cpp& p = CmdParser4Cpp( "-", msg );
+		CmdParser4Cpp p( "-", msg );
 		p.Accept( "-q" ).AsString( 1 ).WithAlias( "-Q" );
 		Assert::IsFalse( p.Parse( std::vector<std::string>( { "-q", "Foo", "-Q", "Bar" } ) ) );
 		std::string& s = msg.GetParseResult();
@@ -44,9 +44,9 @@ public:
 
 	TEST_METHOD( testMissingMandatory )
 	{
-		IParseResult& msg = SystemOutputParseResult();
+		SystemOutputParseResult msg;
 
-		CmdParser4Cpp& p = CmdParser4Cpp( "-", msg );
+		CmdParser4Cpp p( "-", msg );
 
 		p.Accept( "-q" ).AsString( 1 ).SetMandatory();
 		p.Accept( "-Q" ).AsString( 1 );
@@ -57,9 +57,9 @@ public:
 
 	TEST_METHOD( testLeftOvers )
 	{
-		IParseResult& msg = SystemOutputParseResult();
+		SystemOutputParseResult msg;
 
-		CmdParser4Cpp& p = CmdParser4Cpp( "-", msg );
+		CmdParser4Cpp p( "-", msg );
 		p.Accept( "-Q" ).AsString( 1 );
 		Assert::IsFalse( p.Parse( std::vector<std::string>( { "-Q", "Bar", "some", "extra" } ) ) );
 		std::string& s = msg.GetParseResult();
@@ -68,9 +68,9 @@ public:
 
 	TEST_METHOD( testBoolean )
 	{
-		IParseResult& msg = SystemOutputParseResult();
+		SystemOutputParseResult msg;
 
-		CmdParser4Cpp& p = CmdParser4Cpp( "/", msg );
+		CmdParser4Cpp p( "/", msg );
 
 		p.Accept( "/b" ).AsBoolean( 4 );
 		p.Accept( "/bar" ).WithAlias( "/foo" ).AsBoolean( 1 );
@@ -84,7 +84,7 @@ public:
 
 	TEST_METHOD( testSingleBoolean )
 	{
-		IParseResult& msg = SystemOutputParseResult();
+		SystemOutputParseResult msg;
 
 		CmdParser4Cpp& p = CmdParser4Cpp( "-", msg );
 
@@ -98,9 +98,9 @@ public:
 
 	TEST_METHOD( testFailedParse )
 	{
-		IParseResult& msg = SystemOutputParseResult();
+		SystemOutputParseResult msg;
 
-		CmdParser4Cpp& p = CmdParser4Cpp( "/", msg );
+		CmdParser4Cpp p( "/", msg );
 
 		p.Accept( "/b" ).AsBoolean( 4 );
 		Assert::IsFalse( p.Parse( std::vector<std::string>( { "/b", "true", "1", "Nope", "false" } ) ) );
@@ -110,9 +110,9 @@ public:
 
 	TEST_METHOD( testMissingParameters )
 	{
-		IParseResult& msg = SystemOutputParseResult();
+		SystemOutputParseResult msg;
 
-		CmdParser4Cpp& p = CmdParser4Cpp( "/", msg );
+		CmdParser4Cpp p( "/", msg );
 		p.Accept( "/b" ).AsBoolean( 4 );
 		Assert::IsFalse( p.Parse( std::vector<std::string>( { "/b", "true", "1", "Nope" } ) ) );
 		std::string& s = msg.GetParseResult();
@@ -121,9 +121,9 @@ public:
 
 	TEST_METHOD( testMissingParameters2 )
 	{
-		IParseResult& msg = SystemOutputParseResult();
+		SystemOutputParseResult msg;
 
-		CmdParser4Cpp& p = CmdParser4Cpp( "/", msg );
+		CmdParser4Cpp p( "/", msg );
 		p.Accept( "/b" ).AsBoolean( 4 );
 		Assert::IsFalse( p.Parse( std::vector<std::string>( { "/b" } ) ) );
 		std::string& s = msg.GetParseResult();
@@ -132,9 +132,9 @@ public:
 
 	TEST_METHOD( testNoInputWithMandatory )
 	{
-		IParseResult& msg = SystemOutputParseResult();
+		SystemOutputParseResult msg;
 
-		CmdParser4Cpp& p = CmdParser4Cpp( "/", msg );
+		CmdParser4Cpp p( "/", msg );
 		p.Accept( "/b" ).AsBoolean( 1 ).SetMandatory();
 		Assert::IsFalse( p.Parse( std::vector<std::string>( { "" } ) ) );
 		std::string& s = msg.GetParseResult();
@@ -143,9 +143,9 @@ public:
 
 	TEST_METHOD( testDescription )
 	{
-		IParseResult& msg = SystemOutputParseResult();
+		SystemOutputParseResult msg;
 
-		CmdParser4Cpp& p = CmdParser4Cpp( "/", msg );
+		CmdParser4Cpp p( "/", msg );
 		p.Accept( "single" ).AsSingleBoolean().DescribedAs( "AAA BBBBB CCCCCCCCCCC DDDDDDDDDDDDDDE EEEEEEEEEEEEEEEE FFFFFFFFFFF GGGGGGGGGGGGGGG HHHHHHHHHHHH" );
 		p.Accept( "/bool" ).AsBoolean( 1 ).WithAlias( std::vector<std::string>( { "/B", "-B", "-b" } ) ).DescribedAs( "A Boolean value" ).SetMandatory();
 		p.Accept( "/string" ).AsString( 1 ).DescribedAs( "A string argument" );
@@ -167,9 +167,192 @@ public:
 		// Can't really 'test' the output string, so debug and verify correctness manually.
 	}
 
+	TEST_METHOD( testVariableParameterCount )
+	{
+		SystemOutputParseResult msg;
 
+		CmdParser4Cpp p( "/", msg );
+		p.Accept( "/b" ).AsBoolean( 1, Constructor::NO_PARAMETER_LIMIT );
+		Assert::IsTrue( p.Parse( std::vector<std::string>( { "/b", "1", "0", "1", "true", "false" } ) ) );
+		Assert::AreEqual( 5, p.GetAvailableBooleanParameterCount( "/b" ) );
+		Assert::IsTrue( p.GetBool( "/b", 0, false ) );
+		Assert::IsFalse( p.GetBool( "/b", 1, true ) );
+		Assert::IsTrue( p.GetBool( "/b", 2, false ) );
+		Assert::IsTrue( p.GetBool( "/b", 3, false ) );
+		Assert::IsFalse( p.GetBool( "/b", 4, true ) );
+	}
 
-	TEST_METHOD( testHidFromUsage )
+	TEST_METHOD( testMultiArgumentAtEnd )
+	{
+		SystemOutputParseResult msg;
+
+		CmdParser4Cpp p( "/", msg );
+		p.Accept( "single" ).AsSingleBoolean().DescribedAs( "AAA BBBBB CCCCCCCCCCC DDDDDDDDDDDDDDE EEEEEEEEEEEEEEEE FFFFFFFFFFF GGGGGGGGGGGGGGG HHHHHHHHHHHH" );
+		p.Accept( "/bool" ).AsBoolean( 1 ).WithAlias( std::vector<std::string>( { "/B", "-B", "-b" } ) ).DescribedAs( "A Boolean value" ).SetMandatory();
+		p.Accept( "/string" ).AsString( 1 ).DescribedAs( "A string argument" );
+		p.Accept( "/goo" ).AsBoolean( 1 ).SetMandatory().DescribedAs( "-gle?" );
+		p.Accept( "/aaa" ).AsString( 1 ).DescribedAs( "Jada Jada Jada" );
+		p.Accept( "/bbb" ).AsString( 1, Constructor::NO_PARAMETER_LIMIT ).DescribedAs( "A long non descriptive description without any meaning what so ever" );
+		Assert::IsFalse( p.Parse( std::vector<std::string>( { "/bool", "1", "single", "/goo", "true", "/bbb", "AAA", "/aaa", "123", "456", "789" } ) ) );
+
+		Assert::IsTrue( strstr( msg.GetParseResult().c_str(), "An argument that allows an unlimited variable number of parameters must be places last on the command line" ) != nullptr );
+	}
+
+	TEST_METHOD( testNotEnoughParameters )
+	{
+		SystemOutputParseResult msg;
+
+		CmdParser4Cpp p( "/", msg );
+		p.Accept( "/b" ).AsBoolean( 2 );
+		p.Accept( "/c" ).AsBoolean( 1 );
+		Assert::IsFalse( p.Parse( std::vector<std::string>( { "/b", "true", "/c", "false" } ) ) );
+		Assert::IsTrue( strstr( msg.GetParseResult().c_str(), "Not enough parameters, argument '/b'" ) != nullptr );
+	}
+
+	TEST_METHOD( testNotEnoughParameters2 )
+	{
+		SystemOutputParseResult msg;
+
+		CmdParser4Cpp p( "/", msg );
+		p.Accept( "/a" ).AsBoolean( 1 );
+		p.Accept( "/b" ).AsBoolean( 3 );
+		p.Accept( "/c" ).AsBoolean( 1 );
+		Assert::IsFalse( p.Parse( std::vector<std::string>( { "/b", "true", "false", "/a", "true", "/c", "false" } ) ) );
+		Assert::IsTrue( strstr( msg.GetParseResult().c_str(), "Not enough parameters, argument '/b' requires 3" ) != nullptr );
+	}
+
+	TEST_METHOD( testMultipleMulti )
+	{
+		SystemOutputParseResult msg;
+
+		CmdParser4Cpp p( "/", msg );
+		p.Accept( "/multi1" ).AsBoolean( 1, 3 );
+		p.Accept( "/multi2" ).AsBoolean( 1, 3 );
+		Assert::IsFalse( p.Parse( std::vector<std::string>( { "/multi1", "1", "/multi2", "1" } ) ) );
+		Assert::IsTrue( strstr( msg.GetParseResult().c_str(), "Multiple arguments which allows for variable parameter count are specified on the command line" ) != nullptr );
+	}
+
+	TEST_METHOD( testSameArgumentMultipleTimes )
+	{
+		SystemOutputParseResult msg;
+
+		CmdParser4Cpp p( "/", msg );
+		p.Accept( "/multi1" ).AsBoolean( 1, 3 );
+		p.Accept( "/multi2" ).AsBoolean( 1, 3 );
+		Assert::IsFalse( p.Parse( std::vector<std::string>( { "/multi1", "1", "/multi1", "1" } ) ) );
+
+		Assert::IsTrue( strstr( msg.GetParseResult().c_str(), "The argument '/multi1' is specified multiple times" ) != nullptr );
+	}
+
+	TEST_METHOD( testDependsOnMissing )
+	{
+		SystemOutputParseResult msg;
+
+		CmdParser4Cpp p( "/", msg );
+		p.Accept( "-first" ).DependsOn( "-second" ).AsBoolean( 1 );
+		p.Accept( "-second" ).AsBoolean( 1 );
+		Assert::IsFalse( p.Parse( std::vector<std::string>( { "-first", "false" } ) ) );
+		Assert::IsTrue( strstr( msg.GetParseResult().c_str(), "Argument '-first' depends on '-second', but the latter is missing" ) != nullptr );
+	}
+
+	TEST_METHOD( testDependsTwoWay )
+	{
+		SystemOutputParseResult msg;
+
+		CmdParser4Cpp p( "-", msg );
+		p.Accept( "-first" ).DependsOn( "-second" ).AsBoolean( 1 );
+		p.Accept( "-second" ).DependsOn( "-first" ).AsBoolean( 1 );
+		Assert::IsTrue( p.Parse( std::vector<std::string>( { "-first", "false", "-second", "true" } ) ) );
+		Assert::AreEqual( 0, static_cast<int>(msg.GetParseResult().length()) );
+	}
+
+	TEST_METHOD( testDependsTwoWayFail )
+	{
+		SystemOutputParseResult msg;
+
+		CmdParser4Cpp p( "-", msg );
+		p.Accept( "-first" ).DependsOn( "-second" ).AsBoolean( 1 );
+		p.Accept( "-second" ).DependsOn( "-first" ).AsBoolean( 1 );
+		Assert::IsFalse( p.Parse( std::vector<std::string>( { "-second", "true" } ) ) );
+		Assert::IsTrue( strstr( msg.GetParseResult().c_str(), "Argument '-second' depends on '-first', but the latter is missing" ) != nullptr );
+	}
+
+	TEST_METHOD( testDependsOnProgrammingError )
+	{
+		SystemOutputParseResult msg;
+
+		CmdParser4Cpp p( "-", msg );
+		p.Accept( "-first" ).DependsOn( "-second" ).AsBoolean( 1 );
+		Assert::IsFalse( p.Parse( std::vector<std::string>( { "-first", "false" } ) ) );
+		Assert::IsTrue( strstr( msg.GetParseResult().c_str(), "Argument '-first' depends on '-second', but no such argument is defined - contact the author of the application" ) != nullptr );
+	}
+
+	TEST_METHOD( testBlockedByOK )
+	{
+		SystemOutputParseResult msg;
+
+		CmdParser4Cpp p( "-", msg );
+		p.Accept( "-first" ).BlockedBy( "-second" ).AsSingleBoolean();
+		p.Accept( "-second" ).BlockedBy( "-first" ).AsSingleBoolean();
+		Assert::IsTrue( p.Parse( std::vector<std::string>( { "-first" } ) ) );
+	}
+
+	TEST_METHOD( testBlockedByFAIL )
+	{
+		SystemOutputParseResult msg;
+
+		CmdParser4Cpp p( "-", msg );
+		p.Accept( "-first" ).BlockedBy( "-second" ).AsSingleBoolean();
+		p.Accept( "-second" ).BlockedBy( "-first" ).AsSingleBoolean();
+		Assert::IsFalse( p.Parse( std::vector<std::string>( { "-first", "-second" } ) ) );
+		Assert::IsTrue( strstr( msg.GetParseResult().c_str(), "mutually exclusive" ) != nullptr );
+	}
+
+	TEST_METHOD( testGitExample )
+	{
+		SystemOutputParseResult msg;
+
+		CmdParser4Cpp p( "-", msg );
+		p.Accept( "-argument" ).AsBoolean( 1 ).SetMandatory().DescribedAs( "An argument that accept a single boolean parameter" );
+		p.Accept( "-multi" ).AsString( 1, 4 ).DescribedAs( "An optional argument that accept one to four argument." );
+		// The name of the argument, or any prefix characters, doesn't really matter, here we use double dash.
+		p.Accept( "--otherArgument" ).WithAlias( std::vector<std::string>( { "-o", "-O" } ) ).AsSingleBoolean().DescribedAs( "An optional argument that takes no parameters" );
+		// Arguments with variable parameters are only accepted as the last argument on the commandline.
+		Assert::IsTrue( p.Parse( std::vector<std::string>( { "-argument", "true", "-O", "-multi", "parameter1", "parameter2", "parameter3" } ) ) );
+		// Verify the number of parameters that can be read for the different arguments.
+		Assert::AreEqual( 1, p.GetAvailableBooleanParameterCount( "--otherArgument" ) );
+		Assert::AreEqual( 3, p.GetAvailableStringParameterCount( "-multi" ) );
+		Assert::AreEqual( 1, p.GetAvailableBooleanParameterCount( "-argument" ) );
+
+		// Read the values from the parser.
+		Assert::AreEqual( true, p.GetBool( "-argument", 0 ) );
+		Assert::AreEqual( "parameter1", p.GetString( "-multi", 0 ) );
+		Assert::AreEqual( "parameter2", p.GetString( "-multi", 1 ) );
+		Assert::AreEqual( "parameter3", p.GetString( "-multi", 2 ) );
+		Assert::AreEqual( nullptr, p.GetString( "-multi", 4 ) );
+
+		SystemOutputUsageFormatter usage( "MyCmdString" );
+		p.GetUsage( usage );
+
+		std::cout << usage.ToString();
+	}
+
+	TEST_METHOD( testGitExample2 )
+	{
+		SystemOutputParseResult msg;
+
+		CmdParser4Cpp p( "-", msg );
+
+		p.Accept( "-argument" ).AsBoolean( 1 ).SetMandatory().DescribedAs( "An argument that accept a single boolean parameter" );
+		p.Accept( "-multi" ).AsString( 1, 4 ).DescribedAs( "An optional argument that accept one to four argument." );
+
+		// Missing mandatory argument
+		Assert::IsFalse( p.Parse( std::vector<std::string>( { "-multi", "parameter1", "parameter2", "parameter3" } ) ) );
+
+		std::cout << msg.GetParseResult();
+	}
+
+	TEST_METHOD( testHideFromUsage )
 	{
 
 	}

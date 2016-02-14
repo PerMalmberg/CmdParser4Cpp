@@ -21,6 +21,10 @@ public:
 	void MultipleMultiArgumentsSpecified() override;
 	void MultiArgumentsMustBePalcedLast() override;
 	void MissingMandatoryArgument( const std::string& argument ) override;
+	void NoSuchArgumentDefined( const std::string& argument, const std::string& dependsOn ) override;
+	void MissingDependentArgument( const std::string& argument, const std::string& dependsOn ) override;
+	void NoSuchMutuallyExclusiveArgumentDefined( const std::string& argument, const std::string& missing ) override;
+	void ArgumentsAreMutuallyExclusive( const std::string& argument, const std::string& blocker ) override;
 private:
 	std::vector<std::string> myLines;
 };
