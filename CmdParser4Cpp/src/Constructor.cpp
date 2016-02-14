@@ -153,6 +153,18 @@ Constructor::BlockedBy( const std::string& primaryName ) const
 	return *this;
 }
 
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+const Constructor&
+Constructor::SetHidden() const
+{
+	myArgument.SetHidden();
+	return *this;
+}
+
+
 } // END commandline
 } // END codezeal
 } // com

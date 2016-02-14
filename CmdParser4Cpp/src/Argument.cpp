@@ -20,7 +20,8 @@ Argument::Argument( const std::string& argumentName, IParseResult& parseResult )
 	myIsMandatory(false),
 	myDescription(),
 	myDependencies(),
-	myBlocks()
+	myBlocks(),
+	isHidden( false )
 {
 	myNames.push_back( argumentName );
 }

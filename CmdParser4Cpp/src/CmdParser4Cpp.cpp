@@ -341,14 +341,14 @@ CmdParser4Cpp::GetUsage( IUsageFormatter& formatter ) const
 {
 	for( const auto& pair : myArguments ) {
 		const auto& arg = *pair.second;
-		if( arg.IsMandatory() ) {
+		if( arg.IsMandatory() && !arg.IsHidden() ) {
 			formatter.PrepareMandatory( arg.GetPrimaryName(), arg.HasVariableParameterCount(), arg.GetMaxParameterCount(), arg.GetAliases(), arg.GetDescription() );
 		}
 	}
 
 	for( const auto& pair : myArguments ) {
 		const auto& arg = *pair.second;
-		if( !arg.IsMandatory() ) {
+		if( !arg.IsMandatory() && !arg.IsHidden() ) {
 			formatter.PrepareMandatory( arg.GetPrimaryName(), arg.HasVariableParameterCount(), arg.GetMaxParameterCount(), arg.GetAliases(), arg.GetDescription() );
 		}
 	}

@@ -38,6 +38,7 @@ public:
 	const Constructor& DescribedAs( const std::string& desc ) const;
 	const Constructor& DependsOn( const std::string& primaryName ) const;
 	const Constructor& BlockedBy( const std::string& primaryName ) const;
+	const Constructor& SetHidden() const;
 
 private:
 	CmdParser4Cpp& myParser;
