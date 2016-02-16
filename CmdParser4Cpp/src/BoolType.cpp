@@ -80,11 +80,11 @@ BoolType::GetResult( int index, bool defaultValue ) const
 {
 	bool res = defaultValue;
 
-	if( myResults.size() >= index && index <= myResults.size() ) {
+	if( index >= 0 && index < myResults.size() ) {
 		return myResults.at( index ).compare( ONE ) == 0;
 	}
-	
-	return res;	
+
+	return res;
 }
 
 } // END commandline

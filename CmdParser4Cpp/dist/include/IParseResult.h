@@ -21,8 +21,6 @@ public:
 	virtual void NotEnoughParameters( const std::string& argument, int minParameterCount ) = 0;
 	virtual void FailedToParseArgument( const std::string& argument ) = 0;
 	virtual void ArgumentSpecifiedMultipleTimes( const std::string& argument ) = 0;
-	virtual void MultipleMultiArgumentsSpecified() = 0;
-	virtual void MultiArgumentsMustBePalcedLast() = 0;
 	virtual void MissingMandatoryArgument( const std::string& argument ) = 0;
 	virtual void NoSuchArgumentDefined( const std::string& argument, const std::string& dependsOn ) = 0;
 	virtual void MissingDependentArgument( const std::string& argument, const std::string& dependsOn ) = 0;

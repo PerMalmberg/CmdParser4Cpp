@@ -182,7 +182,7 @@ public:
 		Assert::IsFalse( p.GetBool( "/b", 4, true ) );
 	}
 
-	TEST_METHOD( testMultiArgumentAtEnd )
+	TEST_METHOD( testMultiArgumentInMiddle )
 	{
 		SystemOutputParseResult msg;
 
@@ -191,11 +191,14 @@ public:
 		p.Accept( "/bool" ).AsBoolean( 1 ).WithAlias( std::vector<std::string>( { "/B", "-B", "-b" } ) ).DescribedAs( "A Boolean value" ).SetMandatory();
 		p.Accept( "/string" ).AsString( 1 ).DescribedAs( "A string argument" );
 		p.Accept( "/goo" ).AsBoolean( 1 ).SetMandatory().DescribedAs( "-gle?" );
-		p.Accept( "/aaa" ).AsString( 1 ).DescribedAs( "Jada Jada Jada" );
+		p.Accept( "/aaa" ).AsString( 3 ).DescribedAs( "Jada Jada Jada" );
 		p.Accept( "/bbb" ).AsString( 1, Constructor::NO_PARAMETER_LIMIT ).DescribedAs( "A long non descriptive description without any meaning what so ever" );
-		Assert::IsFalse( p.Parse( std::vector<std::string>( { "/bool", "1", "single", "/goo", "true", "/bbb", "AAA", "/aaa", "123", "456", "789" } ) ) );
+		Assert::IsTrue( p.Parse( std::vector<std::string>( { "/bool", "1", "single", "/goo", "true", "/bbb", "AAA", "BBB", "CCC", "/aaa", "123", "456", "789" } ) ) );
 
-		Assert::IsTrue( strstr( msg.GetParseResult().c_str(), "An argument that allows an unlimited variable number of parameters must be placed last on the command line" ) != nullptr );
+		Assert::AreEqual( "AAA", p.GetString( "/bbb", 0 ) );
+		Assert::AreEqual( "BBB", p.GetString( "/bbb", 1 ) );
+		Assert::AreEqual( "CCC", p.GetString( "/bbb", 2 ) );
+		Assert::AreEqual( nullptr, p.GetString( "/bbb", 3 ) );
 	}
 
 	TEST_METHOD( testNotEnoughParameters )
@@ -228,8 +231,11 @@ public:
 		CmdParser4Cpp p( "/", msg );
 		p.Accept( "/multi1" ).AsBoolean( 1, 3 );
 		p.Accept( "/multi2" ).AsBoolean( 1, 3 );
-		Assert::IsFalse( p.Parse( std::vector<std::string>( { "/multi1", "1", "/multi2", "1" } ) ) );
-		Assert::IsTrue( strstr( msg.GetParseResult().c_str(), "Multiple arguments which allows for variable parameter count are specified on the command line" ) != nullptr );
+		Assert::IsTrue( p.Parse( std::vector<std::string>( { "/multi1", "1", "0", "/multi2", "0", "true" } ) ) );
+		Assert::AreEqual( true, p.GetBool( "/multi1", 0 ) );
+		Assert::AreEqual( false, p.GetBool( "/multi1", 1 ) );
+		Assert::AreEqual( false, p.GetBool( "/multi2", 0 ) );
+		Assert::AreEqual( true, p.GetBool( "/multi2", 1 ) );
 	}
 
 	TEST_METHOD( testSameArgumentMultipleTimes )

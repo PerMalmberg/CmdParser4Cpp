@@ -95,26 +95,6 @@ SystemOutputParseResult::ArgumentSpecifiedMultipleTimes( const std::string& argu
 //
 //////////////////////////////////////////////////////////////////////////
 void
-SystemOutputParseResult::MultipleMultiArgumentsSpecified()
-{
-	myLines.push_back( "Multiple arguments which allows for variable parameter count are specified on the command line." );
-}
-
-//////////////////////////////////////////////////////////////////////////
-//
-//
-//////////////////////////////////////////////////////////////////////////
-void
-SystemOutputParseResult::MultiArgumentsMustBePalcedLast()
-{
-	myLines.push_back( "An argument that allows an unlimited variable number of parameters must be placed last on the command line." );
-}
-
-//////////////////////////////////////////////////////////////////////////
-//
-//
-//////////////////////////////////////////////////////////////////////////
-void
 SystemOutputParseResult::MissingMandatoryArgument( const std::string& argument )
 {
 	std::string line = "The mandatory argument '";

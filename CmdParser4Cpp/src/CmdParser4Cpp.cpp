@@ -118,10 +118,7 @@ CmdParser4Cpp::CheckConstraints( const VectorOfString& arguments )
 {
 	bool res = true;
 
-	// Find all arguments with unlimited parameters on the command line.
-	std::vector<int> variable;
-	std::vector<int> argumentIndexs;
-
+	// Find all arguments duplicates
 	for( auto& a : myArguments ) {
 		int hitCount = 0;
 		int ix = a.second->FindArgument( arguments, hitCount );
@@ -131,31 +128,7 @@ CmdParser4Cpp::CheckConstraints( const VectorOfString& arguments )
 				// Same argument multiple times - that's bad
 				res = false;
 				myParseResult.ArgumentSpecifiedMultipleTimes( a.second->GetPrimaryName() );
-			}
-			else if( a.second->HasVariableParameterCount() ) {
-				variable.push_back( ix );
-			}
-			else {
-				argumentIndexs.push_back( ix );
-			}
-		}
-	}
-
-	if( res && variable.size() > 1 ) {
-		res = false;
-		myParseResult.MultipleMultiArgumentsSpecified();
-	}
-
-	if( res && variable.size() == 1 ) {
-		// Check if the argument is last on the list
-		int max = variable.at( 0 );
-		for( auto curr : argumentIndexs ) {
-			max = std::max( max, curr );
-		}
-
-		if( variable.at( 0 ) < max ) {
-			res = false;
-			myParseResult.MultiArgumentsMustBePalcedLast();
+			}			
 		}
 	}
 

@@ -18,8 +18,6 @@ public:
 	void NotEnoughParameters( const std::string& argument, int minParameterCount ) override;
 	void FailedToParseArgument( const std::string& argument ) override;
 	void ArgumentSpecifiedMultipleTimes( const std::string& argument ) override;
-	void MultipleMultiArgumentsSpecified() override;
-	void MultiArgumentsMustBePalcedLast() override;
 	void MissingMandatoryArgument( const std::string& argument ) override;
 	void NoSuchArgumentDefined( const std::string& argument, const std::string& dependsOn ) override;
 	void MissingDependentArgument( const std::string& argument, const std::string& dependsOn ) override;
