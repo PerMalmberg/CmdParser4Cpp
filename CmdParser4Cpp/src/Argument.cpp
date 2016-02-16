@@ -12,12 +12,12 @@ namespace commandline {
 //
 //////////////////////////////////////////////////////////////////////////
 Argument::Argument( const std::string& argumentName, IParseResult& parseResult )
-	: 
+	:
 	myParseResult( parseResult ),
 	myType( 0 ),
 	myExistsOnCommandLine( false ),
 	myNames(),
-	myIsMandatory(false),
+	myIsMandatory( false ),
 	myDescription(),
 	myDependencies(),
 	myBlocks(),
@@ -72,7 +72,7 @@ Argument::Parse( VectorOfString& arguments )
 //
 //////////////////////////////////////////////////////////////////////////
 int
-Argument::FindArgument( VectorOfString& allArguments, int& hitCount )
+Argument::FindArgument( const VectorOfString& allArguments, int& hitCount )
 {
 	int foundIx = -1;
 
@@ -81,7 +81,7 @@ Argument::FindArgument( VectorOfString& allArguments, int& hitCount )
 	// Loop all our names and test against all provided arguments.
 	for( const auto& name : myNames ) {
 		for( int ix = 0; ix < allArguments.size(); ++ix ) {
-			if(  allArguments.at(ix).compare( name ) == 0 ) {
+			if( allArguments.at( ix ).compare( name ) == 0 ) {
 				if( foundIx == -1 ) {
 					// First hit
 					foundIx = ix;
@@ -113,13 +113,13 @@ const VectorOfString
 Argument::GetAliases() const
 {
 	VectorOfString aliasesOnly;
-	
+
 	if( myNames.size() > 0 ) {
 		for( auto it = myNames.begin() + 1; it != myNames.end(); ++it ) {
 			aliasesOnly.push_back( *it );
 		}
 	}
-	
+
 	return aliasesOnly;
 }
 
@@ -175,7 +175,7 @@ Argument::AddBlockedBy( const std::string& blockedBy )
 //
 //
 //////////////////////////////////////////////////////////////////////////
-bool 
+bool
 Argument::CheckMutualExclusion( const std::unordered_map<std::string, Argument*>& testAgainst, const std::unordered_map<std::string, Argument*>& alreadyTested ) const
 {
 	bool result = true;

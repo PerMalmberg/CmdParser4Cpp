@@ -19,7 +19,7 @@ public:
 	void SetArgumentType( BaseType* type );
 	bool Parse( VectorOfString& arguments );
 
-	int FindArgument( VectorOfString& arguments, int& hitCount );
+	int FindArgument( const VectorOfString& arguments, int& hitCount );
 	
 	const std::string& GetPrimaryName() const;
 	void AddAlias( const std::string& alias ) { myNames.push_back( alias ); }
