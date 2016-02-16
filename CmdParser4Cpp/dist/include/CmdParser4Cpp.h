@@ -4,6 +4,7 @@
 #pragma once
 
 #include <string>
+#include <utility>
 #include <unordered_map>
 #include "IParseResult.h"
 #include "Constructor.h"
@@ -58,12 +59,19 @@ private:
 	void RemoveEmptyArguments( std::vector<std::string>& arguments );
 	template<typename ArgumentType>
 	int GetAvailableParameterCount( const std::string& argumentName, std::unordered_map<std::string, const ArgumentType*> map ) const;
-	template<typename ArgumentType, typename ValueType>
-	int GetAvailableParameterCount( const std::unordered_map<std::string, ArgumentType>& map, const std::string& argumentName ) const;
-	bool CheckConstraints( VectorOfString& args );
+	bool CheckConstraints( const VectorOfString& args );
 	bool CheckMandatory() const;
 	bool CheckDependencies() const;
 	bool CheckMutualExclusion() const;
+	void GetIndexes( std::vector<std::pair<int, Argument*>>& argumentIndexes, const std::vector<std::string>& arguments );
+
+	class IndexSorter {
+	public:
+		bool operator()(const std::pair<int, Argument*>& lhs, const std::pair<int, Argument*>& rhs) {
+			return lhs.first < rhs.first;
+
+		}
+	};
 
 	// Prevent copying
 	CmdParser4Cpp( const CmdParser4Cpp& ) = delete;

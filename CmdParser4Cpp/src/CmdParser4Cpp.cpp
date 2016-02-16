@@ -65,28 +65,46 @@ CmdParser4Cpp::Parse( const std::vector<std::string>& arguments )
 	bool result = CheckConstraints( copy );
 
 	if( result ) {
-		// Let each argument have a go until there are no more arguments available.
-		// (we rely on that the Argument removes the parts it uses from the vector)
+		// First, get indexes for the respective arguments
+		std::vector<std::pair<int, Argument*>> argumentIndexes;
+		GetIndexes( argumentIndexes, arguments );
 
-		auto currentArg = myArguments.begin();
+		// Now let each argument parse any parameter until the next argument.
+		// This ensures that an argument isn't considered as a parameter to another argument.
+		for( auto curr = argumentIndexes.begin(); result && curr != argumentIndexes.end(); ++curr ) {
+			int argumentPos = (*curr).first;
+			int nextArgumentPos;
 
-		while( result && copy.size() > 0 && currentArg != myArguments.end() ) {
-			result = (*currentArg).second->Parse( copy );
-			++currentArg;
+			// Are there more arguments left? If so, stop at that one. Otherwise take parameters until end.
+			std::vector<std::pair<int, Argument*>>::iterator nextArgument;
+			if( curr == --argumentIndexes.end() ) {
+				nextArgumentPos = copy.size();
+			}
+			else {
+				// Make a copy and 
+				auto next = curr;
+				++next;
+				nextArgument = next;
+				nextArgumentPos = (*nextArgument).first;
+			}
+						
+
+			// Get a copy of the argument and the parameters after the argument.
+			std::vector<std::string> parameters( copy.begin() + argumentPos, copy.begin() + nextArgumentPos );
+			
+			// Let the argument parse its parameters
+			result = (*curr).second->Parse( parameters );
+
+			if( result && parameters.size() > 0 ) {
+				// Leftovers from command line
+				myParseResult.UnknownArguments( parameters );
+				result = false;
+			}
 		}
-
-		if( result && copy.size() > 0 ) {
-			// Leftovers from command line
-			myParseResult.UnknownArguments( copy );
-			result = false;
-		}
-
 		
 		result &= CheckMandatory();
 		result &= CheckDependencies();
 		result &= CheckMutualExclusion();
-		
-
 	}
 	return result;
 }
@@ -96,7 +114,7 @@ CmdParser4Cpp::Parse( const std::vector<std::string>& arguments )
 //
 //////////////////////////////////////////////////////////////////////////
 bool
-CmdParser4Cpp::CheckConstraints( VectorOfString& arguments )
+CmdParser4Cpp::CheckConstraints( const VectorOfString& arguments )
 {
 	bool res = true;
 
@@ -352,6 +370,26 @@ CmdParser4Cpp::GetUsage( IUsageFormatter& formatter ) const
 			formatter.PrepareMandatory( arg.GetPrimaryName(), arg.HasVariableParameterCount(), arg.GetMaxParameterCount(), arg.GetAliases(), arg.GetDescription() );
 		}
 	}
+}
+
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+void
+CmdParser4Cpp::GetIndexes( std::vector<std::pair<int, Argument*>>& argumentIndexes, const std::vector<std::string>& arguments )
+{
+	for( auto& pair : myArguments ) {
+		int hit = 0;
+		int ix = pair.second->FindArgument( arguments, hit );
+		if( ix != -1 ) {
+			argumentIndexes.push_back( std::make_pair( ix, pair.second ) );
+		}
+	}
+
+	IndexSorter sorter;
+
+	std::sort( argumentIndexes.begin(), argumentIndexes.end(), sorter );
 }
 
 } // END commandline

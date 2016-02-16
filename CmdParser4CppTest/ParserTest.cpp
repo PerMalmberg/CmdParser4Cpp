@@ -195,7 +195,7 @@ public:
 		p.Accept( "/bbb" ).AsString( 1, Constructor::NO_PARAMETER_LIMIT ).DescribedAs( "A long non descriptive description without any meaning what so ever" );
 		Assert::IsFalse( p.Parse( std::vector<std::string>( { "/bool", "1", "single", "/goo", "true", "/bbb", "AAA", "/aaa", "123", "456", "789" } ) ) );
 
-		Assert::IsTrue( strstr( msg.GetParseResult().c_str(), "An argument that allows an unlimited variable number of parameters must be places last on the command line" ) != nullptr );
+		Assert::IsTrue( strstr( msg.GetParseResult().c_str(), "An argument that allows an unlimited variable number of parameters must be placed last on the command line" ) != nullptr );
 	}
 
 	TEST_METHOD( testNotEnoughParameters )

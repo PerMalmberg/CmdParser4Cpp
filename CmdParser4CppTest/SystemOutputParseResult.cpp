@@ -107,7 +107,7 @@ SystemOutputParseResult::MultipleMultiArgumentsSpecified()
 void
 SystemOutputParseResult::MultiArgumentsMustBePalcedLast()
 {
-	myLines.push_back( "An argument that allows an unlimited variable number of parameters must be places last on the command line." );
+	myLines.push_back( "An argument that allows an unlimited variable number of parameters must be placed last on the command line." );
 }
 
 //////////////////////////////////////////////////////////////////////////
