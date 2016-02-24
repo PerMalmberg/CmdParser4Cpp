@@ -76,16 +76,14 @@ CmdParser4Cpp::Parse( const std::vector<std::string>& arguments )
 			int nextArgumentPos;
 
 			// Are there more arguments left? If so, stop at that one. Otherwise take parameters until end.
-			std::vector<std::pair<int, Argument*>>::iterator nextArgument;
 			if( curr == --argumentIndexes.end() ) {
 				nextArgumentPos = copy.size();
 			}
 			else {
-				// Make a copy and 
+				// Make a copy and increment
 				auto next = curr;
 				++next;
-				nextArgument = next;
-				nextArgumentPos = (*nextArgument).first;
+				nextArgumentPos = (*next).first;
 			}
 						
 
