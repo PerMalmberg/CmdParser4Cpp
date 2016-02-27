@@ -16,9 +16,8 @@ namespace commandline {
 //
 //
 //////////////////////////////////////////////////////////////////////////
-CmdParser4Cpp::CmdParser4Cpp( const char* argumentPrefix, IParseResult& parseResult )
-	: myArgumentPrefix( argumentPrefix ),
-	myParseResult( parseResult ),
+CmdParser4Cpp::CmdParser4Cpp( IParseResult& parseResult )
+	: myParseResult( parseResult ),
 	myArguments(),
 	myStringResults(),
 	myBoolResults()

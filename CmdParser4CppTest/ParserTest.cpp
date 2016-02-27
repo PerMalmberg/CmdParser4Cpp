@@ -18,7 +18,7 @@ public:
 	{
 		SystemOutputParseResult msg;
 
-		CmdParser4Cpp p( "-", msg );
+		CmdParser4Cpp p( msg );
 		p.Accept( "-m" ).AsString( 2 );
 
 		Assert::IsTrue( p.Parse( std::vector<std::string>( { "-m", "", "one", "two" } ) ) );
@@ -35,7 +35,7 @@ public:
 	{
 		SystemOutputParseResult msg;
 
-		CmdParser4Cpp p( "-", msg );
+		CmdParser4Cpp p( msg );
 		p.Accept( "-q" ).AsString( 1 ).WithAlias( "-Q" );
 		Assert::IsFalse( p.Parse( std::vector<std::string>( { "-q", "Foo", "-Q", "Bar" } ) ) );
 		std::string& s = msg.GetParseResult();
@@ -46,7 +46,7 @@ public:
 	{
 		SystemOutputParseResult msg;
 
-		CmdParser4Cpp p( "-", msg );
+		CmdParser4Cpp p( msg );
 
 		p.Accept( "-q" ).AsString( 1 ).SetMandatory();
 		p.Accept( "-Q" ).AsString( 1 );
@@ -59,7 +59,7 @@ public:
 	{
 		SystemOutputParseResult msg;
 
-		CmdParser4Cpp p( "-", msg );
+		CmdParser4Cpp p( msg );
 		p.Accept( "-Q" ).AsString( 1 );
 		Assert::IsFalse( p.Parse( std::vector<std::string>( { "-Q", "Bar", "some", "extra" } ) ) );
 		std::string& s = msg.GetParseResult();
@@ -70,7 +70,7 @@ public:
 	{
 		SystemOutputParseResult msg;
 
-		CmdParser4Cpp p( "/", msg );
+		CmdParser4Cpp p( msg );
 
 		p.Accept( "/b" ).AsBoolean( 4 );
 		p.Accept( "/bar" ).WithAlias( "/foo" ).AsBoolean( 1 );
@@ -86,7 +86,7 @@ public:
 	{
 		SystemOutputParseResult msg;
 
-		CmdParser4Cpp& p = CmdParser4Cpp( "-", msg );
+		CmdParser4Cpp& p = CmdParser4Cpp( msg );
 
 		p.Accept( "foo" ).AsSingleBoolean();
 		p.Accept( "bar" ).AsSingleBoolean();
@@ -100,7 +100,7 @@ public:
 	{
 		SystemOutputParseResult msg;
 
-		CmdParser4Cpp p( "/", msg );
+		CmdParser4Cpp p( msg );
 
 		p.Accept( "/b" ).AsBoolean( 4 );
 		Assert::IsFalse( p.Parse( std::vector<std::string>( { "/b", "true", "1", "Nope", "false" } ) ) );
@@ -112,7 +112,7 @@ public:
 	{
 		SystemOutputParseResult msg;
 
-		CmdParser4Cpp p( "/", msg );
+		CmdParser4Cpp p( msg );
 		p.Accept( "/b" ).AsBoolean( 4 );
 		Assert::IsFalse( p.Parse( std::vector<std::string>( { "/b", "true", "1", "Nope" } ) ) );
 		std::string& s = msg.GetParseResult();
@@ -123,7 +123,7 @@ public:
 	{
 		SystemOutputParseResult msg;
 
-		CmdParser4Cpp p( "/", msg );
+		CmdParser4Cpp p( msg );
 		p.Accept( "/b" ).AsBoolean( 4 );
 		Assert::IsFalse( p.Parse( std::vector<std::string>( { "/b" } ) ) );
 		std::string& s = msg.GetParseResult();
@@ -134,7 +134,7 @@ public:
 	{
 		SystemOutputParseResult msg;
 
-		CmdParser4Cpp p( "/", msg );
+		CmdParser4Cpp p( msg );
 		p.Accept( "/b" ).AsBoolean( 1 ).SetMandatory();
 		Assert::IsFalse( p.Parse( std::vector<std::string>( { "" } ) ) );
 		std::string& s = msg.GetParseResult();
@@ -145,7 +145,7 @@ public:
 	{
 		SystemOutputParseResult msg;
 
-		CmdParser4Cpp p( "/", msg );
+		CmdParser4Cpp p( msg );
 		p.Accept( "single" ).AsSingleBoolean().DescribedAs( "AAA BBBBB CCCCCCCCCCC DDDDDDDDDDDDDDE EEEEEEEEEEEEEEEE FFFFFFFFFFF GGGGGGGGGGGGGGG HHHHHHHHHHHH" );
 		p.Accept( "/bool" ).AsBoolean( 1 ).WithAlias( std::vector<std::string>( { "/B", "-B", "-b" } ) ).DescribedAs( "A Boolean value" ).SetMandatory();
 		p.Accept( "/string" ).AsString( 1 ).DescribedAs( "A string argument" );
@@ -171,7 +171,7 @@ public:
 	{
 		SystemOutputParseResult msg;
 
-		CmdParser4Cpp p( "/", msg );
+		CmdParser4Cpp p( msg );
 		p.Accept( "/b" ).AsBoolean( 1, Constructor::NO_PARAMETER_LIMIT );
 		Assert::IsTrue( p.Parse( std::vector<std::string>( { "/b", "1", "0", "1", "true", "false" } ) ) );
 		Assert::AreEqual( 5, p.GetAvailableBooleanParameterCount( "/b" ) );
@@ -186,7 +186,7 @@ public:
 	{
 		SystemOutputParseResult msg;
 
-		CmdParser4Cpp p( "/", msg );
+		CmdParser4Cpp p( msg );
 		p.Accept( "single" ).AsSingleBoolean().DescribedAs( "AAA BBBBB CCCCCCCCCCC DDDDDDDDDDDDDDE EEEEEEEEEEEEEEEE FFFFFFFFFFF GGGGGGGGGGGGGGG HHHHHHHHHHHH" );
 		p.Accept( "/bool" ).AsBoolean( 1 ).WithAlias( std::vector<std::string>( { "/B", "-B", "-b" } ) ).DescribedAs( "A Boolean value" ).SetMandatory();
 		p.Accept( "/string" ).AsString( 1 ).DescribedAs( "A string argument" );
@@ -205,7 +205,7 @@ public:
 	{
 		SystemOutputParseResult msg;
 
-		CmdParser4Cpp p( "/", msg );
+		CmdParser4Cpp p( msg );
 		p.Accept( "/b" ).AsBoolean( 2 );
 		p.Accept( "/c" ).AsBoolean( 1 );
 		Assert::IsFalse( p.Parse( std::vector<std::string>( { "/b", "true", "/c", "false" } ) ) );
@@ -216,7 +216,7 @@ public:
 	{
 		SystemOutputParseResult msg;
 
-		CmdParser4Cpp p( "/", msg );
+		CmdParser4Cpp p( msg );
 		p.Accept( "/a" ).AsBoolean( 1 );
 		p.Accept( "/b" ).AsBoolean( 3 );
 		p.Accept( "/c" ).AsBoolean( 1 );
@@ -228,7 +228,7 @@ public:
 	{
 		SystemOutputParseResult msg;
 
-		CmdParser4Cpp p( "/", msg );
+		CmdParser4Cpp p( msg );
 		p.Accept( "/multi1" ).AsBoolean( 1, 3 );
 		p.Accept( "/multi2" ).AsBoolean( 1, 3 );
 		Assert::IsTrue( p.Parse( std::vector<std::string>( { "/multi1", "1", "0", "/multi2", "0", "true" } ) ) );
@@ -242,7 +242,7 @@ public:
 	{
 		SystemOutputParseResult msg;
 
-		CmdParser4Cpp p( "/", msg );
+		CmdParser4Cpp p( msg );
 		p.Accept( "/multi1" ).AsBoolean( 1, 3 );
 		p.Accept( "/multi2" ).AsBoolean( 1, 3 );
 		Assert::IsFalse( p.Parse( std::vector<std::string>( { "/multi1", "1", "/multi1", "1" } ) ) );
@@ -254,7 +254,7 @@ public:
 	{
 		SystemOutputParseResult msg;
 
-		CmdParser4Cpp p( "/", msg );
+		CmdParser4Cpp p( msg );
 		p.Accept( "-first" ).DependsOn( "-second" ).AsBoolean( 1 );
 		p.Accept( "-second" ).AsBoolean( 1 );
 		Assert::IsFalse( p.Parse( std::vector<std::string>( { "-first", "false" } ) ) );
@@ -265,7 +265,7 @@ public:
 	{
 		SystemOutputParseResult msg;
 
-		CmdParser4Cpp p( "-", msg );
+		CmdParser4Cpp p( msg );
 		p.Accept( "-first" ).DependsOn( "-second" ).AsBoolean( 1 );
 		p.Accept( "-second" ).DependsOn( "-first" ).AsBoolean( 1 );
 		Assert::IsTrue( p.Parse( std::vector<std::string>( { "-first", "false", "-second", "true" } ) ) );
@@ -276,7 +276,7 @@ public:
 	{
 		SystemOutputParseResult msg;
 
-		CmdParser4Cpp p( "-", msg );
+		CmdParser4Cpp p( msg );
 		p.Accept( "-first" ).DependsOn( "-second" ).AsBoolean( 1 );
 		p.Accept( "-second" ).DependsOn( "-first" ).AsBoolean( 1 );
 		Assert::IsFalse( p.Parse( std::vector<std::string>( { "-second", "true" } ) ) );
@@ -287,7 +287,7 @@ public:
 	{
 		SystemOutputParseResult msg;
 
-		CmdParser4Cpp p( "-", msg );
+		CmdParser4Cpp p( msg );
 		p.Accept( "-first" ).DependsOn( "-second" ).AsBoolean( 1 );
 		Assert::IsFalse( p.Parse( std::vector<std::string>( { "-first", "false" } ) ) );
 		Assert::IsTrue( strstr( msg.GetParseResult().c_str(), "Argument '-first' depends on '-second', but no such argument is defined - contact the author of the application" ) != nullptr );
@@ -297,7 +297,7 @@ public:
 	{
 		SystemOutputParseResult msg;
 
-		CmdParser4Cpp p( "-", msg );
+		CmdParser4Cpp p( msg );
 		p.Accept( "-first" ).BlockedBy( "-second" ).AsSingleBoolean();
 		p.Accept( "-second" ).BlockedBy( "-first" ).AsSingleBoolean();
 		Assert::IsTrue( p.Parse( std::vector<std::string>( { "-first" } ) ) );
@@ -307,7 +307,7 @@ public:
 	{
 		SystemOutputParseResult msg;
 
-		CmdParser4Cpp p( "-", msg );
+		CmdParser4Cpp p( msg );
 		p.Accept( "-first" ).BlockedBy( "-second" ).AsSingleBoolean();
 		p.Accept( "-second" ).BlockedBy( "-first" ).AsSingleBoolean();
 		Assert::IsFalse( p.Parse( std::vector<std::string>( { "-first", "-second" } ) ) );
@@ -318,7 +318,7 @@ public:
 	{
 		SystemOutputParseResult msg;
 
-		CmdParser4Cpp p( "-", msg );
+		CmdParser4Cpp p( msg );
 		p.Accept( "-argument" ).AsBoolean( 1 ).SetMandatory().DescribedAs( "An argument that accept a single boolean parameter" );
 		p.Accept( "-multi" ).AsString( 1, 4 ).DescribedAs( "An optional argument that accept one to four argument." );
 		// The name of the argument, or any prefix characters, doesn't really matter, here we use double dash.
@@ -347,7 +347,7 @@ public:
 	{
 		SystemOutputParseResult msg;
 
-		CmdParser4Cpp p( "-", msg );
+		CmdParser4Cpp p( msg );
 
 		p.Accept( "-argument" ).AsBoolean( 1 ).SetMandatory().DescribedAs( "An argument that accept a single boolean parameter" );
 		p.Accept( "-multi" ).AsString( 1, 4 ).DescribedAs( "An optional argument that accept one to four argument." );

@@ -35,7 +35,7 @@ protected:
 	VectorOfString myResults;
 
 private:
-	bool HasEnoughParametersLeft( VectorOfString arguments, int argumentIx );		
+	bool HasEnoughParametersLeft( VectorOfString parameters );		
 
 	BaseType( const BaseType& ) = delete;
 	BaseType& operator=( const BaseType& ) = delete;

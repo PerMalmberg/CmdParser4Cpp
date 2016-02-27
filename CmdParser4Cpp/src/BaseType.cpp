@@ -1,6 +1,7 @@
 // Copyright (c) 2016 Per Malmberg
 // Licensed under MIT, see LICENSE file. 
 
+#include <algorithm>
 #include "BaseType.h"
 
 namespace com {
@@ -31,7 +32,7 @@ BaseType::Parse( VectorOfString& allArguments, int argumentIx )
 	std::string argumentName = allArguments.at( argumentIx );
 	allArguments.erase( allArguments.begin() + argumentIx );
 
-	bool res = HasEnoughParametersLeft( allArguments, argumentIx );
+	bool res = HasEnoughParametersLeft( allArguments );
 
 	if( res ) {
 		// We only do this if the current type takes at least one parameter
@@ -80,23 +81,9 @@ BaseType::IsSucessfullyParsed() const
 //
 //////////////////////////////////////////////////////////////////////////
 bool
-BaseType::HasEnoughParametersLeft( VectorOfString arguments, int argumentIx )
+BaseType::HasEnoughParametersLeft( VectorOfString parameters )
 {
-	// Calculate remaining arguments until the prefix is found
-	int remaining = 0;
-
-	bool done = false;
-
-	for( int i = argumentIx; !done && i < arguments.size(); ++i ) {
-		if( strncmp( arguments.at( i ).c_str(), myParser.GetArgumentPrefix().c_str(), myParser.GetArgumentPrefix().length() ) == 0 ) {
-			done = true;
-		}
-		else {
-			++remaining;
-		}
-	}
-
-	return remaining >= myMinParameterCount;
+	return parameters.size() >= myMinParameterCount;
 }
 
 } // END commandline

@@ -22,7 +22,7 @@ typedef std::vector<std::string> VectorOfString;
 class CmdParser4Cpp
 {
 public:
-	CmdParser4Cpp( const char* argumentPrefix, IParseResult& parseResult );
+	CmdParser4Cpp( IParseResult& parseResult );
 
 	virtual ~CmdParser4Cpp();
 
@@ -36,7 +36,6 @@ public:
 	void SetResult( const std::string& argumentName, const BoolType* type );
 	void SetResult( const std::string& argumentName, const StringType* type );
 
-	const std::string& GetArgumentPrefix() const { return myArgumentPrefix; }
 	IParseResult& GetMessagerParser() const { return myParseResult; }
 	int GetAvailableStringParameterCount( const std::string& argumentName ) const;
 	int GetAvailableBoolParameterCount( const std::string& argumentName ) const;
@@ -50,7 +49,6 @@ public:
 	void GetUsage( IUsageFormatter& formatter ) const;
 
 private:
-	std::string myArgumentPrefix;
 	IParseResult& myParseResult;
 	std::unordered_map<std::string, Argument*> myArguments;
 	std::unordered_map<std::string, const StringType*> myStringResults;
