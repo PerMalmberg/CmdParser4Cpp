@@ -22,7 +22,7 @@ This example is taken from the test cases.
 
 SystemOutputParseResult msg;
 
-CmdParser4Cpp p( "-", msg );
+CmdParser4Cpp p( msg );
 p.Accept( "-argument" ).AsBoolean( 1 ).SetMandatory().DescribedAs( "An argument that accept a single boolean parameter" );
 p.Accept( "-multi" ).AsString( 1, 4 ).DescribedAs( "An optional argument that accept one to four argument." );
 // The name of the argument, or any prefix characters, doesn't really matter, here we use double dash.
