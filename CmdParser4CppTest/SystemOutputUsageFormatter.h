@@ -18,7 +18,7 @@ public:
 
 private:
 	std::stringstream myUsage;
-	int myIndent;
+	size_t myIndent;
 
 	std::string Indent() const;
 	void FormatArgument( const std::string& primaryName, bool hasVariableParameterCount, int maxArgumentCount, const std::vector<std::string>& aliases, const std::string& description );
