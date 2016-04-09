@@ -63,7 +63,7 @@ StringType::GetResult( int index, const char* defaultValue ) const
 	// the constness of the underlying std::string in myResults
 	// and that is worse than two returns.
 
-	if( index >= 0 && index < myResults.size() ) {
+	if( index >= 0 && index < static_cast<int>( myResults.size() ) ) {
 		return myResults.at( index ).c_str();
 	}
 	else {

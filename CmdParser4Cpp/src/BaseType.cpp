@@ -39,7 +39,7 @@ BaseType::Parse( VectorOfString& allArguments, int argumentIx )
 		for( int currentParameter = 0;
 		res && currentParameter < myMaxParameterCount // Don't take too many parameters
 			&& allArguments.size() > 0 // Still some left
-			&& argumentIx < allArguments.size() // Not yet reached end
+			&& argumentIx < static_cast<int>( allArguments.size() ) // Not yet reached end
 			;
 			++currentParameter
 			) {
@@ -83,7 +83,7 @@ BaseType::IsSucessfullyParsed() const
 bool
 BaseType::HasEnoughParametersLeft( VectorOfString parameters )
 {
-	return parameters.size() >= myMinParameterCount;
+	return static_cast<int>( parameters.size() ) >= myMinParameterCount;
 }
 
 } // END commandline

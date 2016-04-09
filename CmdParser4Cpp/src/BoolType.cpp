@@ -37,7 +37,7 @@ BoolType::~BoolType()
 bool
 BoolType::DoTypeParse( const std::string& parameter )
 {
-	int count = myResults.size();
+	unsigned long int count = myResults.size();
 
 	// Push ONE or ZERO to the results, we use ONE to compare in GetResult()
 	if( icompare( ZERO, parameter ) || icompare( ONE, parameter ) ) {
@@ -80,7 +80,7 @@ BoolType::GetResult( int index, bool defaultValue ) const
 {
 	bool res = defaultValue;
 
-	if( index >= 0 && index < myResults.size() ) {
+	if( index >= 0 && index < static_cast<int>( myResults.size() ) ) {
 		return myResults.at( index ).compare( ONE ) == 0;
 	}
 

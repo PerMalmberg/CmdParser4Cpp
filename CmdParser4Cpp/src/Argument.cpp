@@ -80,7 +80,7 @@ Argument::FindArgument( const VectorOfString& allArguments, int& hitCount )
 
 	// Loop all our names and test against all provided arguments.
 	for( const auto& name : myNames ) {
-		for( int ix = 0; ix < allArguments.size(); ++ix ) {
+		for( int ix = 0; ix < static_cast<int>( allArguments.size() ); ++ix ) {
 			if( allArguments.at( ix ).compare( name ) == 0 ) {
 				if( foundIx == -1 ) {
 					// First hit
