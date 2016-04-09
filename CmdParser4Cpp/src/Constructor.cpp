@@ -1,6 +1,7 @@
 // Copyright (c) 2016 Per Malmberg
 // Licensed under MIT, see LICENSE file. 
 
+#include <limits>
 #include "Constructor.h"
 #include "Argument.h"
 #include "CmdParser4Cpp.h"
