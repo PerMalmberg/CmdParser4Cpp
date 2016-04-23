@@ -10,7 +10,7 @@ public:
 	DummyResult();
 	~DummyResult();
 
-	virtual std::string GetParseResult() { return "Not implemented"; }
+	virtual std::string GetParseResult() const { return "Not implemented"; }
 
 	virtual void UnknownArguments( const std::vector<std::string>& leftovers ) {}
 	virtual void NotEnoughParameters( const std::string& argument, int minParameterCount ) {}

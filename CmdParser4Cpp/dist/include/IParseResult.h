@@ -16,7 +16,7 @@ class IParseResult {
 public:
 	virtual ~IParseResult() = 0;
 
-	virtual std::string GetParseResult() = 0;
+	virtual std::string GetParseResult() const = 0;
 
 	virtual void UnknownArguments( const std::vector<std::string>& leftovers ) = 0;
 	virtual void NotEnoughParameters( const std::string& argument, int minParameterCount ) = 0;

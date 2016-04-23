@@ -241,7 +241,6 @@ public:
 	TEST_METHOD( testSameArgumentMultipleTimes )
 	{
 		SystemOutputParseResult msg;
-
 		CmdParser4Cpp p( msg );
 		p.Accept( "/multi1" ).AsBoolean( 1, 3 );
 		p.Accept( "/multi2" ).AsBoolean( 1, 3 );
@@ -253,7 +252,6 @@ public:
 	TEST_METHOD( testDependsOnMissing )
 	{
 		SystemOutputParseResult msg;
-
 		CmdParser4Cpp p( msg );
 		p.Accept( "-first" ).DependsOn( "-second" ).AsBoolean( 1 );
 		p.Accept( "-second" ).AsBoolean( 1 );
@@ -286,7 +284,6 @@ public:
 	TEST_METHOD( testDependsOnProgrammingError )
 	{
 		SystemOutputParseResult msg;
-
 		CmdParser4Cpp p( msg );
 		p.Accept( "-first" ).DependsOn( "-second" ).AsBoolean( 1 );
 		Assert::IsFalse( p.Parse( std::vector<std::string>( { "-first", "false" } ) ) );
@@ -296,7 +293,6 @@ public:
 	TEST_METHOD( testBlockedByOK )
 	{
 		SystemOutputParseResult msg;
-
 		CmdParser4Cpp p( msg );
 		p.Accept( "-first" ).BlockedBy( "-second" ).AsSingleBoolean();
 		p.Accept( "-second" ).BlockedBy( "-first" ).AsSingleBoolean();
