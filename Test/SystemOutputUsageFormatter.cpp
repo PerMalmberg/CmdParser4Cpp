@@ -66,7 +66,7 @@ SystemOutputUsageFormatter::FormatArgument( const std::string& primaryName, bool
 	}
 	else if( hasVariableParameterCount ) {
 		for( int i = 0; i < maxArgumentCount; ++i ) {
-			myUsage << (i == 0) ? "" : " ";
+			myUsage << (i == 0 ? "" : " ");
 			myUsage << " <arg" << (i + 1) << ">";
 		}
 	}
