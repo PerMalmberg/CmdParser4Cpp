@@ -1,10 +1,10 @@
 // Copyright (c) 2016 Per Malmberg
 // Licensed under MIT, see LICENSE file. 
 
-#include "SystemOutputParseResult.h"
 #include <iostream>
 #include <string>
 #include <sstream>
+#include "SystemOutputParseResult.h"
 
 
 //////////////////////////////////////////////////////////////////////////
