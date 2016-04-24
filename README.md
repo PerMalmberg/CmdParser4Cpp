@@ -15,6 +15,17 @@
 ## Ports
 A Java port is available here: https://github.com/PerMalmberg/CmdParser4J
 
+## Building
+Standard CMakeLists.txt files included, directly usable by CLion etc.
+To compile on Windows, do:
+<pre>
+cd <path root of project>
+mkdir build
+cd build
+cmake -G "Visual Studio 14 2015" ..
+</pre>
+then open the generated solution.
+
 ## Usage
 This example is taken from the example application.
 
