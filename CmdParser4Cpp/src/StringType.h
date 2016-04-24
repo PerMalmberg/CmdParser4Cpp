@@ -26,6 +26,8 @@ protected:
 	void RetrieveResult() override;
 
 private:
+	StringType( const StringType& ) = delete;
+	StringType& operator=( const StringType& ) = delete;
 };
 
 } // END commandline

@@ -1,16 +1,18 @@
 cmake_minimum_required(VERSION 3.4)
 project(Test)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -static-libgcc -static-libstdc++ -static -lpthread")
+if(${CMAKE_MAKE_PROGRAM} MATCHES ".*(MSBuild|msdev|devenv|nmake).*")
+	# Build at warning level 4 on Windows.
+	# Treat all warnings as errors
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4 /WX /wd4711 /wd4702")
+else()
+	# Build with all warnings
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -std=c++11 -static-libgcc -static-libstdc++ -static -lpthread")
+endif()
 
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall")
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wall")
-
-
+# Use CMAKE_CURRENT_LIST_DIR instead of CMAKE_SOURCE_DIR to specify relative to where this CMakeLists.txt is located
+# as opposed to where the 'main' CMakeLists.txt file is located.
 include_directories("${CMAKE_CURRENT_LIST_DIR}/../CmdParser4Cpp/dist/include")
-
-set(libCmdParser4Cpp "${CMAKE_CURRENT_LIST_DIR}/../CmdParser4Cpp/dist/bin/libCmdParser4Cpp.a")
-
 
 set(SOURCE_FILES
 		main.cpp
@@ -21,13 +23,5 @@ set(SOURCE_FILES
 		SystemOutputUsageFormatter.cpp
 		)
 
-
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
-target_link_libraries(${PROJECT_NAME} ${libCmdParser4Cpp})
-
-set_target_properties(${PROJECT_NAME}
-		PROPERTIES
-		ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_CURRENT_LIST_DIR}/dist/bin"
-		LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_LIST_DIR}/dist/bin"
-		RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_LIST_DIR}/dist/bin"
-		)
+target_link_libraries(${PROJECT_NAME} CmdParser4Cpp)

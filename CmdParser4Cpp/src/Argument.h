@@ -17,6 +17,7 @@ public:
 	virtual ~Argument();
 
 	void SetArgumentType( BaseType* type );
+	bool HasArgumentType() const { return myType != nullptr; }
 	bool Parse( VectorOfString& arguments );
 
 	int FindArgument( const VectorOfString& arguments, int& hitCount );

@@ -54,6 +54,7 @@ private:
 	std::unordered_map<std::string, const StringType*> myStringResults;
 	std::unordered_map<std::string, const BoolType*> myBoolResults;
 
+	bool CheckArgumentTypes() const;
 	void RemoveEmptyArguments( std::vector<std::string>& arguments );
 	template<typename ArgumentType>
 	int GetAvailableParameterCount( const std::string& argumentName, std::unordered_map<std::string, const ArgumentType*> map ) const;

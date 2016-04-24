@@ -17,9 +17,9 @@ public:
 
 	virtual ~BaseType() {}
 
-	int GetAvailableParameterCount() const { return myResults.size(); }
+	int GetAvailableParameterCount() const { return static_cast<int>( myResults.size() ); }
 	int GetMaxParameterCount() const { return myMaxParameterCount; }
-	int HasVariableParameterCount() const { return myMinParameterCount != myMaxParameterCount; }
+	bool HasVariableParameterCount() const { return myMinParameterCount != myMaxParameterCount; }
 	virtual bool IsSucessfullyParsed() const;
 
 protected:

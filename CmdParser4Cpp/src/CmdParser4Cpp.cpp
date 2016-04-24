@@ -62,7 +62,7 @@ CmdParser4Cpp::Parse(const std::vector<std::string>& arguments)
 	std::vector<std::string> copy( arguments );
 	RemoveEmptyArguments( copy );
 
-	bool result = CheckConstraints( copy );
+	bool result = CheckArgumentTypes() && CheckConstraints( copy );
 
 	if( result )
 	{
@@ -80,7 +80,7 @@ CmdParser4Cpp::Parse(const std::vector<std::string>& arguments)
 			// Are there more arguments left? If so, stop at that one. Otherwise take parameters until end.
 			if( curr == --argumentIndexes.end() )
 			{
-				nextArgumentPos = copy.size();
+				nextArgumentPos = static_cast<int>( copy.size() );
 			}
 			else
 			{
@@ -89,7 +89,6 @@ CmdParser4Cpp::Parse(const std::vector<std::string>& arguments)
 				++next;
 				nextArgumentPos = (*next).first;
 			}
-
 
 			// Get a copy of the argument and the parameters after the argument.
 			std::vector<std::string> parameters( copy.begin() + argumentPos, copy.begin() + nextArgumentPos );
@@ -110,6 +109,27 @@ CmdParser4Cpp::Parse(const std::vector<std::string>& arguments)
 		result &= CheckMutualExclusion();
 	}
 	return result;
+}
+
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+bool
+CmdParser4Cpp::CheckArgumentTypes() const
+{
+	bool res = true;
+
+	// Find any argument that has no type
+	for( auto& a : myArguments )
+	{
+		if( !a.second->HasArgumentType() ) {
+			res = false;
+			myParseResult.ArgumentMissingType( a.second->GetPrimaryName() );
+		}
+	}
+
+	return res;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -221,7 +241,7 @@ CmdParser4Cpp::RemoveEmptyArguments(std::vector<std::string>& arguments)
 		if( arguments.at( i ).length() <= 0 )
 		{
 			// Delete, don't increase index
-			arguments.erase( arguments.begin() + i );
+			arguments.erase( arguments.begin() + static_cast<int>( i ) );
 		}
 		else
 		{

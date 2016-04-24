@@ -32,6 +32,9 @@ protected:
 private:
 	bool icompare( const std::string& s, const std::string& s2 );
 	static bool icomparer( char c, char c2 ) { return std::tolower( c ) == std::tolower( c2 ); }
+
+	BoolType( const BoolType& ) = delete;
+	BoolType& operator=( const BoolType& ) = delete;
 };
 
 

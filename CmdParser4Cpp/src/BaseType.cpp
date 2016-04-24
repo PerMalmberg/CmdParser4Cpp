@@ -29,7 +29,7 @@ bool
 BaseType::Parse( VectorOfString& allArguments, int argumentIx )
 {
 	// Save and remove the argument name
-	std::string argumentName = allArguments.at( argumentIx );
+	std::string argumentName = allArguments.at( static_cast<size_t>( argumentIx ) );
 	allArguments.erase( allArguments.begin() + argumentIx );
 
 	bool res = HasEnoughParametersLeft( allArguments );
@@ -45,7 +45,7 @@ BaseType::Parse( VectorOfString& allArguments, int argumentIx )
 			) {
 
 			// Get the next parameter from the front, i.e. where our parameters start.
-			std::string parameter = allArguments.at( argumentIx );
+			std::string parameter = allArguments.at( static_cast<size_t>( argumentIx ) );
 			allArguments.erase( allArguments.begin() + argumentIx );
 			res = DoTypeParse( parameter );
 		}

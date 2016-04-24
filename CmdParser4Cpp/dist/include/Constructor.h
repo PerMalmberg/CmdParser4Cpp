@@ -43,6 +43,8 @@ public:
 private:
 	CmdParser4Cpp& myParser;
 	Argument& myArgument;
+
+	Constructor& operator=( const Constructor& ) = delete;
 };
 
 } // END commandline

@@ -64,7 +64,7 @@ StringType::GetResult( int index, const char* defaultValue ) const
 	// and that is worse than two returns.
 
 	if( index >= 0 && index < static_cast<int>( myResults.size() ) ) {
-		return myResults.at( index ).c_str();
+		return myResults.at( static_cast<size_t>( index ) ).c_str();
 	}
 	else {
 		return defaultValue;

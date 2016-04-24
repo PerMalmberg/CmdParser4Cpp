@@ -333,9 +333,9 @@ SCENARIO( "Description" )
 				//cout << output;
 
 				// Can't test outputed text so just verify that it contains the descriptions
-				REQUIRE( strstr( output.c_str(), "/aaa" ) );
+				REQUIRE( strstr( output.c_str(), "/aaa" ) != nullptr );
 				REQUIRE( strstr( output.c_str(),
-				                 "A long non descriptive description without any meaning what so ever" ) );
+				                 "A long non descriptive description without any meaning what so ever" ) != nullptr );
 			}
 		}
 	}
@@ -590,8 +590,8 @@ SCENARIO( "Hidden arguments" )
 	{
 		SystemOutputParseResult msg;
 		CmdParser4Cpp p( msg );
-		p.Accept( "-first" ).AsSingleBoolean().DescribedAs("The first argument");
-		p.Accept( "-second" ).AsSingleBoolean().SetHidden().DescribedAs("The hidden argument");
+		p.Accept( "-first" ).AsSingleBoolean().DescribedAs( "The first argument" );
+		p.Accept( "-second" ).AsSingleBoolean().SetHidden().DescribedAs( "The hidden argument" );
 
 		WHEN( "Usage is called" )
 		{
@@ -601,12 +601,74 @@ SCENARIO( "Hidden arguments" )
 
 			THEN( "Hidden argument is not reported" )
 			{
-				REQUIRE( strstr( usage.ToString().c_str(), "The hidden argument" ) == nullptr );
+				REQUIRE( strstr( output.c_str(), "The hidden argument" ) == nullptr );
 			}
 			AND_THEN( "Non-hidden arguments are reported" )
 			{
-				REQUIRE( strstr( usage.ToString().c_str(), "The first argument" ) != nullptr );
+				REQUIRE( strstr( output.c_str(), "The first argument" ) != nullptr );
 			}
 		}
 	}
 }
+
+SCENARIO( "Missing argument type" )
+{
+	GIVEN( "A parser with argument that has no set type" )
+	{
+		SystemOutputParseResult msg;
+		CmdParser4Cpp p( msg );
+		p.Accept( "-first" ).DescribedAs( "The first argument" );
+
+		WHEN( "parsing is done" )
+		{
+			REQUIRE_FALSE( p.Parse( std::vector<std::string>( { "-first" } ) ) );
+
+			THEN( "Problem reported" )
+			{
+				REQUIRE( strstr( msg.GetParseResult().c_str(), "is missing type information" ) != nullptr );
+			}
+		}
+	}
+}
+
+//SCENARIO( "Garbage on command line" )
+//{
+//	GIVEN( "Properly setup parser" )
+//	{
+//		SystemOutputParseResult msg;
+//		CmdParser4Cpp p( msg );
+//		p.Accept( "-first" ).AsSingleBoolean();
+//
+//		WHEN( "given garbage on command line" )
+//		{
+//			REQUIRE_FALSE( p.Parse( std::vector<std::string>( { "jada", "Jada" } ) ) );
+//
+//			THEN("Unknown arguments named")
+//			{
+//				const std::string& s =  msg.GetParseResult();
+//				REQUIRE( strstr(s.c_str(), "jada Jada" ) != nullptr );
+//			}
+//		}
+//	}
+//}
+
+//SCENARIO("Garbage before first command")
+//{
+//	GIVEN("Properly setup parser")
+//	{
+//		SystemOutputParseResult msg;
+//		CmdParser4Cpp p( msg );
+//		p.Accept( "-first" ).AsSingleBoolean();
+//
+//		WHEN( "given garbage on before first command" )
+//		{
+//			REQUIRE_FALSE( p.Parse( std::vector<std::string>( { "jada", "Jada", "-first" } ) ) );
+//
+//			THEN( "Unknown arguments named" )
+//			{
+//				const std::string& s = msg.GetParseResult();
+//				REQUIRE( strstr( s.c_str(), "jada Jada" ) != nullptr );
+//			}
+//		}
+//	}
+//}

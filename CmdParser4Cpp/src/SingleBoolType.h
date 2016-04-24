@@ -20,6 +20,10 @@ public:
 	SingleBoolType( CmdParser4Cpp& parser, Argument& argument );
 	bool IsSucessfullyParsed() const override;
 
+private:
+	SingleBoolType( const SingleBoolType& ) = delete;
+	SingleBoolType& operator=( const SingleBoolType& ) = delete;
+
 };
 
 
