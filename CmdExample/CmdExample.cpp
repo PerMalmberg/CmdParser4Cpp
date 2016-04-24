@@ -12,6 +12,8 @@ using namespace std;
 
 int main(int argc, const char* argv[])
 {
+	int result = 0;
+
 	SystemOutputParseResult res;
 
 	CmdParser4Cpp parser( res );
@@ -50,13 +52,15 @@ int main(int argc, const char* argv[])
 		else
 		{
 			cout << "No operation specified" << endl;
+			result = 1;
 		}
 	}
 	else
 	{
 		cout << res.GetParseResult();
+		result = 1;
 	}
 
-	return 0;
+	return result;
 }
 

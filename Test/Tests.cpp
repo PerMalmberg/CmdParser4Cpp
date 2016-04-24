@@ -631,6 +631,8 @@ SCENARIO( "Missing argument type" )
 	}
 }
 
+// Future enhancement: Check commands before first argument and also when no argument matches.
+
 //SCENARIO( "Garbage on command line" )
 //{
 //	GIVEN( "Properly setup parser" )
