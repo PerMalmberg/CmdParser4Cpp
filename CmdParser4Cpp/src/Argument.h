@@ -28,7 +28,6 @@ public:
 
 	bool HasVariableParameterCount() const { return myType->HasVariableParameterCount(); }
 	int GetMaxParameterCount() const { return myType->GetMaxParameterCount(); }
-	int GetAvailableParameterCount() const { return myType->GetAvailableParameterCount(); }
 
 	void SetMandatory() { myIsMandatory = true; }
 	bool IsMandatory() const { return myIsMandatory; }

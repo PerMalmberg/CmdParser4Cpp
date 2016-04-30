@@ -631,46 +631,44 @@ SCENARIO( "Missing argument type" )
 	}
 }
 
-// Future enhancement: Check commands before first argument and also when no argument matches.
+SCENARIO( "Garbage on command line" )
+{
+	GIVEN( "Properly setup parser" )
+	{
+		SystemOutputParseResult msg;
+		CmdParser4Cpp p( msg );
+		p.Accept( "-first" ).AsSingleBoolean();
 
-//SCENARIO( "Garbage on command line" )
-//{
-//	GIVEN( "Properly setup parser" )
-//	{
-//		SystemOutputParseResult msg;
-//		CmdParser4Cpp p( msg );
-//		p.Accept( "-first" ).AsSingleBoolean();
-//
-//		WHEN( "given garbage on command line" )
-//		{
-//			REQUIRE_FALSE( p.Parse( std::vector<std::string>( { "jada", "Jada" } ) ) );
-//
-//			THEN("Unknown arguments named")
-//			{
-//				const std::string& s =  msg.GetParseResult();
-//				REQUIRE( strstr(s.c_str(), "jada Jada" ) != nullptr );
-//			}
-//		}
-//	}
-//}
+		WHEN( "given only garbage on command line" )
+		{
+			REQUIRE_FALSE( p.Parse( std::vector<std::string>( { "jada", "Jada" } ) ) );
 
-//SCENARIO("Garbage before first command")
-//{
-//	GIVEN("Properly setup parser")
-//	{
-//		SystemOutputParseResult msg;
-//		CmdParser4Cpp p( msg );
-//		p.Accept( "-first" ).AsSingleBoolean();
-//
-//		WHEN( "given garbage on before first command" )
-//		{
-//			REQUIRE_FALSE( p.Parse( std::vector<std::string>( { "jada", "Jada", "-first" } ) ) );
-//
-//			THEN( "Unknown arguments named" )
-//			{
-//				const std::string& s = msg.GetParseResult();
-//				REQUIRE( strstr( s.c_str(), "jada Jada" ) != nullptr );
-//			}
-//		}
-//	}
-//}
+			THEN("Unknown arguments named")
+			{
+				const std::string& s =  msg.GetParseResult();
+				REQUIRE( strstr(s.c_str(), "jada Jada" ) != nullptr );
+			}
+		}
+	}
+}
+
+SCENARIO("Garbage before first command")
+{
+	GIVEN("Properly setup parser")
+	{
+		SystemOutputParseResult msg;
+		CmdParser4Cpp p( msg );
+		p.Accept( "-first" ).AsSingleBoolean();
+
+		WHEN( "given garbage on before first command" )
+		{
+			REQUIRE_FALSE( p.Parse( std::vector<std::string>( { "jada", "-first" } ) ) );
+
+			THEN( "Unknown arguments named" )
+			{
+				const std::string& s = msg.GetParseResult();
+				REQUIRE( strstr( s.c_str(), "jada" ) != nullptr );
+			}
+		}
+	}
+}

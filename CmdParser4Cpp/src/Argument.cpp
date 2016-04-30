@@ -14,7 +14,7 @@ namespace commandline {
 Argument::Argument( const std::string& argumentName, IParseResult& parseResult )
 	:
 	myParseResult( parseResult ),
-	myType( 0 ),
+	myType( nullptr ),
 	myExistsOnCommandLine( false ),
 	myNames(),
 	myIsMandatory( false ),

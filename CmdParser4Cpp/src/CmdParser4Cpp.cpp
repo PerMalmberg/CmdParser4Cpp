@@ -70,43 +70,57 @@ CmdParser4Cpp::Parse(const std::vector<std::string>& arguments)
 		std::vector<std::pair<int, Argument*>> argumentIndexes;
 		GetIndexes( argumentIndexes, arguments );
 
-		// Now let each argument parse any parameter until the next argument.
-		// This ensures that an argument isn't considered as a parameter to another argument.
-		for( auto curr = argumentIndexes.begin(); result && curr != argumentIndexes.end(); ++curr )
+		if( argumentIndexes.size() == 0 && arguments.size() > 0) {
+			// Arguments provided on the command line, but no matches found.
+			myParseResult.UnknownArguments( arguments );
+			result = false;
+		}
+		else if( argumentIndexes.size() > 0 && argumentIndexes.at(0).first > 0 ) {
+			// Unknown arguments before first matching Argument.
+			std::vector<std::string> unknown( copy.begin(), copy.begin() + (argumentIndexes.at(0).first));
+			myParseResult.UnknownArguments( unknown );
+			result = false;
+		}
+		else
 		{
-			int argumentPos = (*curr).first;
-			int nextArgumentPos;
-
-			// Are there more arguments left? If so, stop at that one. Otherwise take parameters until end.
-			if( curr == --argumentIndexes.end() )
+			// Now let each argument parse any parameter until the next argument.
+			// This ensures that an argument isn't considered as a parameter to another argument.
+			for( auto curr = argumentIndexes.begin(); result && curr != argumentIndexes.end(); ++curr )
 			{
-				nextArgumentPos = static_cast<int>( copy.size() );
-			}
-			else
-			{
-				// Make a copy and increment
-				auto next = curr;
-				++next;
-				nextArgumentPos = (*next).first;
-			}
+				int argumentPos = (*curr).first;
+				int nextArgumentPos;
 
-			// Get a copy of the argument and the parameters after the argument.
-			std::vector<std::string> parameters( copy.begin() + argumentPos, copy.begin() + nextArgumentPos );
+				// Are there more arguments left? If so, stop at that one. Otherwise take parameters until end.
+				if( curr == --argumentIndexes.end() )
+				{
+					nextArgumentPos = static_cast<int>( copy.size() );
+				}
+				else
+				{
+					// Make a copy and increment
+					auto next = curr;
+					++next;
+					nextArgumentPos = (*next).first;
+				}
 
-			// Let the argument parse its parameters
-			result = (*curr).second->Parse( parameters );
+				// Get a copy of the argument and the parameters after the argument.
+				std::vector<std::string> parameters( copy.begin() + argumentPos, copy.begin() + nextArgumentPos );
 
-			if( result && parameters.size() > 0 )
-			{
-				// Leftovers from command line
-				myParseResult.UnknownArguments( parameters );
-				result = false;
+				// Let the argument parse its parameters
+				result = (*curr).second->Parse( parameters );
+
+				if( result && parameters.size() > 0 )
+				{
+					// Leftovers from command line
+					myParseResult.UnknownArguments( parameters );
+					result = false;
+				}
 			}
+			result &= CheckMandatory();
+			result &= CheckDependencies();
+			result &= CheckMutualExclusion();
 		}
 
-		result &= CheckMandatory();
-		result &= CheckDependencies();
-		result &= CheckMutualExclusion();
 	}
 	return result;
 }
