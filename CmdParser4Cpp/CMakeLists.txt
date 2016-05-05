@@ -26,7 +26,7 @@ set(SOURCE_FILES
 # Create a static library
 add_library(${PROJECT_NAME} STATIC ${SOURCE_FILES})
 
-# Output final binaries in the dist folder so they easilly can be distributed together with the header files.
+# Output final binaries in the dist folder so they easily can be distributed together with the header files.
 set_target_properties(${PROJECT_NAME}
 		PROPERTIES
 		ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_CURRENT_LIST_DIR}/dist/bin/${CMAKE_BUILD_TYPE}"
