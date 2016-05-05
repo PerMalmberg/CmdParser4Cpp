@@ -14,6 +14,8 @@ endif()
 # as opposed to where the 'main' CMakeLists.txt file is located.
 include_directories("${CMAKE_CURRENT_LIST_DIR}/../CmdParser4Cpp/dist/include")
 
+include_directories("${CMAKE_CURRENT_LIST_DIR}/../externals")
+
 set(SOURCE_FILES
 		main.cpp
 		Tests.cpp

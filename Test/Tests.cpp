@@ -5,7 +5,7 @@
 #include <CmdParser4Cpp.h>
 #include <cstring>
 #include <iostream>
-#include "catch.hpp"
+#include <Catch/include/catch.hpp>
 #include "SystemOutputParseResult.h"
 #include "SystemOutputUsageFormatter.h"
 

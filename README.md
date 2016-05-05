@@ -15,6 +15,13 @@
 ## Ports
 A Java port is available here: https://github.com/PerMalmberg/CmdParser4J
 
+##Downloading
+The test project Catch (https://github.com/philsquared/Catch) for testing so you need that cloned too.
+
+git clone --recursive https://github.com/PerMalmberg/CmdParser4Cpp.git
+
+
+
 ## Building
 Standard CMakeLists.txt files included, directly usable by CLion etc.
 To compile on Windows, do:
