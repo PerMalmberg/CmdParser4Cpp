@@ -6,6 +6,7 @@
 #include <string>
 #include <utility>
 #include <unordered_map>
+#include <memory>
 #include "IParseResult.h"
 #include "Constructor.h"
 #include "IUsageFormatter.h"
@@ -50,7 +51,7 @@ public:
 
 private:
 	IParseResult& myParseResult;
-	std::unordered_map<std::string, Argument*> myArguments;
+	std::unordered_map<std::string, std::shared_ptr<Argument>> myArguments;
 	std::unordered_map<std::string, const StringType*> myStringResults;
 	std::unordered_map<std::string, const BoolType*> myBoolResults;
 
@@ -62,11 +63,11 @@ private:
 	bool CheckMandatory() const;
 	bool CheckDependencies() const;
 	bool CheckMutualExclusion() const;
-	void GetIndexes( std::vector<std::pair<int, Argument*>>& argumentIndexes, const std::vector<std::string>& arguments );
+	void GetIndexes( std::vector<std::pair<int, std::shared_ptr<Argument>>>& argumentIndexes, const std::vector<std::string>& arguments );
 
 	class IndexSorter {
 	public:
-		bool operator()(const std::pair<int, Argument*>& lhs, const std::pair<int, Argument*>& rhs) {
+		bool operator()(const std::pair<int, std::shared_ptr<Argument>>& lhs, const std::pair<int, std::shared_ptr<Argument>>& rhs) {
 			return lhs.first < rhs.first;
 
 		}

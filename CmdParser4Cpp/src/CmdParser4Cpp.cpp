@@ -2,6 +2,7 @@
 // Licensed under MIT, see LICENSE file. 
 
 #include <algorithm>
+#include <memory>
 #include "CmdParser4Cpp.h"
 #include "Argument.h"
 #include "StringType.h"
@@ -31,7 +32,7 @@ CmdParser4Cpp::CmdParser4Cpp(IParseResult& parseResult)
 const Constructor
 CmdParser4Cpp::Accept(const std::string& argumentName)
 {
-	Argument* a = new Argument( argumentName, myParseResult );
+	std::shared_ptr<Argument> a( std::make_shared<Argument>( argumentName, myParseResult ) );
 	myArguments.insert( { argumentName, a } );
 	Constructor c( *a, *this );
 
@@ -46,10 +47,7 @@ CmdParser4Cpp::Accept(const std::string& argumentName)
 CmdParser4Cpp::~CmdParser4Cpp()
 {
 	// Deallocate our arguments
-	for( auto& pair : myArguments )
-	{
-		delete pair.second;
-	}
+	myArguments.erase(myArguments.begin(), myArguments.end());
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -67,7 +65,7 @@ CmdParser4Cpp::Parse(const std::vector<std::string>& arguments)
 	if( result )
 	{
 		// First, get indexes for the respective arguments
-		std::vector<std::pair<int, Argument*>> argumentIndexes;
+		std::vector<std::pair<int, std::shared_ptr<Argument>>> argumentIndexes;
 		GetIndexes( argumentIndexes, arguments );
 
 		if( argumentIndexes.size() == 0 && arguments.size() > 0) {
@@ -224,8 +222,8 @@ CmdParser4Cpp::CheckMutualExclusion() const
 	bool result = true;
 	// We don't want to check blockers 'a' -> 'b', then 'b' -> 'a' as that will give the same error message twice
 
-	std::unordered_map<std::string, Argument*> testAgainst( myArguments );
-	std::unordered_map<std::string, Argument*> alreadyTested;
+	std::unordered_map<std::string, std::shared_ptr<Argument>> testAgainst( myArguments );
+	std::unordered_map<std::string, std::shared_ptr<Argument>> alreadyTested;
 
 	for( const auto& pair : myArguments )
 	{
@@ -408,7 +406,7 @@ CmdParser4Cpp::GetUsage(IUsageFormatter& formatter) const
 //
 //////////////////////////////////////////////////////////////////////////
 void
-CmdParser4Cpp::GetIndexes(std::vector<std::pair<int, Argument*>>& argumentIndexes,
+CmdParser4Cpp::GetIndexes(std::vector<std::pair<int, std::shared_ptr<Argument>>>& argumentIndexes,
                           const std::vector<std::string>& arguments)
 {
 	for( auto& pair : myArguments )

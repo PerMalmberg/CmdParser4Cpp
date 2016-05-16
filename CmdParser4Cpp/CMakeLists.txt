@@ -1,10 +1,12 @@
 cmake_minimum_required(VERSION 3.4)
 project(CmdParser4Cpp)
 
+set(CMAKE_CXX_STANDARD 14)
+
 if(${CMAKE_MAKE_PROGRAM} MATCHES ".*(MSBuild|msdev|devenv|nmake).*")
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Wall /wd4514 /wd4820 /wd4710 /wd4711")
 else()
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11 -fno-exceptions")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -fno-exceptions")
 endif()
 
 include_directories("dist/include")

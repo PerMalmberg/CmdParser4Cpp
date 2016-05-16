@@ -138,7 +138,7 @@ Argument::AddDependency( const std::string& primaryName )
 //
 //////////////////////////////////////////////////////////////////////////
 bool
-Argument::CheckDependencies( std::unordered_map<std::string, Argument*> arguments ) const
+Argument::CheckDependencies( std::unordered_map<std::string, std::shared_ptr<Argument>> arguments ) const
 {
 	bool result = true;
 
@@ -176,7 +176,7 @@ Argument::AddBlockedBy( const std::string& blockedBy )
 //
 //////////////////////////////////////////////////////////////////////////
 bool
-Argument::CheckMutualExclusion( const std::unordered_map<std::string, Argument*>& testAgainst, const std::unordered_map<std::string, Argument*>& alreadyTested ) const
+Argument::CheckMutualExclusion( const std::unordered_map<std::string, std::shared_ptr<Argument>>& testAgainst, const std::unordered_map<std::string, std::shared_ptr<Argument>>& alreadyTested ) const
 {
 	bool result = true;
 

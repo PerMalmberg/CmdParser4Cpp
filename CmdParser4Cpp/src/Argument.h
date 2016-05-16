@@ -37,10 +37,10 @@ public:
 	const std::string& GetDescription() const { return myDescription; }
 
 	void AddDependency( const std::string& primaryName );
-	bool CheckDependencies( std::unordered_map<std::string, Argument*> arguments ) const;
+	bool CheckDependencies( std::unordered_map<std::string, std::shared_ptr<Argument>> arguments ) const;
 
 	void AddBlockedBy( const std::string& blockedBy );
-	bool CheckMutualExclusion( const std::unordered_map<std::string, Argument*>& testAgainst, const std::unordered_map<std::string, Argument*>& alreadyTested ) const;
+	bool CheckMutualExclusion( const std::unordered_map<std::string, std::shared_ptr<Argument>>& testAgainst, const std::unordered_map<std::string, std::shared_ptr<Argument>>& alreadyTested ) const;
 	void SetHidden() { isHidden = true; }
 	bool IsHidden() const { return isHidden; }
 

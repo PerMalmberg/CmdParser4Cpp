@@ -1,10 +1,12 @@
 cmake_minimum_required(VERSION 3.4)
 project(CmdExample)
 
+set(CMAKE_CXX_STANDARD 11)
+
 if(${CMAKE_MAKE_PROGRAM} MATCHES ".*(MSBuild|msdev|devenv|nmake).*")
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Wall /wd4514 /wd4820 /wd4710 /wd4711")
 else()
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11 -static-libgcc -static-libstdc++ -static -lpthread")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -static-libgcc -static-libstdc++ -static -lpthread")
 endif()
 
 include_directories("${CMAKE_CURRENT_LIST_DIR}/../CmdParser4Cpp/dist/include")
