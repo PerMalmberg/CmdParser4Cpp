@@ -3,9 +3,7 @@
 #include <string>
 #include <vector>
 
-namespace com {
-namespace codezeal {
-namespace commandline {
+namespace cmdparser4cpp {
 
 class CmdParser4Cpp;
 class Argument;
@@ -20,6 +18,4 @@ public:
 	virtual std::string ToString() const = 0;
 };
 
-} // END commandline
-} // END codezeal
-} // com
+} // END cmdparser4cpp

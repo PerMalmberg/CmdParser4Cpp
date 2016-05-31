@@ -4,7 +4,7 @@
 #include "IUsageFormatter.h"
 
 
-using namespace com::codezeal::commandline;
+using namespace cmdparser4cpp;
 
 class SystemOutputUsageFormatter : public IUsageFormatter
 {

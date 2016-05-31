@@ -9,9 +9,7 @@
 #include "BoolType.h"
 
 
-namespace com {
-namespace codezeal {
-namespace commandline {
+namespace cmdparser4cpp {
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -424,6 +422,4 @@ CmdParser4Cpp::GetIndexes(std::vector<std::pair<int, std::shared_ptr<Argument>>>
 	std::sort( argumentIndexes.begin(), argumentIndexes.end(), sorter );
 }
 
-} // END commandline
-} // END codezeal
-} // com
+} // END cmdparser4cpp

@@ -3,9 +3,7 @@
 
 #include "Argument.h"
 
-namespace com {
-namespace codezeal {
-namespace commandline {
+namespace cmdparser4cpp {
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -203,6 +201,4 @@ Argument::CheckMutualExclusion( const std::unordered_map<std::string, std::share
 	return result;
 }
 
-} // END commandline
-} // END codezeal
-} // com
+} // END cmdparser4cpp

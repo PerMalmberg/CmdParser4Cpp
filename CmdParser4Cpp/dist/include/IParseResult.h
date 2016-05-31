@@ -7,9 +7,7 @@
 #include <string>
 
 
-namespace com {
-namespace codezeal {
-namespace commandline {
+namespace cmdparser4cpp {
 
 // Interface used by the parser to notify the application of parse errors/events.
 class IParseResult {
@@ -32,6 +30,4 @@ public:
 
 inline IParseResult::~IParseResult() {}
 
-} // END commandline
-} // END codezeal
-} // com
+} // END cmdparser4cpp

@@ -7,7 +7,7 @@
 #include "SystemOutputParseResult.h"
 #include "SystemOutputUsageFormatter.h"
 
-using namespace com::codezeal::commandline;
+using namespace cmdparser4cpp;
 using namespace std;
 
 int main(int argc, const char* argv[])

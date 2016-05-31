@@ -11,9 +11,7 @@
 #include "Constructor.h"
 #include "IUsageFormatter.h"
 
-namespace com {
-namespace codezeal {
-namespace commandline {
+namespace cmdparser4cpp {
 
 class BoolType;
 class StringType;
@@ -78,6 +76,4 @@ private:
 	CmdParser4Cpp& operator=( const CmdParser4Cpp& ) = delete;
 };
 
-} // END commandline
-} // END codezeal
-} // com
+} // END cmdparser4cpp

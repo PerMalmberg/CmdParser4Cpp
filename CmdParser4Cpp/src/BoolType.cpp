@@ -3,10 +3,7 @@
 
 #include "BoolType.h"
 
-
-namespace com {
-namespace codezeal {
-namespace commandline {
+namespace cmdparser4cpp {
 
 const std::string BoolType::ZERO( "0" );
 const std::string BoolType::ONE( "1" );
@@ -87,6 +84,4 @@ BoolType::GetResult( int index, bool defaultValue ) const
 	return res;
 }
 
-} // END commandline
-} // END codezeal
-} // com
+} // END cmdparser4cpp

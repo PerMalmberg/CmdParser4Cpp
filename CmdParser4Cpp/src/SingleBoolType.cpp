@@ -4,9 +4,7 @@
 #include "SingleBoolType.h"
 #include "BoolType.h"
 
-namespace com {
-namespace codezeal {
-namespace commandline {
+namespace cmdparser4cpp {
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -29,6 +27,4 @@ bool SingleBoolType::IsSucessfullyParsed() const
 }
 
 
-} // END commandline
-} // END codezeal
-} // com
+} // END cmdparser4cpp

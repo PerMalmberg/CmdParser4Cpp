@@ -6,9 +6,7 @@
 #include "CmdParser4Cpp.h"
 
 
-namespace com {
-namespace codezeal {
-namespace commandline {
+namespace cmdparser4cpp {
 
 class BaseType
 {
@@ -41,6 +39,4 @@ private:
 	BaseType& operator=( const BaseType& ) = delete;
 };
 
-} // END commandline
-} // END codezeal
-} // com
+} // END cmdparser4cpp

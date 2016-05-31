@@ -4,7 +4,7 @@
 #pragma once
 #include "IParseResult.h"
 
-using namespace com::codezeal::commandline;
+using namespace cmdparser4cpp;
 
 class SystemOutputParseResult : public IParseResult
 {

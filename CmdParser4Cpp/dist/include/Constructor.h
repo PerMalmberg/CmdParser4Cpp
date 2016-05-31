@@ -6,9 +6,7 @@
 #include <string>
 #include <vector>
 
-namespace com {
-namespace codezeal {
-namespace commandline {
+namespace cmdparser4cpp {
 
 class CmdParser4Cpp;
 class Argument;
@@ -47,6 +45,4 @@ private:
 	Constructor& operator=( const Constructor& ) = delete;
 };
 
-} // END commandline
-} // END codezeal
-} // com
+} // END cmdparser4cpp

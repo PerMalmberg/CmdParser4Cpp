@@ -6,9 +6,7 @@
 #include <string>
 #include "BaseType.h"
 
-namespace com {
-namespace codezeal {
-namespace commandline {
+namespace cmdparser4cpp {
 
 class CmdParser4Cpp;
 class Argument;
@@ -30,6 +28,4 @@ private:
 	StringType& operator=( const StringType& ) = delete;
 };
 
-} // END commandline
-} // END codezeal
-} // com
+} // END cmdparser4cpp

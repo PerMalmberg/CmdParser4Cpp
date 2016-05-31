@@ -8,9 +8,7 @@
 #include "CmdParser4Cpp.h"
 #include "Argument.h"
 
-namespace com {
-namespace codezeal {
-namespace commandline {
+namespace cmdparser4cpp {
 
 class BoolType : public BaseType
 {
@@ -38,6 +36,4 @@ private:
 };
 
 
-} // END commandline
-} // END codezeal
-} // com
+} // END cmdparser4cpp

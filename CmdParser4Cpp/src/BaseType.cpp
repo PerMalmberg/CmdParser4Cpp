@@ -4,9 +4,7 @@
 #include <algorithm>
 #include "BaseType.h"
 
-namespace com {
-namespace codezeal {
-namespace commandline {
+namespace cmdparser4cpp {
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -86,7 +84,5 @@ BaseType::HasEnoughParametersLeft( VectorOfString parameters )
 	return static_cast<int>( parameters.size() ) >= myMinParameterCount;
 }
 
-} // END commandline
-} // END codezeal
-} // com
+} // END cmdparser4cpp
 

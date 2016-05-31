@@ -6,9 +6,7 @@
 #include <typeinfo>
 #include "BaseType.h"
 
-namespace com {
-namespace codezeal {
-namespace commandline {
+namespace cmdparser4cpp {
 
 class Argument
 {
@@ -59,6 +57,4 @@ private:
 	Argument& operator=( const Argument& ) = delete;
 };
 
-} // END commandline
-} // END codezeal
-} // com
+} // END cmdparser4cpp

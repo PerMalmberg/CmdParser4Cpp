@@ -4,9 +4,7 @@
 #include "StringType.h"
 #include "Argument.h"
 
-namespace com {
-namespace codezeal {
-namespace commandline {
+namespace cmdparser4cpp {
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -70,6 +68,4 @@ StringType::GetResult( int index, const char* defaultValue ) const
 	}
 }
 
-} // END commandline
-} // END codezeal
-} // com
+} // END cmdparser4cpp

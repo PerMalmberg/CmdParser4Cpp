@@ -8,9 +8,7 @@
 #include "BoolType.h"
 #include "SingleBoolType.h"
 
-namespace com {
-namespace codezeal {
-namespace commandline {
+namespace cmdparser4cpp {
 
 const int Constructor::NO_PARAMETER_LIMIT = std::numeric_limits<int>::max();
 
@@ -165,6 +163,4 @@ Constructor::SetHidden() const
 }
 
 
-} // END commandline
-} // END codezeal
-} // com
+} // END cmdparser4cpp
