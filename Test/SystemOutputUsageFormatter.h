@@ -9,7 +9,7 @@ using namespace cmdparser4cpp;
 class SystemOutputUsageFormatter : public IUsageFormatter
 {
 public:
-	SystemOutputUsageFormatter( const std::string& header );
+	explicit SystemOutputUsageFormatter( const std::string& header );
 	~SystemOutputUsageFormatter();
 
 	void PrepareMandatory( const std::string& primaryName, bool hasVariableParameterCount, int maxArgumentCount, const std::vector<std::string>& aliases, const std::string& description ) override;

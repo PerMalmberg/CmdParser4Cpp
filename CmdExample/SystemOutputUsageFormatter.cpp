@@ -47,9 +47,9 @@ void
 SystemOutputUsageFormatter::FormatArgument( const std::string& primaryName, bool hasVariableParameterCount, int maxArgumentCount, const std::vector<std::string>& aliases, const std::string& description )
 {
 	myUsage << std::endl << Indent() << primaryName;
-
-	bool firstAlias = true;
+	
 	if( aliases.size() > 0 ) {
+		bool firstAlias = true;
 		myUsage << " (";
 		for( auto& alias : aliases ) {
 			if( !firstAlias ) {

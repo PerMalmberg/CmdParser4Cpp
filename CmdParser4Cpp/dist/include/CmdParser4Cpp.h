@@ -21,8 +21,8 @@ typedef std::vector<std::string> VectorOfString;
 class CmdParser4Cpp
 {
 public:
-	CmdParser4Cpp( IParseResult& parseResult );
-
+	explicit CmdParser4Cpp( IParseResult& parseResult );
+	
 	virtual ~CmdParser4Cpp();
 
 	// Defines an argument with the provided argument name.
