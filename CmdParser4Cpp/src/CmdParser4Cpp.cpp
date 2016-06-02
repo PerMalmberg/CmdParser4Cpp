@@ -64,7 +64,7 @@ CmdParser4Cpp::Parse(const std::vector<std::string>& arguments)
 	{
 		// First, get indexes for the respective arguments
 		std::vector<std::pair<int, std::shared_ptr<Argument>>> argumentIndexes;
-		GetIndexes( argumentIndexes, arguments );
+		GetIndexes( argumentIndexes, copy );
 
 		if( argumentIndexes.size() == 0 && arguments.size() > 0) {
 			// Arguments provided on the command line, but no matches found.
@@ -279,16 +279,6 @@ void
 CmdParser4Cpp::SetResult(const std::string& argumentName, const StringType* result)
 {
 	myStringResults.insert( { argumentName, result } );
-}
-
-//////////////////////////////////////////////////////////////////////////
-//
-//
-//////////////////////////////////////////////////////////////////////////
-int
-CmdParser4Cpp::GetAvailableBoolParameterCount(const std::string& argumentName) const
-{
-	return GetAvailableParameterCount( argumentName, myBoolResults );
 }
 
 //////////////////////////////////////////////////////////////////////////

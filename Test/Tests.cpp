@@ -22,13 +22,18 @@ TEST_CASE( "Basic parsing" )
 		WHEN( "it accepts a single argument with two parameters" )
 		{
 			p.Accept( "-m" ).AsString( 2 );
+			p.Accept( "-b" ).AsBoolean( 1 );
 
 			THEN( "it it accepts two parameters" )
 			{
-				REQUIRE( p.Parse( std::vector<std::string>( { "-m", "", "one", "two" } ) ) );
+				bool res = p.Parse( std::vector<std::string>( { "-m", "", "one", "two", "-b", "1" } ) );
+
+				REQUIRE( res );
 				REQUIRE( 2 == p.GetAvailableStringParameterCount( "-m" ) );
+				REQUIRE( 1 == p.GetAvailableBooleanParameterCount( "-b" ) );
 				REQUIRE( string( "one" ) == p.GetString( "-m" ) );
 				REQUIRE( string( "two" ) == p.GetString( "-m", 1 ) );
+				REQUIRE( true == p.GetBool( "-b" ) );
 			}
 			AND_WHEN( "asked for unknown argument it returns null" )
 			{
@@ -643,18 +648,18 @@ SCENARIO( "Garbage on command line" )
 		{
 			REQUIRE_FALSE( p.Parse( std::vector<std::string>( { "jada", "Jada" } ) ) );
 
-			THEN("Unknown arguments named")
+			THEN( "Unknown arguments named" )
 			{
-				const std::string& s =  msg.GetParseResult();
-				REQUIRE( strstr(s.c_str(), "jada Jada" ) != nullptr );
+				const std::string& s = msg.GetParseResult();
+				REQUIRE( strstr( s.c_str(), "jada Jada" ) != nullptr );
 			}
 		}
 	}
 }
 
-SCENARIO("Garbage before first command")
+SCENARIO( "Garbage before first command" )
 {
-	GIVEN("Properly setup parser")
+	GIVEN( "Properly setup parser" )
 	{
 		SystemOutputParseResult msg;
 		CmdParser4Cpp p( msg );

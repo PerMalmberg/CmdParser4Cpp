@@ -37,7 +37,6 @@ public:
 
 	IParseResult& GetMessagerParser() const { return myParseResult; }
 	int GetAvailableStringParameterCount( const std::string& argumentName ) const;
-	int GetAvailableBoolParameterCount( const std::string& argumentName ) const;
 	const char* GetString( const std::string& argumentName, int index = 0, const char* defaultValue = nullptr ) const;
 	bool GetBool( const std::string& argumentName, int index = 0, bool defaultValue = false ) const;
 	int GetAvailableBooleanParameterCount( const std::string& argumentName ) const;
