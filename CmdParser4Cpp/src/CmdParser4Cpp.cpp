@@ -7,6 +7,7 @@
 #include "Argument.h"
 #include "StringType.h"
 #include "BoolType.h"
+#include "IntegerType.h"
 
 
 namespace cmdparser4cpp {
@@ -18,8 +19,7 @@ namespace cmdparser4cpp {
 CmdParser4Cpp::CmdParser4Cpp(IParseResult& parseResult)
 		: myParseResult( parseResult ),
 		  myArguments(),
-		  myStringResults(),
-		  myBoolResults()
+		  myResults()
 {
 }
 
@@ -268,7 +268,8 @@ CmdParser4Cpp::RemoveEmptyArguments(std::vector<std::string>& arguments)
 void
 CmdParser4Cpp::SetResult(const std::string& argumentName, const BoolType* result)
 {
-	myBoolResults.insert( { argumentName, result } );
+	std::unordered_map<std::string, const BoolType*>& map = myResults;
+	map.insert( { argumentName, result } );
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -278,7 +279,19 @@ CmdParser4Cpp::SetResult(const std::string& argumentName, const BoolType* result
 void
 CmdParser4Cpp::SetResult(const std::string& argumentName, const StringType* result)
 {
-	myStringResults.insert( { argumentName, result } );
+	std::unordered_map<std::string, const StringType*>& map = myResults;
+	map.insert( { argumentName, result } );
+}
+
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+void
+CmdParser4Cpp::SetResult(const std::string& argumentName, const IntegerType* result)
+{
+	std::unordered_map<std::string, const IntegerType*>& map = myResults;
+	map.insert( { argumentName, result } );
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -288,7 +301,7 @@ CmdParser4Cpp::SetResult(const std::string& argumentName, const StringType* resu
 int
 CmdParser4Cpp::GetAvailableStringParameterCount(const std::string& argumentName) const
 {
-	return GetAvailableParameterCount( argumentName, myStringResults );
+	return GetAvailableParameterCount<StringType>( argumentName );
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -297,9 +310,12 @@ CmdParser4Cpp::GetAvailableStringParameterCount(const std::string& argumentName)
 //////////////////////////////////////////////////////////////////////////
 template<typename ArgumentType>
 int
-CmdParser4Cpp::GetAvailableParameterCount(const std::string& argumentName,
-                                          std::unordered_map<std::string, const ArgumentType*> map) const
+CmdParser4Cpp::GetAvailableParameterCount(const std::string& argumentName
+                                          /*std::unordered_map<std::string, const ArgumentType*> map */) const
 {
+
+	const std::unordered_map<std::string, const ArgumentType*>& map = myResults;
+
 	int res = 0;
 	auto item = map.find( argumentName );
 	if( item != map.end() )
@@ -317,7 +333,7 @@ CmdParser4Cpp::GetAvailableParameterCount(const std::string& argumentName,
 const char*
 CmdParser4Cpp::GetString(const std::string& argumentName, int index, const char* defaultValue) const
 {
-	return GetValue( myStringResults, argumentName, index, defaultValue );
+	return GetValue<StringType>( argumentName, index, defaultValue );
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -327,8 +343,19 @@ CmdParser4Cpp::GetString(const std::string& argumentName, int index, const char*
 bool
 CmdParser4Cpp::GetBool(const std::string& argumentName, int index, bool defaultValue) const
 {
-	return GetValue( myBoolResults, argumentName, index, defaultValue );
+	return GetValue<BoolType>( argumentName, index, defaultValue );
 }
+
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+int
+CmdParser4Cpp::GetInteger(const std::string& argumentName, int index, int defaultValue) const
+{
+	return GetValue<IntegerType>( argumentName, index, defaultValue );
+}
+
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -337,7 +364,17 @@ CmdParser4Cpp::GetBool(const std::string& argumentName, int index, bool defaultV
 int
 CmdParser4Cpp::GetAvailableBooleanParameterCount(const std::string& argumentName) const
 {
-	return GetAvailableParameterCount( argumentName, myBoolResults );
+	return GetAvailableParameterCount<BoolType>( argumentName );
+}
+
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+int
+CmdParser4Cpp::GetAvailableIntegerParameterCount(const std::string& argumentName) const
+{
+	return GetAvailableParameterCount<IntegerType>( argumentName );
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -346,9 +383,10 @@ CmdParser4Cpp::GetAvailableBooleanParameterCount(const std::string& argumentName
 //////////////////////////////////////////////////////////////////////////
 template<typename ArgumentType, typename ValueType>
 ValueType
-CmdParser4Cpp::GetValue(const std::unordered_map<std::string, ArgumentType>& map,
-                        const std::string& argumentName, int index, ValueType defaultValue) const
+CmdParser4Cpp::GetValue( const std::string& argumentName, int index, ValueType defaultValue) const
 {
+	const std::unordered_map<std::string, const ArgumentType*>& map = myResults;
+
 	ValueType res = defaultValue;
 
 	auto item = map.find( argumentName );

@@ -17,6 +17,8 @@ class BoolType;
 
 class StringType;
 
+class IntegerType;
+
 typedef std::vector<std::string> VectorOfString;
 
 class CmdParser4Cpp
@@ -35,12 +37,15 @@ public:
 
 	void SetResult( const std::string& argumentName, const BoolType* type );
 	void SetResult( const std::string& argumentName, const StringType* type );
+	void SetResult( const std::string& argumentName, const IntegerType* type );
 
 	IParseResult& GetMessagerParser() const { return myParseResult; }
 	int GetAvailableStringParameterCount( const std::string& argumentName ) const;
 	const char* GetString( const std::string& argumentName, int index = 0, const char* defaultValue = nullptr ) const;
 	bool GetBool( const std::string& argumentName, int index = 0, bool defaultValue = false ) const;
+	int GetInteger(const std::string& argumentName, int index = 0, int defaultValue = 0) const;
 	int GetAvailableBooleanParameterCount( const std::string& argumentName ) const;
+	int GetAvailableIntegerParameterCount( const std::string& argumentName ) const;
 
 	template<typename ArgumentType, typename ValueType>
 	ValueType GetValue(const std::string& argumentName, int index, ValueType defaultValue) const;
@@ -55,7 +60,8 @@ private:
 	// the different argument types that we support. Using a struct instead of a class saves us from having to specify
 	// a public inheritance for each base class.
 	struct ResultEnvelope : std::unordered_map<std::string, const StringType*>,
-	                        std::unordered_map<std::string, const BoolType*>
+	                        std::unordered_map<std::string, const BoolType*>,
+	                        std::unordered_map<std::string, const IntegerType*>
 	{
 	};
 

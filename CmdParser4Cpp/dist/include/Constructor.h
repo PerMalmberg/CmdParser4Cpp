@@ -30,6 +30,9 @@ public:
 
 	const Constructor& AsSingleBoolean() const;
 
+	const Constructor& AsInteger( int parameterCount ) const;
+	const Constructor& AsInteger( int minimumParameterCount, int maximumParameterCount ) const;
+
 	const Constructor& WithAlias( const std::string& alias ) const;
 	const Constructor& WithAlias( const VectorOfString& alias ) const;
 	const Constructor& SetMandatory() const;

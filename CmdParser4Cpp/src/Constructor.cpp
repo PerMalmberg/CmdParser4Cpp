@@ -7,6 +7,7 @@
 #include "StringType.h"
 #include "BoolType.h"
 #include "SingleBoolType.h"
+#include "IntegerType.h"
 
 namespace cmdparser4cpp {
 
@@ -80,6 +81,27 @@ const Constructor&
 Constructor::AsSingleBoolean() const
 {
 	myArgument.SetArgumentType( new SingleBoolType( myParser, myArgument ) );
+	return *this;
+}
+
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+const Constructor&
+Constructor::AsInteger( int parameterCount ) const
+{
+	return AsInteger( parameterCount, parameterCount );
+}
+
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+const Constructor&
+Constructor::AsInteger( int minimumParameterCount, int maximumParameterCount ) const
+{
+	myArgument.SetArgumentType( new IntegerType( myParser, myArgument, minimumParameterCount, maximumParameterCount ) );
 	return *this;
 }
 

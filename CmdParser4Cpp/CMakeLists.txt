@@ -23,7 +23,9 @@ set(SOURCE_FILES
 		src/SingleBoolType.cpp
 		src/SingleBoolType.h
 		src/StringType.cpp
-		src/StringType.h)
+		src/StringType.h
+		src/IntegerType.cpp
+		src/IntegerType.h)
 
 # Create a static library
 add_library(${PROJECT_NAME} STATIC ${SOURCE_FILES})

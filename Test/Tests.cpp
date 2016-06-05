@@ -204,6 +204,50 @@ SCENARIO( "Single boolean" )
 	}
 }
 
+SCENARIO( "Integer" )
+{
+	GIVEN( "Parser setup for two integers" )
+	{
+		SystemOutputParseResult msg;
+		CmdParser4Cpp p( msg );
+		p.Accept( "-a" ).AsInteger(1);
+		p.Accept( "-b" ).AsInteger(2);
+
+		WHEN( "called with both arguments" )
+		{
+			REQUIRE( p.Parse( std::vector<std::string>( { "-a", "5", "-b", "1", "2" } ) ) );
+			THEN( "both arguments return correct count" )
+			{
+				REQUIRE( p.GetAvailableIntegerParameterCount("-a") == 1 );
+				REQUIRE( p.GetAvailableIntegerParameterCount("-b") == 2 );
+			}
+			AND_THEN("Correct parameters are returned")
+			{
+				REQUIRE( 5 == p.GetInteger("-a") );
+				REQUIRE( 1 == p.GetInteger("-b", 0) );
+				REQUIRE( 2 == p.GetInteger("-b", 1, 1000) );
+				REQUIRE( 0 == p.GetInteger("-b", 10, 0) );
+			}
+		}
+		AND_WHEN("called with negative numbers")
+		{
+			REQUIRE( p.Parse( std::vector<std::string>( { "-a", "-54321" } ) ) );
+			THEN( "negative number returned")
+			{
+				REQUIRE(-54321 == p.GetInteger("-a" ));
+			}
+		}
+		AND_WHEN("called with explicit positive number")
+		{
+			REQUIRE( p.Parse( std::vector<std::string>( { "-a", "+456789" } ) ) );
+			THEN( "positive number returned")
+			{
+				REQUIRE(456789 == p.GetInteger("-a" ));
+			}
+		}
+	}
+}
+
 SCENARIO( "Missing parameters" )
 {
 	GIVEN( "A parser with boolean argument requiring four parameters" )
