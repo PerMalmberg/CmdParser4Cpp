@@ -58,10 +58,10 @@ IntegerType::RetrieveResult()
 int
 IntegerType::GetResult( int index, int defaultValue ) const
 {
-	bool res = defaultValue;
+	int res = defaultValue;
 
 	if( index >= 0 && index < static_cast<int>( myResults.size() ) ) {
-		return atoi( myResults.at( static_cast<size_t>( index ) ).c_str() );
+		res = atoi( myResults.at( static_cast<size_t>( index ) ).c_str() );
 	}
 
 	return res;
