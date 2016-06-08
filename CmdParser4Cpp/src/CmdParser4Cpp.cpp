@@ -265,39 +265,6 @@ CmdParser4Cpp::RemoveEmptyArguments(std::vector<std::string>& arguments)
 //
 //
 //////////////////////////////////////////////////////////////////////////
-void
-CmdParser4Cpp::SetResult(const std::string& argumentName, const BoolType* result)
-{
-	std::unordered_map<std::string, const BoolType*>& map = myResults;
-	map.insert( { argumentName, result } );
-}
-
-//////////////////////////////////////////////////////////////////////////
-//
-//
-//////////////////////////////////////////////////////////////////////////
-void
-CmdParser4Cpp::SetResult(const std::string& argumentName, const StringType* result)
-{
-	std::unordered_map<std::string, const StringType*>& map = myResults;
-	map.insert( { argumentName, result } );
-}
-
-//////////////////////////////////////////////////////////////////////////
-//
-//
-//////////////////////////////////////////////////////////////////////////
-void
-CmdParser4Cpp::SetResult(const std::string& argumentName, const IntegerType* result)
-{
-	std::unordered_map<std::string, const IntegerType*>& map = myResults;
-	map.insert( { argumentName, result } );
-}
-
-//////////////////////////////////////////////////////////////////////////
-//
-//
-//////////////////////////////////////////////////////////////////////////
 int
 CmdParser4Cpp::GetAvailableStringParameterCount(const std::string& argumentName) const
 {
@@ -310,8 +277,7 @@ CmdParser4Cpp::GetAvailableStringParameterCount(const std::string& argumentName)
 //////////////////////////////////////////////////////////////////////////
 template<typename ArgumentType>
 int
-CmdParser4Cpp::GetAvailableParameterCount(const std::string& argumentName
-                                          /*std::unordered_map<std::string, const ArgumentType*> map */) const
+CmdParser4Cpp::GetAvailableParameterCount(const std::string& argumentName) const
 {
 
 	const std::unordered_map<std::string, const ArgumentType*>& map = myResults;
