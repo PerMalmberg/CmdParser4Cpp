@@ -91,3 +91,6 @@ int main(int argc, const char* argv[])
 	return result;
 }
 ```
+
+#Class diagram
+![Class diagram](https://github.com/PerMalmberg/CmdParser4Cpp/blob/master/cmdparser4cpp.png)

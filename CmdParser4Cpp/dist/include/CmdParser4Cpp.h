@@ -35,9 +35,8 @@ public:
 	// Parses the command line arguments
 	bool Parse( const std::vector<std::string>& arguments );
 
-	void SetResult( const std::string& argumentName, const BoolType* type );
-	void SetResult( const std::string& argumentName, const StringType* type );
-	void SetResult( const std::string& argumentName, const IntegerType* type );
+	template<typename ArgumentType>
+	void SetResult( const std::string& argumentName, const ArgumentType* result );
 
 	IParseResult& GetMessagerParser() const { return myParseResult; }
 	int GetAvailableStringParameterCount( const std::string& argumentName ) const;
@@ -98,5 +97,12 @@ private:
 
 	CmdParser4Cpp& operator=(const CmdParser4Cpp&) = delete;
 };
+
+template<typename ArgumentType>
+void CmdParser4Cpp::SetResult( const std::string& argumentName, const ArgumentType* result )
+{
+	std::unordered_map<std::string, const ArgumentType*>& map = myResults;
+	map.insert( { argumentName, result } );
+}
 
 } // END cmdparser4cpp
