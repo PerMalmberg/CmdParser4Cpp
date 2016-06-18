@@ -245,6 +245,10 @@ SCENARIO( "Integer" )
 				REQUIRE(456789 == p.GetInteger("-a" ));
 			}
 		}
+		AND_WHEN("called with invalid integer data")
+		{
+			REQUIRE_FALSE( p.Parse( std::vector<std::string>( { "-a", "AA" } ) ) );
+		}
 	}
 }
 
@@ -605,7 +609,7 @@ SCENARIO( "Two-way dependency programming error" )
 	}
 }
 
-SCENARIO( "Blocking arguments - OK" )
+SCENARIO( "Blocking arguments" )
 {
 	GIVEN( "Parser with blocking arguments" )
 	{
@@ -630,6 +634,28 @@ SCENARIO( "Blocking arguments - OK" )
 				REQUIRE( strstr( msg.GetParseResult().c_str(), "mutually exclusive" ) != nullptr );
 			}
 		}
+	}
+}
+
+SCENARIO( "Blocking argument missing" )
+{
+	GIVEN( "Parser with missing blocking argument" )
+	{
+		SystemOutputParseResult msg;
+		CmdParser4Cpp p( msg );
+		p.Accept( "-first" ).BlockedBy( "-doesnotexist" ).AsSingleBoolean();
+		p.Accept( "-second" ).BlockedBy( "-first" ).AsSingleBoolean();
+
+		WHEN( "Parse attempted" )
+		{
+			REQUIRE_FALSE( p.Parse( std::vector<std::string>( { "-first" } ) ) );
+
+			THEN("error reported")
+			{
+				REQUIRE( strstr( msg.GetParseResult().c_str(), "doesnotexist" ) != nullptr );
+			}
+		}
+
 	}
 }
 
