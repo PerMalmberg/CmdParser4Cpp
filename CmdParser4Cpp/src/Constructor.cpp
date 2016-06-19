@@ -184,5 +184,16 @@ Constructor::SetHidden() const
 	return *this;
 }
 
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+const Constructor&
+Constructor::WithConfigPath( const std::string& path ) const
+{
+	myArgument.SetConfigPath( path );
+	return *this;
+}
+
 
 } // END cmdparser4cpp

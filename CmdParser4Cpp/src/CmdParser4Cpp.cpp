@@ -9,7 +9,6 @@
 #include "BoolType.h"
 #include "IntegerType.h"
 
-
 namespace cmdparser4cpp {
 
 //////////////////////////////////////////////////////////////////////////
@@ -53,7 +52,7 @@ CmdParser4Cpp::~CmdParser4Cpp()
 //
 //////////////////////////////////////////////////////////////////////////
 bool
-CmdParser4Cpp::Parse(const std::vector<std::string>& arguments)
+CmdParser4Cpp::Parse(const std::vector<std::string>& arguments, std::shared_ptr<IConfigurationReader> cfgReader )
 {
 	std::vector<std::string> copy( arguments );
 	RemoveEmptyArguments( copy );
@@ -112,8 +111,11 @@ CmdParser4Cpp::Parse(const std::vector<std::string>& arguments)
 					result = false;
 				}
 			}
-			result &= CheckMandatory();
+
+			FallbackToConfiguration(cfgReader);
+
 			result &= CheckDependencies();
+			result &= CheckMandatory();
 			result &= CheckMutualExclusion();
 		}
 
@@ -414,6 +416,24 @@ CmdParser4Cpp::GetIndexes(std::vector<std::pair<int, std::shared_ptr<Argument>>>
 	IndexSorter sorter;
 
 	std::sort( argumentIndexes.begin(), argumentIndexes.end(), sorter );
+}
+
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+void
+CmdParser4Cpp::FallbackToConfiguration( std::shared_ptr<IConfigurationReader> cfgReader )
+{
+	// Let each argument that has not already been successfully parsed based on the
+	// command line attempt a fallback to the configuration
+	if( cfgReader ) {
+		for( auto& arg : myArguments ) {
+			if( !arg.second->IsSuccessFullyParsed()) {
+				cfgReader->FillFromConfiguration( arg.first, arg.second );
+			}
+		}
+	}
 }
 
 } // END cmdparser4cpp

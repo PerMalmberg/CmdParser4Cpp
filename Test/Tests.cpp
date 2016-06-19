@@ -6,6 +6,7 @@
 #include <cstring>
 #include <iostream>
 #include <Catch/include/catch.hpp>
+#include <XMLConfigurationReader.h>
 #include "SystemOutputParseResult.h"
 #include "SystemOutputUsageFormatter.h"
 
@@ -743,6 +744,30 @@ SCENARIO( "Garbage before first command" )
 			{
 				const std::string& s = msg.GetParseResult();
 				REQUIRE( strstr( s.c_str(), "jada" ) != nullptr );
+			}
+		}
+	}
+}
+
+SCENARIO( "Values from XML configuration file" )
+{
+	std::string cfgStr = "<Settings><First>55</First></Settings>";
+
+	GIVEN( "Properly setup parser" )
+	{
+		SystemOutputParseResult msg;
+		CmdParser4Cpp p( msg );
+		p.Accept( "-first" ).AsBoolean(1).WithConfigPath("/Settings/First");
+
+		std::shared_ptr<IConfigurationReader> cfg = std::make_shared<XMLConfigurationReader>();
+
+		WHEN( "Provided with configuration file" )
+		{
+			REQUIRE_FALSE( p.Parse( std::vector<std::string>(), cfg ) );
+
+			THEN( "Argument read from configuration" )
+			{
+				REQUIRE( p.GetInteger("-first") == 55 );
 			}
 		}
 	}

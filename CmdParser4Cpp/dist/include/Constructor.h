@@ -40,6 +40,7 @@ public:
 	const Constructor& DependsOn( const std::string& primaryName ) const;
 	const Constructor& BlockedBy( const std::string& primaryName ) const;
 	const Constructor& SetHidden() const;
+	const Constructor& WithConfigPath( const std::string& path ) const;
 
 private:
 	CmdParser4Cpp& myParser;

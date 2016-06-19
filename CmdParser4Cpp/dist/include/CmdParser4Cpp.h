@@ -10,6 +10,7 @@
 #include "IParseResult.h"
 #include "Constructor.h"
 #include "IUsageFormatter.h"
+#include "IConfigurationReader.h"
 
 namespace cmdparser4cpp {
 
@@ -33,7 +34,8 @@ public:
 	const Constructor Accept( const std::string& argumentName );
 
 	// Parses the command line arguments
-	bool Parse( const std::vector<std::string>& arguments );
+	bool Parse( const std::vector<std::string>& arguments, std::shared_ptr<IConfigurationReader> cfgReader = nullptr );
+
 
 	template<typename ArgumentType>
 	void SetResult( const std::string& argumentName, const ArgumentType* result );
@@ -78,6 +80,8 @@ private:
 	bool CheckDependencies() const;
 
 	bool CheckMutualExclusion() const;
+
+	void FallbackToConfiguration( std::shared_ptr<IConfigurationReader> cfgReader );
 
 	void GetIndexes(std::vector<std::pair<int, std::shared_ptr<Argument>>>& argumentIndexes,
 	                const std::vector<std::string>& arguments);

@@ -1,3 +1,6 @@
 [submodule "externals/Catch"]
 	path = externals/Catch
 	url = https://github.com/philsquared/Catch.git
+[submodule "pugixml"]
+	path = externals/pugixml
+	url = https://github.com/zeux/pugixml.git

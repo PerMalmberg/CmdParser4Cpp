@@ -1,0 +1,30 @@
+// Copyright (c) 2016 Per Malmberg
+// Licensed under MIT, see LICENSE file.
+
+#include "XMLConfigurationReader.h"
+#include "Argument.h"
+
+namespace cmdparser4cpp {
+
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+void
+XMLConfigurationReader::SetPathForArgument( const std::string &searchPath, const std::string &primaryArgumentName )
+{
+
+}
+
+
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+void
+XMLConfigurationReader::FillFromConfiguration( const std::string &primaryArgumentName, std::shared_ptr<Argument> argument )
+{
+
+}
+
+}

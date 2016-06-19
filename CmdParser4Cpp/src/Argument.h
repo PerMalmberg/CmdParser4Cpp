@@ -5,6 +5,7 @@
 
 #include <typeinfo>
 #include "BaseType.h"
+#include "IConfigurationReader.h"
 
 namespace cmdparser4cpp {
 
@@ -41,17 +42,20 @@ public:
 	bool CheckMutualExclusion( const std::unordered_map<std::string, std::shared_ptr<Argument>>& testAgainst, const std::unordered_map<std::string, std::shared_ptr<Argument>>& alreadyTested ) const;
 	void SetHidden() { isHidden = true; }
 	bool IsHidden() const { return isHidden; }
+	void SetConfigPath( const std::string& configPath ) { myConfigPath = configPath; }
+	std::string GetConfigPath() const { return myConfigPath; }
 
 private:
 	IParseResult& myParseResult;
-	BaseType* myType;
-	bool myExistsOnCommandLine;
+	BaseType* myType = nullptr;
+	bool myExistsOnCommandLine = false;
 	VectorOfString myNames;
-	bool myIsMandatory;
-	std::string myDescription;
+	bool myIsMandatory = false;
+	std::string myDescription = "";
 	VectorOfString myDependencies;
 	VectorOfString myBlocks;
-	bool isHidden;
+	bool isHidden = false;
+	std::string myConfigPath = "";
 	
 	Argument( const Argument& ) = delete;
 	Argument& operator=( const Argument& ) = delete;

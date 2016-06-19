@@ -9,6 +9,10 @@ else()
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -fno-exceptions")
 endif()
 
+#Disable exceptions in pugixml
+add_definitions(-DPUGIXML_NO_EXCEPTIONS)
+
+include_directories("${CMAKE_CURRENT_LIST_DIR}/../externals/pugixml/src")
 include_directories("dist/include")
 
 set(SOURCE_FILES
@@ -25,7 +29,8 @@ set(SOURCE_FILES
 		src/StringType.cpp
 		src/StringType.h
 		src/IntegerType.cpp
-		src/IntegerType.h)
+		src/IntegerType.h
+		../externals/pugixml/src/pugixml.cpp dist/include/IConfigurationReader.h dist/include/XMLConfigurationReader.h src/XMLConfigurationReader.cpp)
 
 # Create a static library
 add_library(${PROJECT_NAME} STATIC ${SOURCE_FILES})

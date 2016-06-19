@@ -12,14 +12,9 @@ namespace cmdparser4cpp {
 Argument::Argument( const std::string& argumentName, IParseResult& parseResult )
 	:
 	myParseResult( parseResult ),
-	myType( nullptr ),
-	myExistsOnCommandLine( false ),
 	myNames(),
-	myIsMandatory( false ),
-	myDescription(),
 	myDependencies(),
-	myBlocks(),
-	isHidden( false )
+	myBlocks()
 {
 	myNames.push_back( argumentName );
 }
