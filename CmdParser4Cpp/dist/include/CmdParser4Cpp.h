@@ -81,7 +81,7 @@ private:
 
 	bool CheckMutualExclusion() const;
 
-	void FallbackToConfiguration( std::shared_ptr<IConfigurationReader> cfgReader );
+	bool FallbackToConfiguration( std::shared_ptr<IConfigurationReader> cfgReader );
 
 	void GetIndexes(std::vector<std::pair<int, std::shared_ptr<Argument>>>& argumentIndexes,
 	                const std::vector<std::string>& arguments);

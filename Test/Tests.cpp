@@ -749,25 +749,38 @@ SCENARIO( "Garbage before first command" )
 	}
 }
 
-SCENARIO( "Values from XML configuration file" )
+SCENARIO( "XML configuration - 'child data'" )
 {
-	std::string cfgStr = "<Settings><First>55</First></Settings>";
-
 	GIVEN( "Properly setup parser" )
 	{
 		SystemOutputParseResult msg;
 		CmdParser4Cpp p( msg );
-		p.Accept( "-first" ).AsBoolean(1).WithConfigPath("/Settings/First");
-
-		std::shared_ptr<IConfigurationReader> cfg = std::make_shared<XMLConfigurationReader>();
+		p.Accept( "-first" ).AsInteger(3);
 
 		WHEN( "Provided with configuration file" )
 		{
-			REQUIRE_FALSE( p.Parse( std::vector<std::string>(), cfg ) );
+			std::string cfgStr = "<Settings><First>55</First><First>56</First><First>57</First></Settings>";
+			std::shared_ptr<IConfigurationReader> cfg = std::make_shared<XMLConfigurationReader>( cfgStr );
+			cfg->SetPathForArgument("-first", "/Settings/First");
+
+			REQUIRE( p.Parse( std::vector<std::string>(), cfg ) );
 
 			THEN( "Argument read from configuration" )
 			{
 				REQUIRE( p.GetInteger("-first") == 55 );
+				REQUIRE( p.GetInteger("-first", 1) == 56 );
+				REQUIRE( p.GetInteger("-first", 2) == 57 );
+			}
+		}
+		AND_WHEN("Configuration file is missing entries")
+		{
+			std::string cfgStr = "<Settings><First>55</First><First>56</First></Settings>";
+			std::shared_ptr<IConfigurationReader> cfg = std::make_shared<XMLConfigurationReader>( cfgStr );
+			cfg->SetPathForArgument("-first", "/Settings/First");
+
+			THEN("Parsing fails")
+			{
+				REQUIRE_FALSE( p.Parse( std::vector<std::string>(), cfg ) );
 			}
 		}
 	}

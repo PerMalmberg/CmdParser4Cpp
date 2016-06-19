@@ -12,7 +12,7 @@ endif()
 #Disable exceptions in pugixml
 add_definitions(-DPUGIXML_NO_EXCEPTIONS)
 
-include_directories("${CMAKE_CURRENT_LIST_DIR}/../externals/pugixml/src")
+include_directories("${CMAKE_CURRENT_LIST_DIR}/../externals/")
 include_directories("dist/include")
 
 set(SOURCE_FILES

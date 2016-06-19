@@ -5,14 +5,21 @@
 
 #include <string>
 #include <memory>
+#include <unordered_map>
 #include "IConfigurationReader.h"
+#include "pugixml/src/pugixml.hpp"
 
 namespace cmdparser4cpp {
 
 class XMLConfigurationReader : public IConfigurationReader {
 public:
-	void SetPathForArgument( const std::string& searchPath, const std::string& primaryArgumentName ) override;
-	void FillFromConfiguration( const std::string& primaryArgumentName, std::shared_ptr<Argument> argument ) override;
+	explicit XMLConfigurationReader(std::string xmlData );
+
+	void SetPathForArgument( const std::string& primaryArgumentName, const std::string& searchPath ) override;
+	bool FillFromConfiguration( std::shared_ptr<Argument> argument ) override;
+private:
+	pugi::xml_document myDoc;
+	std::unordered_map<std::string, std::string> myPath;
 };
 
 }
