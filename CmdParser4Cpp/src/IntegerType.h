@@ -27,8 +27,8 @@ private:
 	std::regex myMatcher;
 
 
-	IntegerType( const BoolType& ) = delete;
-	IntegerType& operator=( const BoolType& ) = delete;
+	IntegerType( const IntegerType& ) = delete;
+	IntegerType& operator=( const IntegerType& ) = delete;
 };
 
 
