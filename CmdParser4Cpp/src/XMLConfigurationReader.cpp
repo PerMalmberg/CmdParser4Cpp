@@ -7,12 +7,14 @@
 
 namespace cmdparser4cpp {
 
+using namespace pugi;
+
 //////////////////////////////////////////////////////////////////////////
 //
 //
 //////////////////////////////////////////////////////////////////////////
 XMLConfigurationReader::XMLConfigurationReader( std::string xmlData )
-		: myPath()
+		: myMatcher()
 {
 	myDoc.load_string( xmlData.c_str() );
 }
@@ -22,9 +24,9 @@ XMLConfigurationReader::XMLConfigurationReader( std::string xmlData )
 //
 //////////////////////////////////////////////////////////////////////////
 void
-XMLConfigurationReader::SetPathForArgument( const std::string& primaryArgumentName, const std::string& searchPath )
+XMLConfigurationReader::SetMatcher( const std::string& primaryArgumentName, const NodeMatcher& matcher )
 {
-	myPath.emplace( primaryArgumentName, searchPath );
+	myMatcher.emplace( primaryArgumentName, matcher );
 }
 
 
@@ -36,24 +38,78 @@ bool
 XMLConfigurationReader::FillFromConfiguration( std::shared_ptr<Argument> argument )
 {
 	bool res = true;
-	auto it = myPath.find( argument->GetPrimaryName() );
-	if( it != myPath.end() )
+	auto it = myMatcher.find( argument->GetPrimaryName() );
+	if( it != myMatcher.end() )
 	{
 		// The name of the argument must be the first item in array of items to parse
-		std::vector<std::string> data{ argument->GetPrimaryName() };
+		std::vector<std::string> data{argument->GetPrimaryName()};
 
-		const std::string& searchPath = it->second;
-		auto query = myDoc.select_nodes( searchPath.c_str() );
-		for( auto q : query )
+		// Select the node in the XML tree
+		auto& matcher = it->second;
+		auto nodes = myDoc.select_nodes( matcher.GetPath().c_str() );
+
+		// Loop each found node and let the matcher decide if it is a match.
+		for( auto& n : nodes )
 		{
-			std::string v( q.node().child_value() );
-			data.push_back( v );
+			matcher.Match( n, data );
 		}
 
 		res = argument->Parse( data );
 	}
 
 	return res;
+}
+
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+void
+XMLConfigurationReader::NodeMatcher::Match( const pugi::xpath_node& node, std::vector<std::string>& output )
+{
+	auto xmlNode = node.node();
+
+	// Match using attribute name/value pair?
+	if( !myMatchAttribute.empty() )
+	{
+		xml_attribute attr = xmlNode.attribute( myMatchAttribute.c_str() );
+		if( myMatchAttribute == attr.name() && myMatchAttributeValue == attr.value() )
+		{
+			// We found a matching attribute/value pair, get the actual value
+			ReadAttributeValue( xmlNode, myValueName, output );
+		}
+	}
+	else if( !myValueName.empty() )
+	{
+		// We want to read the value of the attribute
+		ReadAttributeValue( xmlNode, myValueName, output );
+	}
+	else
+	{
+		// Read the child data, e.g. <Node>THE DATA</Node>
+		const auto& text = xmlNode.text();
+		if( !text.empty() )
+		{
+			output.push_back( text.as_string() );
+		}
+	}
+
+}
+
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+void
+XMLConfigurationReader::NodeMatcher::ReadAttributeValue( pugi::xml_node& node, const std::string& attributeName,
+														 std::vector<std::string>& output )
+{
+	auto attr = node.attribute( attributeName.c_str() );
+	std::string value = attr.as_string();
+	if( !value.empty() )
+	{
+		output.push_back( value );
+	}
 }
 
 }

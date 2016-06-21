@@ -27,7 +27,7 @@ TEST_CASE( "Basic parsing" )
 
 			THEN( "it it accepts two parameters" )
 			{
-				bool res = p.Parse( std::vector<std::string>( { "-m", "", "one", "two", "-b", "1" } ) );
+				bool res = p.Parse( std::vector<std::string>( {"-m", "", "one", "two", "-b", "1"} ) );
 
 				REQUIRE( res );
 				REQUIRE( 2 == p.GetAvailableStringParameterCount( "-m" ) );
@@ -57,11 +57,11 @@ TEST_CASE( "Missing parameter parsing" )
 
 			THEN( "it it requires two parameters" )
 			{
-				REQUIRE_FALSE( p.Parse( std::vector<std::string>( { "-m", "", "one" } ) ) );
+				REQUIRE_FALSE( p.Parse( std::vector<std::string>( {"-m", "", "one"} ) ) );
 			}
 			AND_THEN( "is succeeds with two parameters" )
 			{
-				REQUIRE( p.Parse( std::vector<std::string>( { "-m", "", "one", "two" } ) ) );
+				REQUIRE( p.Parse( std::vector<std::string>( {"-m", "", "one", "two"} ) ) );
 			}
 		}
 	}
@@ -80,7 +80,7 @@ SCENARIO( "Argument specified multiple times" )
 
 			THEN( "called with both primary and alias names" )
 			{
-				REQUIRE_FALSE( p.Parse( std::vector<std::string>( { "-q", "Foo", "-Q", "Bar" } ) ) );
+				REQUIRE_FALSE( p.Parse( std::vector<std::string>( {"-q", "Foo", "-Q", "Bar"} ) ) );
 				const string& s = msg.GetParseResult();
 				REQUIRE( strstr( s.c_str(), "The argument '-q' is specified multiple times." ) != nullptr );
 			}
@@ -101,13 +101,13 @@ SCENARIO( "Missing mandatory argument" )
 
 			THEN( "if called with missing argument, it fails" )
 			{
-				REQUIRE_FALSE( p.Parse( std::vector<std::string>( { "-Q", "Bar" } ) ) );
+				REQUIRE_FALSE( p.Parse( std::vector<std::string>( {"-Q", "Bar"} ) ) );
 				const string& s = msg.GetParseResult();
 				REQUIRE( strstr( s.c_str(), "missing" ) != nullptr );
 			}
 			AND_THEN( "if called with mandatory argument, it succeeds" )
 			{
-				REQUIRE( p.Parse( std::vector<std::string>( { "-q", "Foo" } ) ) );
+				REQUIRE( p.Parse( std::vector<std::string>( {"-q", "Foo"} ) ) );
 				const std::string& s = msg.GetParseResult();
 				REQUIRE( s.length() == 0 );
 			}
@@ -125,13 +125,13 @@ SCENARIO( "Leftovers on the command line" )
 
 		WHEN( "called with extra parameters" )
 		{
-			REQUIRE_FALSE( p.Parse( std::vector<std::string>( { "-Q", "Bar", "some", "extra" } ) ) );
+			REQUIRE_FALSE( p.Parse( std::vector<std::string>( {"-Q", "Bar", "some", "extra"} ) ) );
 			const std::string& s = msg.GetParseResult();
 			REQUIRE( strstr( s.c_str(), "Unknown arguments: some extra" ) != nullptr );
 		}
 		AND_WHEN( "called with correct number of parameters" )
 		{
-			REQUIRE( p.Parse( std::vector<std::string>( { "-Q", "Bar" } ) ) );
+			REQUIRE( p.Parse( std::vector<std::string>( {"-Q", "Bar"} ) ) );
 		}
 	}
 }
@@ -147,7 +147,7 @@ SCENARIO( "Using boolean arguments" )
 
 		WHEN( "called with valid parameters" )
 		{
-			REQUIRE( p.Parse( std::vector<std::string>( { "/b", "true", "1", "0", "false", "/foo", "false" } ) ) );
+			REQUIRE( p.Parse( std::vector<std::string>( {"/b", "true", "1", "0", "false", "/foo", "false"} ) ) );
 
 			THEN( "parsing succeeds" )
 			{
@@ -164,7 +164,7 @@ SCENARIO( "Using boolean arguments" )
 		AND_WHEN( "called with invalid parameters" )
 		{
 			REQUIRE_FALSE(
-					p.Parse( std::vector<std::string>( { "/b", "true", "1", "notbool", "false", "/foo", "false" } ) ) );
+					p.Parse( std::vector<std::string>( {"/b", "true", "1", "notbool", "false", "/foo", "false"} ) ) );
 
 			THEN( "argument is reported as problem" )
 			{
@@ -187,7 +187,7 @@ SCENARIO( "Single boolean" )
 
 		WHEN( "called with both arguments" )
 		{
-			REQUIRE( p.Parse( std::vector<std::string>( { "foo", "bar" } ) ) );
+			REQUIRE( p.Parse( std::vector<std::string>( {"foo", "bar"} ) ) );
 			THEN( "both arguments are true" )
 			{
 				REQUIRE( p.GetBool( "foo", 0 ) );
@@ -200,7 +200,7 @@ SCENARIO( "Single boolean" )
 		}
 		AND_WHEN( "called without mandatory it fails" )
 		{
-			REQUIRE_FALSE( p.Parse( std::vector<std::string>( { "bar" } ) ) );
+			REQUIRE_FALSE( p.Parse( std::vector<std::string>( {"bar"} ) ) );
 		}
 	}
 }
@@ -211,44 +211,44 @@ SCENARIO( "Integer" )
 	{
 		SystemOutputParseResult msg;
 		CmdParser4Cpp p( msg );
-		p.Accept( "-a" ).AsInteger(1);
-		p.Accept( "-b" ).AsInteger(2);
+		p.Accept( "-a" ).AsInteger( 1 );
+		p.Accept( "-b" ).AsInteger( 2 );
 
 		WHEN( "called with both arguments" )
 		{
-			REQUIRE( p.Parse( std::vector<std::string>( { "-a", "5", "-b", "1", "2" } ) ) );
+			REQUIRE( p.Parse( std::vector<std::string>( {"-a", "5", "-b", "1", "2"} ) ) );
 			THEN( "both arguments return correct count" )
 			{
-				REQUIRE( p.GetAvailableIntegerParameterCount("-a") == 1 );
-				REQUIRE( p.GetAvailableIntegerParameterCount("-b") == 2 );
+				REQUIRE( p.GetAvailableIntegerParameterCount( "-a" ) == 1 );
+				REQUIRE( p.GetAvailableIntegerParameterCount( "-b" ) == 2 );
 			}
-			AND_THEN("Correct parameters are returned")
+			AND_THEN( "Correct parameters are returned" )
 			{
-				REQUIRE( 5 == p.GetInteger("-a") );
-				REQUIRE( 1 == p.GetInteger("-b", 0) );
-				REQUIRE( 2 == p.GetInteger("-b", 1, 1000) );
-				REQUIRE( 0 == p.GetInteger("-b", 10, 0) );
+				REQUIRE( 5 == p.GetInteger( "-a" ) );
+				REQUIRE( 1 == p.GetInteger( "-b", 0 ) );
+				REQUIRE( 2 == p.GetInteger( "-b", 1, 1000 ) );
+				REQUIRE( 0 == p.GetInteger( "-b", 10, 0 ) );
 			}
 		}
-		AND_WHEN("called with negative numbers")
+		AND_WHEN( "called with negative numbers" )
 		{
-			REQUIRE( p.Parse( std::vector<std::string>( { "-a", "-54321" } ) ) );
-			THEN( "negative number returned")
+			REQUIRE( p.Parse( std::vector<std::string>( {"-a", "-54321"} ) ) );
+			THEN( "negative number returned" )
 			{
-				REQUIRE(-54321 == p.GetInteger("-a" ));
+				REQUIRE( -54321 == p.GetInteger( "-a" ) );
 			}
 		}
-		AND_WHEN("called with explicit positive number")
+		AND_WHEN( "called with explicit positive number" )
 		{
-			REQUIRE( p.Parse( std::vector<std::string>( { "-a", "+456789" } ) ) );
-			THEN( "positive number returned")
+			REQUIRE( p.Parse( std::vector<std::string>( {"-a", "+456789"} ) ) );
+			THEN( "positive number returned" )
 			{
-				REQUIRE(456789 == p.GetInteger("-a" ));
+				REQUIRE( 456789 == p.GetInteger( "-a" ) );
 			}
 		}
-		AND_WHEN("called with invalid integer data")
+		AND_WHEN( "called with invalid integer data" )
 		{
-			REQUIRE_FALSE( p.Parse( std::vector<std::string>( { "-a", "AA" } ) ) );
+			REQUIRE_FALSE( p.Parse( std::vector<std::string>( {"-a", "AA"} ) ) );
 		}
 	}
 }
@@ -262,7 +262,7 @@ SCENARIO( "Missing parameters" )
 		p.Accept( "/b" ).AsBoolean( 4 );
 		WHEN( "called with too few parameters" )
 		{
-			REQUIRE_FALSE( p.Parse( std::vector<std::string>( { "/b", "true", "1", "0" } ) ) );
+			REQUIRE_FALSE( p.Parse( std::vector<std::string>( {"/b", "true", "1", "0"} ) ) );
 
 			THEN( "Argument is reported as problematic" )
 			{
@@ -284,7 +284,7 @@ SCENARIO( "Missing parameters, part 2" )
 
 		WHEN( "called with too few parameters" )
 		{
-			REQUIRE_FALSE( p.Parse( std::vector<std::string>( { "/b", "true", "/c", "false" } ) ) );
+			REQUIRE_FALSE( p.Parse( std::vector<std::string>( {"/b", "true", "/c", "false"} ) ) );
 
 			THEN( "Argument is reported as problematic" )
 			{
@@ -307,12 +307,12 @@ SCENARIO( "Missing parameters, part 3" )
 		WHEN( "called with too few parameters" )
 		{
 			REQUIRE_FALSE(
-					p.Parse( std::vector<std::string>( { "/b", "true", "false", "/a", "true", "/c", "false" } ) ) );
+					p.Parse( std::vector<std::string>( {"/b", "true", "false", "/a", "true", "/c", "false"} ) ) );
 
 			THEN( "Argument is reported as problematic" )
 			{
 				REQUIRE( strstr( msg.GetParseResult().c_str(), "Not enough parameters, argument '/b' requires 3" ) !=
-				         nullptr );
+						 nullptr );
 			}
 		}
 	}
@@ -327,7 +327,7 @@ SCENARIO( "No parameters at all" )
 		p.Accept( "/b" ).AsBoolean( 4 ).SetMandatory();
 		WHEN( "called with no parameters" )
 		{
-			REQUIRE_FALSE( p.Parse( std::vector<std::string>( { "/b" } ) ) );
+			REQUIRE_FALSE( p.Parse( std::vector<std::string>( {"/b"} ) ) );
 
 			THEN( "Argument is reported as problematic" )
 			{
@@ -337,7 +337,7 @@ SCENARIO( "No parameters at all" )
 		}
 		AND_WHEN( "called with without mandatory argument" )
 		{
-			REQUIRE_FALSE( p.Parse( std::vector<std::string>( { } ) ) );
+			REQUIRE_FALSE( p.Parse( std::vector<std::string>( {} ) ) );
 			const string& s = msg.GetParseResult();
 			REQUIRE( strstr( s.c_str(), "missing" ) != nullptr );
 		}
@@ -353,7 +353,7 @@ SCENARIO( "Description" )
 
 		p.Accept( "single" ).AsSingleBoolean().DescribedAs(
 				"AAA BBBBB CCCCCCCCCCC DDDDDDDDDDDDDDE EEEEEEEEEEEEEEEE FFFFFFFFFFF GGGGGGGGGGGGGGG HHHHHHHHHHHH" );
-		p.Accept( "/bool" ).AsBoolean( 1 ).WithAlias( std::vector<std::string>( { "/B", "-B", "-b" } ) ).DescribedAs(
+		p.Accept( "/bool" ).AsBoolean( 1 ).WithAlias( std::vector<std::string>( {"/B", "-B", "-b"} ) ).DescribedAs(
 				"A Boolean value" ).SetMandatory();
 		p.Accept( "/string" ).AsString( 1 ).DescribedAs( "A string argument" );
 		p.Accept( "/goo" ).AsBoolean( 1 ).SetMandatory().DescribedAs( "Something something" );
@@ -364,7 +364,7 @@ SCENARIO( "Description" )
 		WHEN( "arguments are parsed" )
 		{
 			REQUIRE( p.Parse( std::vector<std::string>(
-					{ "/bool", "1", "single", "/goo", "true", "/aaa", "AAA", "/bbb", "123", "456", "789" } ) ) );
+					{"/bool", "1", "single", "/goo", "true", "/aaa", "AAA", "/bbb", "123", "456", "789"} ) ) );
 
 			THEN( "parameters can be read" )
 			{
@@ -389,7 +389,7 @@ SCENARIO( "Description" )
 				// Can't test outputed text so just verify that it contains the descriptions
 				REQUIRE( strstr( output.c_str(), "/aaa" ) != nullptr );
 				REQUIRE( strstr( output.c_str(),
-				                 "A long non descriptive description without any meaning what so ever" ) != nullptr );
+								 "A long non descriptive description without any meaning what so ever" ) != nullptr );
 			}
 		}
 	}
@@ -405,7 +405,7 @@ SCENARIO( "Variable parameter count" )
 
 		WHEN( "called with arbitrary number of parameters" )
 		{
-			REQUIRE( p.Parse( std::vector<std::string>( { "/b", "1", "0", "1", "true", "false" } ) ) );
+			REQUIRE( p.Parse( std::vector<std::string>( {"/b", "1", "0", "1", "true", "false"} ) ) );
 
 			THEN( "parameters are available" )
 			{
@@ -428,7 +428,7 @@ SCENARIO( "Variable parameter in middle" )
 		CmdParser4Cpp p( msg );
 		p.Accept( "single" ).AsSingleBoolean().DescribedAs(
 				"AAA BBBBB CCCCCCCCCCC DDDDDDDDDDDDDDE EEEEEEEEEEEEEEEE FFFFFFFFFFF GGGGGGGGGGGGGGG HHHHHHHHHHHH" );
-		p.Accept( "/bool" ).AsBoolean( 1 ).WithAlias( std::vector<std::string>( { "/B", "-B", "-b" } ) ).DescribedAs(
+		p.Accept( "/bool" ).AsBoolean( 1 ).WithAlias( std::vector<std::string>( {"/B", "-B", "-b"} ) ).DescribedAs(
 				"A Boolean value" ).SetMandatory();
 		p.Accept( "/string" ).AsString( 1 ).DescribedAs( "A string argument" );
 		p.Accept( "/goo" ).AsBoolean( 1 ).SetMandatory().DescribedAs( "-gle?" );
@@ -439,8 +439,8 @@ SCENARIO( "Variable parameter in middle" )
 		WHEN( "called with arbitrary number of parameters in the middle of the command line" )
 		{
 			REQUIRE( p.Parse( std::vector<std::string>(
-					{ "/bool", "1", "single", "/goo", "true", "/bbb", "AAA", "BBB", "CCC", "-A", "123", "456",
-					  "789" } ) ) );
+					{"/bool", "1", "single", "/goo", "true", "/bbb", "AAA", "BBB", "CCC", "-A", "123", "456",
+					 "789"} ) ) );
 
 			THEN( "parameters are available for multi-parameter argument" )
 			{
@@ -472,7 +472,7 @@ SCENARIO( "Multiple muti-parameter arguments" )
 
 		WHEN( "Called with multiple parameters" )
 		{
-			REQUIRE( p.Parse( std::vector<std::string>( { "/multi1", "1", "0", "/multi2", "0", "true" } ) ) );
+			REQUIRE( p.Parse( std::vector<std::string>( {"/multi1", "1", "0", "/multi2", "0", "true"} ) ) );
 
 			THEN( "Parameters are available" )
 			{
@@ -507,7 +507,7 @@ SCENARIO( "Same argument multiple times" )
 
 		WHEN( "Called with same argument twice" )
 		{
-			REQUIRE_FALSE( p.Parse( std::vector<std::string>( { "/multi1", "1", "/multi1", "1" } ) ) );
+			REQUIRE_FALSE( p.Parse( std::vector<std::string>( {"/multi1", "1", "/multi1", "1"} ) ) );
 			THEN( "parsing fails" )
 			{
 				REQUIRE(
@@ -529,12 +529,12 @@ SCENARIO( "Missing dependency" )
 
 		WHEN( "Called without dependency" )
 		{
-			REQUIRE_FALSE( p.Parse( std::vector<std::string>( { "-first", "false" } ) ) );
+			REQUIRE_FALSE( p.Parse( std::vector<std::string>( {"-first", "false"} ) ) );
 
 			THEN( "Missing dependency is reported" )
 			{
 				REQUIRE( strstr( msg.GetParseResult().c_str(),
-				                 "Argument '-first' depends on '-second', but the latter is missing" ) != nullptr );
+								 "Argument '-first' depends on '-second', but the latter is missing" ) != nullptr );
 			}
 		}
 	}
@@ -551,7 +551,7 @@ SCENARIO( "Two-way dependency" )
 
 		WHEN( "Called with dependency" )
 		{
-			REQUIRE( p.Parse( std::vector<std::string>( { "-first", "false", "-second", "true" } ) ) );
+			REQUIRE( p.Parse( std::vector<std::string>( {"-first", "false", "-second", "true"} ) ) );
 
 			THEN( "No error reported" )
 			{
@@ -577,12 +577,12 @@ SCENARIO( "Two-way dependency fails" )
 
 		WHEN( "Called without dependency" )
 		{
-			REQUIRE_FALSE( p.Parse( std::vector<std::string>( { "-second", "true" } ) ) );
+			REQUIRE_FALSE( p.Parse( std::vector<std::string>( {"-second", "true"} ) ) );
 
 			THEN( "Missing dependancy reported" )
 			{
 				REQUIRE( strstr( msg.GetParseResult().c_str(),
-				                 "Argument '-second' depends on '-first', but the latter is missing" ) != nullptr );
+								 "Argument '-second' depends on '-first', but the latter is missing" ) != nullptr );
 			}
 		}
 	}
@@ -598,13 +598,13 @@ SCENARIO( "Two-way dependency programming error" )
 
 		WHEN( "Called without dependency" )
 		{
-			REQUIRE_FALSE( p.Parse( std::vector<std::string>( { "-first", "false" } ) ) );
+			REQUIRE_FALSE( p.Parse( std::vector<std::string>( {"-first", "false"} ) ) );
 
 			THEN( "Missing dependancy reported" )
 			{
 				REQUIRE( strstr( msg.GetParseResult().c_str(),
-				                 "Argument '-first' depends on '-second', but no such argument is defined - contact the author of the application" ) !=
-				         nullptr );
+								 "Argument '-first' depends on '-second', but no such argument is defined - contact the author of the application" ) !=
+						 nullptr );
 			}
 		}
 	}
@@ -621,15 +621,15 @@ SCENARIO( "Blocking arguments" )
 
 		WHEN( "Called with only one argument" )
 		{
-			REQUIRE( p.Parse( std::vector<std::string>( { "-first" } ) ) );
+			REQUIRE( p.Parse( std::vector<std::string>( {"-first"} ) ) );
 		}
 		AND_WHEN( "Called with only other argument" )
 		{
-			REQUIRE( p.Parse( std::vector<std::string>( { "-second" } ) ) );
+			REQUIRE( p.Parse( std::vector<std::string>( {"-second"} ) ) );
 		}
 		AND_WHEN( "Called with both arguments" )
 		{
-			REQUIRE_FALSE( p.Parse( std::vector<std::string>( { "-first", "-second" } ) ) );
+			REQUIRE_FALSE( p.Parse( std::vector<std::string>( {"-first", "-second"} ) ) );
 			THEN( "Mutually exclusive arguments are reported" )
 			{
 				REQUIRE( strstr( msg.GetParseResult().c_str(), "mutually exclusive" ) != nullptr );
@@ -649,9 +649,9 @@ SCENARIO( "Blocking argument missing" )
 
 		WHEN( "Parse attempted" )
 		{
-			REQUIRE_FALSE( p.Parse( std::vector<std::string>( { "-first" } ) ) );
+			REQUIRE_FALSE( p.Parse( std::vector<std::string>( {"-first"} ) ) );
 
-			THEN("error reported")
+			THEN( "error reported" )
 			{
 				REQUIRE( strstr( msg.GetParseResult().c_str(), "doesnotexist" ) != nullptr );
 			}
@@ -697,7 +697,7 @@ SCENARIO( "Missing argument type" )
 
 		WHEN( "parsing is done" )
 		{
-			REQUIRE_FALSE( p.Parse( std::vector<std::string>( { "-first" } ) ) );
+			REQUIRE_FALSE( p.Parse( std::vector<std::string>( {"-first"} ) ) );
 
 			THEN( "Problem reported" )
 			{
@@ -717,7 +717,7 @@ SCENARIO( "Garbage on command line" )
 
 		WHEN( "given only garbage on command line" )
 		{
-			REQUIRE_FALSE( p.Parse( std::vector<std::string>( { "jada", "Jada" } ) ) );
+			REQUIRE_FALSE( p.Parse( std::vector<std::string>( {"jada", "Jada"} ) ) );
 
 			THEN( "Unknown arguments named" )
 			{
@@ -738,7 +738,7 @@ SCENARIO( "Garbage before first command" )
 
 		WHEN( "given garbage on before first command" )
 		{
-			REQUIRE_FALSE( p.Parse( std::vector<std::string>( { "jada", "-first" } ) ) );
+			REQUIRE_FALSE( p.Parse( std::vector<std::string>( {"jada", "-first"} ) ) );
 
 			THEN( "Unknown arguments named" )
 			{
@@ -755,30 +755,82 @@ SCENARIO( "XML configuration - 'child data'" )
 	{
 		SystemOutputParseResult msg;
 		CmdParser4Cpp p( msg );
-		p.Accept( "-first" ).AsInteger(3);
+		p.Accept( "-first" ).AsInteger( 3 );
 
-		WHEN( "Provided with configuration file" )
+		WHEN( "Provided with configuration file and the value is in text-format as the child of the node" )
 		{
-			std::string cfgStr = "<Settings><First>55</First><First>56</First><First>57</First></Settings>";
-			std::shared_ptr<IConfigurationReader> cfg = std::make_shared<XMLConfigurationReader>( cfgStr );
-			cfg->SetPathForArgument("-first", "/Settings/First");
+			std::string cfgStr = R"!!(
+									<Settings>
+										<First><![CDATA[40]]></First>
+										<First>41</First>
+										<First><![CDATA[42]]></First>
+									</Settings>)!!";
+			std::shared_ptr<XMLConfigurationReader> cfg = std::make_shared<XMLConfigurationReader>( cfgStr );
+			cfg->SetMatcher( "-first", XMLConfigurationReader::NodeMatcher( "/Settings/First" ) );
 
 			REQUIRE( p.Parse( std::vector<std::string>(), cfg ) );
 
 			THEN( "Argument read from configuration" )
 			{
-				REQUIRE( p.GetInteger("-first") == 55 );
-				REQUIRE( p.GetInteger("-first", 1) == 56 );
-				REQUIRE( p.GetInteger("-first", 2) == 57 );
+				REQUIRE( p.GetInteger( "-first" ) == 40 );
+				REQUIRE( p.GetInteger( "-first", 1 ) == 41 );
+				REQUIRE( p.GetInteger( "-first", 2 ) == 42 );
 			}
 		}
-		AND_WHEN("Configuration file is missing entries")
+		AND_WHEN( "The wanted value is in an attribute and we search using attribute name/value pair" )
+		{
+			std::string cfgStr =
+					R"!!(
+						"<Settings>
+							<First Key="KeyName" Value="1234"/>
+							<First Key="KeyName" Value="5678"/>
+							<First Key="KeyName" Value="9012"/>
+						</Settings>")!!";
+
+
+			std::shared_ptr<XMLConfigurationReader> cfg = std::make_shared<XMLConfigurationReader>( cfgStr );
+			cfg->SetMatcher( "-first",
+							 XMLConfigurationReader::NodeMatcher( "/Settings/First", "Value", "Key", "KeyName" ) );
+
+			REQUIRE( p.Parse( std::vector<std::string>(), cfg ) );
+
+			THEN( "Argument read from configuration" )
+			{
+				REQUIRE( p.GetInteger( "-first" ) == 1234 );
+				REQUIRE( p.GetInteger( "-first", 1 ) == 5678 );
+				REQUIRE( p.GetInteger( "-first", 2 ) == 9012 );
+			}
+		}
+		AND_WHEN( "The wanted value is in an attribute but we don't care about first matching name/value pair" )
+		{
+			std::string cfgStr =
+					R"!!(
+						"<Settings>
+							<First Key="Foo" Value="70"/>
+							<First Key="Bar" Value="80"/>
+							<First Key="FooBar" Value="90"/>
+						</Settings>")!!";
+
+
+			std::shared_ptr<XMLConfigurationReader> cfg = std::make_shared<XMLConfigurationReader>( cfgStr );
+			cfg->SetMatcher( "-first", XMLConfigurationReader::NodeMatcher( "/Settings/First", "Value" ) );
+
+			REQUIRE( p.Parse( std::vector<std::string>(), cfg ) );
+
+			THEN( "Argument read from configuration" )
+			{
+				REQUIRE( p.GetInteger( "-first" ) == 70 );
+				REQUIRE( p.GetInteger( "-first", 1 ) == 80 );
+				REQUIRE( p.GetInteger( "-first", 2 ) == 90 );
+			}
+		}
+		AND_WHEN( "Configuration file is missing entries" )
 		{
 			std::string cfgStr = "<Settings><First>55</First><First>56</First></Settings>";
-			std::shared_ptr<IConfigurationReader> cfg = std::make_shared<XMLConfigurationReader>( cfgStr );
-			cfg->SetPathForArgument("-first", "/Settings/First");
+			std::shared_ptr<XMLConfigurationReader> cfg = std::make_shared<XMLConfigurationReader>( cfgStr );
+			cfg->SetMatcher( "-first", XMLConfigurationReader::NodeMatcher( "/Settings/First" ) );
 
-			THEN("Parsing fails")
+			THEN( "Parsing fails" )
 			{
 				REQUIRE_FALSE( p.Parse( std::vector<std::string>(), cfg ) );
 			}
