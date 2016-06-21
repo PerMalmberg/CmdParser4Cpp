@@ -11,6 +11,13 @@
   * Guard against unknown arguments.
 * Custom "usage" formatting.
 * Custom error messages.
+* Configuration file integration - when arguments are not available on the
+command line they can be read from a configuration file. An XML-reader is included,
+supporting three different modes:
+  * Matching only node name and reading a primary attribute.
+  * Matching only node name and reading the 'text value' of the node.
+  * Matching on node name and reading a primary attribute.
+  * Matching on node name and attribute name/value, reading a second attribute value.
 
 ## Ports
 A Java port is available here: https://github.com/PerMalmberg/CmdParser4J

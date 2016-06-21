@@ -75,8 +75,15 @@ XMLConfigurationReader::NodeMatcher::Match( const pugi::xpath_node& node, std::v
 		xml_attribute attr = xmlNode.attribute( myMatchAttribute.c_str() );
 		if( myMatchAttribute == attr.name() && myMatchAttributeValue == attr.value() )
 		{
-			// We found a matching attribute/value pair, get the actual value
-			ReadAttributeValue( xmlNode, myValueName, output );
+			// We found a matching attribute/value pair
+			if( myValueName.empty() )
+			{
+				ReadTextValue( xmlNode, output );
+			}
+			else
+			{
+				ReadAttributeValue( xmlNode, myValueName, output );
+			}
 		}
 	}
 	else if( !myValueName.empty() )
@@ -87,11 +94,7 @@ XMLConfigurationReader::NodeMatcher::Match( const pugi::xpath_node& node, std::v
 	else
 	{
 		// Read the child data, e.g. <Node>THE DATA</Node>
-		const auto& text = xmlNode.text();
-		if( !text.empty() )
-		{
-			output.push_back( text.as_string() );
-		}
+		ReadTextValue( xmlNode, output );
 	}
 
 }
@@ -109,6 +112,20 @@ XMLConfigurationReader::NodeMatcher::ReadAttributeValue( pugi::xml_node& node, c
 	if( !value.empty() )
 	{
 		output.push_back( value );
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+void
+XMLConfigurationReader::NodeMatcher::ReadTextValue( pugi::xml_node& node, std::vector<std::string>& output )
+{
+	const auto& text = node.text();
+	if( !text.empty() )
+	{
+		output.push_back( text.as_string() );
 	}
 }
 

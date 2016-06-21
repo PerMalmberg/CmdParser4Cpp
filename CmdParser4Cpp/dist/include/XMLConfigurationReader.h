@@ -18,14 +18,24 @@ public:
 	class NodeMatcher
 	{
 	public:
+
+		// Search using only the path - the 'text' of the node will be read
 		explicit NodeMatcher( const std::string& searchPath )
 				: mySearchPath( searchPath )
 		{ }
 
+		// Search using only the path - the specified attribute value of the node will be read
 		NodeMatcher( const std::string& searchPath, const std::string& valueAttributeName )
 				: mySearchPath( searchPath ), myValueName( valueAttributeName )
 		{ }
 
+		// // Search using path and attribute name/value - the 'text' of the node will be read
+		NodeMatcher( const std::string& searchPath, const std::string& matchAttribute, const std::string& matchAttributeValue )
+				: mySearchPath( searchPath ), myMatchAttribute( matchAttribute ),
+				  myMatchAttributeValue( matchAttributeValue )
+		{ }
+
+		// Search using path and attribute name/value - the specified attribute value of the node will be read
 		NodeMatcher( const std::string& searchPath, const std::string& valueAttributeName,
 					 const std::string& matchAttribute, const std::string& matchAttributeValue )
 				: mySearchPath( searchPath ), myValueName( valueAttributeName ), myMatchAttribute( matchAttribute ),
@@ -43,6 +53,7 @@ public:
 		std::string myMatchAttributeValue = "";
 
 		void ReadAttributeValue( pugi::xml_node& node, const std::string& attributeName, std::vector<std::string>& output );
+		void ReadTextValue( pugi::xml_node& node, std::vector<std::string>& output );
 	};
 
 	explicit XMLConfigurationReader( std::string xmlData );

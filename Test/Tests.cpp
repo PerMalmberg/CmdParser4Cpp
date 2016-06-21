@@ -749,7 +749,7 @@ SCENARIO( "Garbage before first command" )
 	}
 }
 
-SCENARIO( "XML configuration - 'child data'" )
+SCENARIO( "XML configuration" )
 {
 	GIVEN( "Properly setup parser" )
 	{
@@ -822,6 +822,30 @@ SCENARIO( "XML configuration - 'child data'" )
 				REQUIRE( p.GetInteger( "-first" ) == 70 );
 				REQUIRE( p.GetInteger( "-first", 1 ) == 80 );
 				REQUIRE( p.GetInteger( "-first", 2 ) == 90 );
+			}
+		}
+		AND_WHEN( "The wanted value is the child data and we search using attribute name/value pair" )
+		{
+			std::string cfgStr =
+					R"!!(
+						"<Settings>
+							<First Key="KeyName">100</First>
+							<First Key="KeyName">200</First>
+							<First Key="KeyName">300</First>
+						</Settings>")!!";
+
+
+			std::shared_ptr<XMLConfigurationReader> cfg = std::make_shared<XMLConfigurationReader>( cfgStr );
+			cfg->SetMatcher( "-first",
+							 XMLConfigurationReader::NodeMatcher( "/Settings/First", "Key", "KeyName" ) );
+
+			REQUIRE( p.Parse( std::vector<std::string>(), cfg ) );
+
+			THEN( "Argument read from configuration" )
+			{
+				REQUIRE( p.GetInteger( "-first" ) == 100 );
+				REQUIRE( p.GetInteger( "-first", 1 ) == 200 );
+				REQUIRE( p.GetInteger( "-first", 2 ) == 300 );
 			}
 		}
 		AND_WHEN( "Configuration file is missing entries" )
