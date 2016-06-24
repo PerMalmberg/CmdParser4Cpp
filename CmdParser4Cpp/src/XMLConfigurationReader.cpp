@@ -86,15 +86,15 @@ XMLConfigurationReader::NodeMatcher::Match( const pugi::xpath_node& node, std::v
 			}
 		}
 	}
-	else if( !myValueName.empty() )
-	{
-		// We want to read the value of the attribute
-		ReadAttributeValue( xmlNode, myValueName, output );
-	}
-	else
+	else if( myValueName.empty() )
 	{
 		// Read the child data, e.g. <Node>THE DATA</Node>
 		ReadTextValue( xmlNode, output );
+	}
+	else
+	{
+		// We want to read the value of the attribute
+		ReadAttributeValue( xmlNode, myValueName, output );
 	}
 
 }
