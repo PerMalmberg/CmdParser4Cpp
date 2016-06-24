@@ -40,7 +40,7 @@ cmake -G "Visual Studio 14 2015" ..
 then open the generated solution.
 
 ## Usage
-This example is taken from the example application.
+This example is taken from the example application. Please see the test cases for more detailed usage.
 
 ```C++
 
