@@ -15,7 +15,7 @@ namespace cmdparser4cpp {
 //
 //
 //////////////////////////////////////////////////////////////////////////
-CmdParser4Cpp::CmdParser4Cpp( IParseResult &parseResult )
+CmdParser4Cpp::CmdParser4Cpp(IParseResult& parseResult)
 		: myParseResult( parseResult ),
 		  myArguments(),
 		  myResults()
@@ -27,10 +27,10 @@ CmdParser4Cpp::CmdParser4Cpp( IParseResult &parseResult )
 //
 //////////////////////////////////////////////////////////////////////////
 const Constructor
-CmdParser4Cpp::Accept( const std::string &argumentName )
+CmdParser4Cpp::Accept(const std::string& argumentName)
 {
 	std::shared_ptr<Argument> a( std::make_shared<Argument>( argumentName, myParseResult ) );
-	myArguments.insert( {argumentName, a} );
+	myArguments.insert( { argumentName, a } );
 	Constructor c( *a, *this );
 
 	// Return a copy for further use.
@@ -52,7 +52,8 @@ CmdParser4Cpp::~CmdParser4Cpp()
 //
 //////////////////////////////////////////////////////////////////////////
 bool
-CmdParser4Cpp::Parse( const std::vector<std::string> &arguments, std::shared_ptr<IConfigurationReader> cfgReader )
+CmdParser4Cpp::Parse(const std::vector<std::string>& arguments, std::shared_ptr<IConfigurationReader> cfgReader,
+                     const std::string& fileNameArgument)
 {
 	std::vector<std::string> copy( arguments );
 	RemoveEmptyArguments( copy );
@@ -74,7 +75,7 @@ CmdParser4Cpp::Parse( const std::vector<std::string> &arguments, std::shared_ptr
 		else if( argumentIndexes.size() > 0 && argumentIndexes.at( 0 ).first > 0 )
 		{
 			// Unknown arguments before first matching Argument.
-			std::vector<std::string> unknown( copy.begin(), copy.begin() + ( argumentIndexes.at( 0 ).first ) );
+			std::vector<std::string> unknown( copy.begin(), copy.begin() + (argumentIndexes.at( 0 ).first) );
 			myParseResult.UnknownArguments( unknown );
 			result = false;
 		}
@@ -84,7 +85,7 @@ CmdParser4Cpp::Parse( const std::vector<std::string> &arguments, std::shared_ptr
 			// This ensures that an argument isn't considered as a parameter to another argument.
 			for( auto curr = argumentIndexes.begin(); result && curr != argumentIndexes.end(); ++curr )
 			{
-				int argumentPos = ( *curr ).first;
+				int argumentPos = (*curr).first;
 				int nextArgumentPos;
 
 				// Are there more arguments left? If so, stop at that one. Otherwise take parameters until end.
@@ -97,14 +98,14 @@ CmdParser4Cpp::Parse( const std::vector<std::string> &arguments, std::shared_ptr
 					// Make a copy and increment
 					auto next = curr;
 					++next;
-					nextArgumentPos = ( *next ).first;
+					nextArgumentPos = (*next).first;
 				}
 
 				// Get a copy of the argument and the parameters after the argument.
 				std::vector<std::string> parameters( copy.begin() + argumentPos, copy.begin() + nextArgumentPos );
 
 				// Let the argument parse its parameters
-				result = ( *curr ).second->Parse( parameters );
+				result = (*curr).second->Parse( parameters );
 
 				if( result && parameters.size() > 0 )
 				{
@@ -114,13 +115,44 @@ CmdParser4Cpp::Parse( const std::vector<std::string> &arguments, std::shared_ptr
 				}
 			}
 
-			result &= FallbackToConfiguration( cfgReader );
-			result &= CheckDependencies();
-			result &= CheckMandatory();
-			result &= CheckMutualExclusion();
+			result = result
+			         && LoadConfigFile( fileNameArgument, cfgReader )
+			         && FallbackToConfiguration( cfgReader )
+			         && CheckDependencies()
+			         && CheckMandatory()
+			         && CheckMutualExclusion();
 		}
 
 	}
+	return result;
+}
+
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+bool
+CmdParser4Cpp::LoadConfigFile( const std::string& fileNameArgument, std::shared_ptr<IConfigurationReader> cfgReader )
+{
+	bool result = true;
+
+	if( !fileNameArgument.empty() )
+	{
+		std::string fileName = GetString( fileNameArgument );
+		if( fileName.empty() ) {
+			myParseResult.FailedToLoadConfiguration( fileNameArgument );
+		}
+		else
+		{
+			result = cfgReader->LoadFromFile( fileName );
+
+			if( !result )
+			{
+				myParseResult.FailedToLoadConfiguration( fileNameArgument );
+			}
+		}
+	}
+
 	return result;
 }
 
@@ -134,7 +166,7 @@ CmdParser4Cpp::CheckArgumentTypes() const
 	bool res = true;
 
 	// Find any argument that has no type
-	for( auto &a : myArguments )
+	for( auto& a : myArguments )
 	{
 		if( !a.second->HasArgumentType() )
 		{
@@ -151,12 +183,12 @@ CmdParser4Cpp::CheckArgumentTypes() const
 //
 //////////////////////////////////////////////////////////////////////////
 bool
-CmdParser4Cpp::CheckConstraints( const VectorOfString &arguments )
+CmdParser4Cpp::CheckConstraints(const VectorOfString& arguments)
 {
 	bool res = true;
 
 	// Find all arguments duplicates
-	for( auto &a : myArguments )
+	for( auto& a : myArguments )
 	{
 		int hitCount = 0;
 		int ix = a.second->FindArgument( arguments, hitCount );
@@ -184,9 +216,9 @@ CmdParser4Cpp::CheckMandatory() const
 {
 	bool res = true;
 
-	for( auto &arg : myArguments )
+	for( auto& arg : myArguments )
 	{
-		const Argument &a = *arg.second;
+		const Argument& a = *arg.second;
 		if( a.IsMandatory() && !a.IsSuccessFullyParsed() )
 		{
 			myParseResult.MissingMandatoryArgument( a.GetPrimaryName() );
@@ -206,7 +238,7 @@ CmdParser4Cpp::CheckDependencies() const
 {
 	bool res = true;
 
-	for( const auto &a : myArguments )
+	for( const auto& a : myArguments )
 	{
 		res &= a.second->CheckDependencies( myArguments );
 	}
@@ -227,9 +259,9 @@ CmdParser4Cpp::CheckMutualExclusion() const
 	std::unordered_map<std::string, std::shared_ptr<Argument>> testAgainst( myArguments );
 	std::unordered_map<std::string, std::shared_ptr<Argument>> alreadyTested;
 
-	for( const auto &pair : myArguments )
+	for( const auto& pair : myArguments )
 	{
-		const Argument &arg = *pair.second;
+		const Argument& arg = *pair.second;
 		bool blocksFound = !arg.CheckMutualExclusion( testAgainst, alreadyTested );
 		if( blocksFound )
 		{
@@ -248,7 +280,7 @@ CmdParser4Cpp::CheckMutualExclusion() const
 //
 //////////////////////////////////////////////////////////////////////////
 void
-CmdParser4Cpp::RemoveEmptyArguments( std::vector<std::string> &arguments )
+CmdParser4Cpp::RemoveEmptyArguments(std::vector<std::string>& arguments)
 {
 	for( size_t i = 0; i < arguments.size(); )
 	{
@@ -270,7 +302,7 @@ CmdParser4Cpp::RemoveEmptyArguments( std::vector<std::string> &arguments )
 //
 //////////////////////////////////////////////////////////////////////////
 int
-CmdParser4Cpp::GetAvailableStringParameterCount( const std::string &argumentName ) const
+CmdParser4Cpp::GetAvailableStringParameterCount(const std::string& argumentName) const
 {
 	return GetAvailableParameterCount<StringType>( argumentName );
 }
@@ -281,16 +313,16 @@ CmdParser4Cpp::GetAvailableStringParameterCount( const std::string &argumentName
 //////////////////////////////////////////////////////////////////////////
 template<typename ArgumentType>
 int
-CmdParser4Cpp::GetAvailableParameterCount( const std::string &argumentName ) const
+CmdParser4Cpp::GetAvailableParameterCount(const std::string& argumentName) const
 {
 
-	const std::unordered_map<std::string, const ArgumentType *> &map = myResults;
+	const std::unordered_map<std::string, const ArgumentType*>& map = myResults;
 
 	int res = 0;
 	auto item = map.find( argumentName );
 	if( item != map.end() )
 	{
-		res = ( *item ).second->GetAvailableParameterCount();
+		res = (*item).second->GetAvailableParameterCount();
 	}
 
 	return res;
@@ -300,8 +332,8 @@ CmdParser4Cpp::GetAvailableParameterCount( const std::string &argumentName ) con
 //
 //
 //////////////////////////////////////////////////////////////////////////
-const char *
-CmdParser4Cpp::GetString( const std::string &argumentName, int index, const char *defaultValue ) const
+const char*
+CmdParser4Cpp::GetString(const std::string& argumentName, int index, const char* defaultValue) const
 {
 	return GetValue<StringType>( argumentName, index, defaultValue );
 }
@@ -311,7 +343,7 @@ CmdParser4Cpp::GetString( const std::string &argumentName, int index, const char
 //
 //////////////////////////////////////////////////////////////////////////
 bool
-CmdParser4Cpp::GetBool( const std::string &argumentName, int index, bool defaultValue ) const
+CmdParser4Cpp::GetBool(const std::string& argumentName, int index, bool defaultValue) const
 {
 	return GetValue<BoolType>( argumentName, index, defaultValue );
 }
@@ -321,7 +353,7 @@ CmdParser4Cpp::GetBool( const std::string &argumentName, int index, bool default
 //
 //////////////////////////////////////////////////////////////////////////
 int
-CmdParser4Cpp::GetInteger( const std::string &argumentName, int index, int defaultValue ) const
+CmdParser4Cpp::GetInteger(const std::string& argumentName, int index, int defaultValue) const
 {
 	return GetValue<IntegerType>( argumentName, index, defaultValue );
 }
@@ -332,7 +364,7 @@ CmdParser4Cpp::GetInteger( const std::string &argumentName, int index, int defau
 //
 //////////////////////////////////////////////////////////////////////////
 int
-CmdParser4Cpp::GetAvailableBooleanParameterCount( const std::string &argumentName ) const
+CmdParser4Cpp::GetAvailableBooleanParameterCount(const std::string& argumentName) const
 {
 	return GetAvailableParameterCount<BoolType>( argumentName );
 }
@@ -342,7 +374,7 @@ CmdParser4Cpp::GetAvailableBooleanParameterCount( const std::string &argumentNam
 //
 //////////////////////////////////////////////////////////////////////////
 int
-CmdParser4Cpp::GetAvailableIntegerParameterCount( const std::string &argumentName ) const
+CmdParser4Cpp::GetAvailableIntegerParameterCount(const std::string& argumentName) const
 {
 	return GetAvailableParameterCount<IntegerType>( argumentName );
 }
@@ -353,9 +385,9 @@ CmdParser4Cpp::GetAvailableIntegerParameterCount( const std::string &argumentNam
 //////////////////////////////////////////////////////////////////////////
 template<typename ArgumentType, typename ValueType>
 ValueType
-CmdParser4Cpp::GetValue( const std::string &argumentName, int index, ValueType defaultValue ) const
+CmdParser4Cpp::GetValue(const std::string& argumentName, int index, ValueType defaultValue) const
 {
-	const std::unordered_map<std::string, const ArgumentType *> &map = myResults;
+	const std::unordered_map<std::string, const ArgumentType*>& map = myResults;
 
 	ValueType res = defaultValue;
 
@@ -363,7 +395,7 @@ CmdParser4Cpp::GetValue( const std::string &argumentName, int index, ValueType d
 
 	if( item != map.end() )
 	{
-		res = ( *item ).second->GetResult( index, defaultValue );
+		res = (*item).second->GetResult( index, defaultValue );
 	}
 
 	return res;
@@ -374,25 +406,25 @@ CmdParser4Cpp::GetValue( const std::string &argumentName, int index, ValueType d
 //
 //////////////////////////////////////////////////////////////////////////
 void
-CmdParser4Cpp::GetUsage( IUsageFormatter &formatter ) const
+CmdParser4Cpp::GetUsage(IUsageFormatter& formatter) const
 {
-	for( const auto &pair : myArguments )
+	for( const auto& pair : myArguments )
 	{
-		const auto &arg = *pair.second;
+		const auto& arg = *pair.second;
 		if( arg.IsMandatory() && !arg.IsHidden() )
 		{
 			formatter.PrepareMandatory( arg.GetPrimaryName(), arg.HasVariableParameterCount(),
-										arg.GetMaxParameterCount(), arg.GetAliases(), arg.GetDescription() );
+			                            arg.GetMaxParameterCount(), arg.GetAliases(), arg.GetDescription() );
 		}
 	}
 
-	for( const auto &pair : myArguments )
+	for( const auto& pair : myArguments )
 	{
-		const auto &arg = *pair.second;
+		const auto& arg = *pair.second;
 		if( !arg.IsMandatory() && !arg.IsHidden() )
 		{
 			formatter.PrepareMandatory( arg.GetPrimaryName(), arg.HasVariableParameterCount(),
-										arg.GetMaxParameterCount(), arg.GetAliases(), arg.GetDescription() );
+			                            arg.GetMaxParameterCount(), arg.GetAliases(), arg.GetDescription() );
 		}
 	}
 }
@@ -402,10 +434,10 @@ CmdParser4Cpp::GetUsage( IUsageFormatter &formatter ) const
 //
 //////////////////////////////////////////////////////////////////////////
 void
-CmdParser4Cpp::GetIndexes( std::vector<std::pair<int, std::shared_ptr<Argument>>> &argumentIndexes,
-						   const std::vector<std::string> &arguments )
+CmdParser4Cpp::GetIndexes(std::vector<std::pair<int, std::shared_ptr<Argument>>>& argumentIndexes,
+                          const std::vector<std::string>& arguments)
 {
-	for( auto &pair : myArguments )
+	for( auto& pair : myArguments )
 	{
 		int hit = 0;
 		int ix = pair.second->FindArgument( arguments, hit );
@@ -425,7 +457,7 @@ CmdParser4Cpp::GetIndexes( std::vector<std::pair<int, std::shared_ptr<Argument>>
 //
 //////////////////////////////////////////////////////////////////////////
 bool
-CmdParser4Cpp::FallbackToConfiguration( std::shared_ptr<IConfigurationReader> cfgReader )
+CmdParser4Cpp::FallbackToConfiguration(std::shared_ptr<IConfigurationReader> cfgReader)
 {
 	bool res = true;
 	// Let each argument that has not already been successfully parsed based on the

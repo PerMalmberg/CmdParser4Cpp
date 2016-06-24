@@ -24,6 +24,7 @@ public:
 	void NoSuchMutuallyExclusiveArgumentDefined( const std::string& argument, const std::string& missing ) override;
 	void ArgumentsAreMutuallyExclusive( const std::string& argument, const std::string& blocker ) override;
 	void ArgumentMissingType( const std::string& argument ) override;
+	void FailedToLoadConfiguration( const std::string& fileNameArgument ) override;
 private:
 	std::vector<std::string> myLines;
 };

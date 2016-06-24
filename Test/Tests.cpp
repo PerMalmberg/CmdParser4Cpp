@@ -5,6 +5,7 @@
 #include <CmdParser4Cpp.h>
 #include <cstring>
 #include <iostream>
+#include <fstream>
 #include <Catch/include/catch.hpp>
 #include <XMLConfigurationReader.h>
 #include "SystemOutputParseResult.h"
@@ -857,6 +858,75 @@ SCENARIO( "XML configuration" )
 			THEN( "Parsing fails" )
 			{
 				REQUIRE_FALSE( p.Parse( std::vector<std::string>(), cfg ) );
+			}
+		}
+		AND_WHEN( "Configuration file is invalid" )
+		{
+			std::string cfgStr = "Not XML";
+			std::shared_ptr<XMLConfigurationReader> cfg = std::make_shared<XMLConfigurationReader>( cfgStr );
+			cfg->SetMatcher( "-first", XMLConfigurationReader::NodeMatcher( "/Settings/First" ) );
+
+			THEN( "Parsing fails" )
+			{
+				REQUIRE_FALSE( p.Parse( std::vector<std::string>(), cfg ) );
+			}
+		}
+	}
+}
+
+SCENARIO( "XML configuration from command line" )
+{
+	GIVEN( "Properly setup parser" )
+	{
+		SystemOutputParseResult msg;
+		CmdParser4Cpp p( msg );
+		p.Accept( "-first" ).AsInteger( 3 );
+		p.Accept("-config").AsString(1).SetMandatory();
+
+		const std::string file = "./config.xml";
+		std::string cfgStr =
+				R"!!(
+				"<Settings>
+					<Foo>
+						<First>88</First>
+						<First>89</First>
+						<First>90</First>
+					</Foo>
+				</Settings>")!!";
+
+		ofstream f;
+		remove( file.c_str() );
+		f.open( file, std::ofstream::binary );
+
+		REQUIRE( f.good() );
+		if( f.good() )
+		{
+			f.write( cfgStr.c_str(), cfgStr.length() );
+			f.close();
+		}
+
+		std::shared_ptr<XMLConfigurationReader> cfg = std::make_shared<XMLConfigurationReader>();
+		cfg->SetMatcher( "-first", XMLConfigurationReader::NodeMatcher( "/Settings/Foo/First" ) );
+
+		WHEN( "Configuration file is specified available" )
+		{
+			THEN( "Parsing succeeds" )
+			{
+				REQUIRE( p.Parse( std::vector<std::string>( { "-config", file } ), cfg, "-config" ) );
+				REQUIRE( p.GetInteger( "-first" ) == 88 );
+				REQUIRE( p.GetInteger( "-first", 1 ) == 89 );
+				REQUIRE( p.GetInteger( "-first", 2 ) == 90 );
+			}
+
+			remove( file.c_str() );
+		}
+		AND_WHEN("Configuration file is missing")
+		{
+			THEN("Parsing fails")
+			{
+				REQUIRE_FALSE( p.Parse( std::vector<std::string>( { "-config", "./non-existingFile.xml" } ), cfg, "-config" ) );
+				std::string result = msg.GetParseResult();
+				REQUIRE( strstr( result.c_str(), "Could not load the configuration specified by argument" ) != nullptr );
 			}
 		}
 	}

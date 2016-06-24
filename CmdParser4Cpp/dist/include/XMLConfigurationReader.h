@@ -56,15 +56,20 @@ public:
 		void ReadTextValue( pugi::xml_node& node, std::vector<std::string>& output );
 	};
 
+	explicit XMLConfigurationReader();
 	explicit XMLConfigurationReader( std::string xmlData );
 
 	void SetMatcher( const std::string& primaryArgumentName, const NodeMatcher& matcher );
 
 	bool FillFromConfiguration( std::shared_ptr<Argument> argument ) override;
+	bool LoadFromFile( const std::string& pathToFile ) override;
 
 private:
 	pugi::xml_document myDoc;
 	std::unordered_map<std::string, NodeMatcher> myMatcher;
+
+	XMLConfigurationReader( const XMLConfigurationReader& ) = delete;
+	XMLConfigurationReader& operator=( const XMLConfigurationReader& ) = delete;
 };
 
 }

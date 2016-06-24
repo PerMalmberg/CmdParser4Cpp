@@ -161,3 +161,14 @@ void SystemOutputParseResult::ArgumentMissingType( const std::string& argument )
 	line << "Argument '" << argument << "' is missing type information. This is a programming error - contact the author of the application";
 	myLines.push_back( line.str() );
 }
+
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+void SystemOutputParseResult::FailedToLoadConfiguration( const std::string& fileNameArgument )
+{
+	std::stringstream line;
+	line << "Could not load the configuration specified by argument '" << fileNameArgument;
+	myLines.push_back( line.str() );
+}
