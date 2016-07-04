@@ -11,13 +11,15 @@
   * Guard against unknown arguments.
 * Custom "usage" formatting.
 * Custom error messages.
-* Configuration file integration - when arguments are not available on the
+* Configuration file integration
+    * When arguments are not available on the
 command line they can be read from a configuration file. An XML-reader is included,
 supporting three different modes:
-  * Matching only node name and reading a primary attribute.
-  * Matching only node name and reading the 'text value' of the node.
-  * Matching on node name and reading a primary attribute.
-  * Matching on node name and attribute name/value, reading a second attribute value.
+        * Matching only node name and reading a primary attribute.
+        * Matching only node name and reading the 'text value' of the node.
+        * Matching on node name and reading a primary attribute.
+        * Matching on node name and attribute name/value, reading a second attribute value.
+    * Can accept a string argument that specifies which configuration file to load.
 
 ## Ports
 A Java port is available here: https://github.com/PerMalmberg/CmdParser4J
@@ -40,7 +42,7 @@ cmake -G "Visual Studio 14 2015" ..
 then open the generated solution.
 
 ## Usage
-This example is taken from the example application.
+This example is taken from the example application. Please see the test cases for more detailed usage.
 
 ```C++
 

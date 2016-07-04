@@ -30,7 +30,11 @@ set(SOURCE_FILES
 		src/StringType.h
 		src/IntegerType.cpp
 		src/IntegerType.h
-		../externals/pugixml/src/pugixml.cpp dist/include/IConfigurationReader.h dist/include/XMLConfigurationReader.h src/XMLConfigurationReader.cpp)
+		src/XMLConfigurationReader.cpp
+		dist/include/IConfigurationReader.h
+		dist/include/XMLConfigurationReader.h
+		../externals/pugixml/src/pugixml.cpp
+		)
 
 # Create a static library
 add_library(${PROJECT_NAME} STATIC ${SOURCE_FILES})

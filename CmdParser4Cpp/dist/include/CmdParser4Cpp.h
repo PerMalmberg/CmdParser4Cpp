@@ -34,8 +34,7 @@ public:
 	const Constructor Accept( const std::string& argumentName );
 
 	// Parses the command line arguments
-	bool Parse( const std::vector<std::string>& arguments, std::shared_ptr<IConfigurationReader> cfgReader = nullptr );
-
+	bool Parse( const std::vector<std::string>& arguments, std::shared_ptr<IConfigurationReader> cfgReader = nullptr, const std::string& pathToConfigFile = "" );
 
 	template<typename ArgumentType>
 	void SetResult( const std::string& argumentName, const ArgumentType* result );
@@ -68,6 +67,7 @@ private:
 
 	ResultEnvelope myResults;
 
+	bool LoadConfigFile( const std::string& fileNameArgument, std::shared_ptr<IConfigurationReader> cfgReader );
 	bool CheckArgumentTypes() const;
 	void RemoveEmptyArguments( std::vector<std::string>& arguments );
 	template<typename ArgumentType>

@@ -26,6 +26,7 @@ public:
 	virtual void NoSuchMutuallyExclusiveArgumentDefined( const std::string& argument, const std::string& missing ) = 0;
 	virtual void ArgumentsAreMutuallyExclusive( const std::string& argument, const std::string& blocker ) = 0;
 	virtual void ArgumentMissingType( const std::string& argument ) = 0;
+	virtual void FailedToLoadConfiguration( const std::string& fileNameArgument ) = 0;
 };
 
 inline IParseResult::~IParseResult() {}
