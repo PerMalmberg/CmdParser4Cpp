@@ -40,8 +40,8 @@ public:
 
 	void AddBlockedBy( const std::string& blockedBy );
 	bool CheckMutualExclusion( const std::unordered_map<std::string, std::shared_ptr<Argument>>& testAgainst, const std::unordered_map<std::string, std::shared_ptr<Argument>>& alreadyTested ) const;
-	void SetHidden() { isHidden = true; }
-	bool IsHidden() const { return isHidden; }
+	void SetHidden() { myIsHidden = true; }
+	bool IsHidden() const { return myIsHidden; }
 
 private:
 	IParseResult& myParseResult;
@@ -52,7 +52,7 @@ private:
 	std::string myDescription = "";
 	VectorOfString myDependencies;
 	VectorOfString myBlocks;
-	bool isHidden = false;
+	bool myIsHidden = false;
 	
 	Argument( const Argument& ) = delete;
 	Argument& operator=( const Argument& ) = delete;
