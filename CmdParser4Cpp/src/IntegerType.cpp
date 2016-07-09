@@ -68,7 +68,7 @@ IntegerType::CheckLimits()
 		int v = GetResult( i, 0 );
 		res = v >= myLimit->GetLower() && v <= myLimit->GetUpper();
 		if( !res ) {
-			//myParser.GetMessagerParser().InvalidParameterValue( myArgument.GetPrimaryName(), myLimit->GetLower(), myLimit->GetUpper() );
+			myParser.GetMessagerParser().InvalidParameterValue( myArgument.GetPrimaryName(), myLimit->GetLower(), myLimit->GetUpper() );
 		}
 	}
 

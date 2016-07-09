@@ -26,8 +26,8 @@ public:
 	virtual void ArgumentsAreMutuallyExclusive( const std::string& argument, const std::string& blocker ) = 0;
 	virtual void ArgumentMissingType( const std::string& argument ) = 0;
 	virtual void FailedToLoadConfiguration( const std::string& fileNameArgument ) = 0;
-	//virtual void InvalidStringLength( const std::string& argument, int lower, int upper );
-	//virtual void InvalidParameterValue( const std::string& argument, int lower, int upper );
+	virtual void InvalidStringLength( const std::string& argument, int lower, int upper ) = 0;
+	virtual void InvalidParameterValue( const std::string& argument, int lower, int upper ) = 0;
 };
 
 inline IParseResult::~IParseResult() {}

@@ -182,20 +182,20 @@ void SystemOutputParseResult::FailedToLoadConfiguration( const std::string& file
 //
 //
 //////////////////////////////////////////////////////////////////////////
-//void SystemOutputParseResult::InvalidStringLength( const std::string& argument, int lower, int upper )
-//{
-//	std::stringstream line;
-//	line << "String length of argument '" << argument << "' is outside limits " << lower << " - " << upper;
-//	myLines.push_back( line.str() );
-//}
+void SystemOutputParseResult::InvalidStringLength( const std::string& argument, int lower, int upper )
+{
+	std::stringstream line;
+	line << "String length of argument '" << argument << "' is outside limits " << lower << " - " << upper;
+	myLines.push_back( line.str() );
+}
 
 //////////////////////////////////////////////////////////////////////////
 //
 //
 //////////////////////////////////////////////////////////////////////////
-//void SystemOutputParseResult::InvalidParameterValue( const std::string& argument, int lower, int upper )
-//{
-//	std::stringstream line;
-//	line << "Parameter of argument '" << argument << "' is outside limits " << lower << " - " << upper;
-//	myLines.push_back( line.str() );
-//}
+void SystemOutputParseResult::InvalidParameterValue( const std::string& argument, int lower, int upper )
+{
+	std::stringstream line;
+	line << "Parameter of argument '" << argument << "' is outside limits " << lower << " - " << upper;
+	myLines.push_back( line.str() );
+}

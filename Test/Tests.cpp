@@ -955,10 +955,14 @@ SCENARIO( "Integer limits" )
 		AND_WHEN( "Called with value outside limits" )
 		{
 			REQUIRE_FALSE( p.Parse( std::vector<std::string>( {"-first", "3"} ) ) );
+			std::string s = msg.GetParseResult();
+			REQUIRE( strstr( s.c_str(), "Parameter of argument " ) != nullptr );
 		}
 		AND_WHEN( "Called with value outside limits" )
 		{
 			REQUIRE_FALSE( p.Parse( std::vector<std::string>( {"-first", "6"} ) ) );
+			std::string s = msg.GetParseResult();
+			REQUIRE( strstr( s.c_str(), "Parameter of argument " ) != nullptr );
 		}
 	}
 }
@@ -982,10 +986,14 @@ SCENARIO( "String lengths" )
 		AND_WHEN( "Called with value outside limits" )
 		{
 			REQUIRE_FALSE( p.Parse( std::vector<std::string>( {"-first", "AAA"} ) ) );
+			std::string s = msg.GetParseResult();
+			REQUIRE( strstr( s.c_str(), "String length of argument" ) != nullptr );
 		}
 		AND_WHEN( "Called with value outside limits" )
 		{
 			REQUIRE_FALSE( p.Parse( std::vector<std::string>( {"-first", "AAAAAA"} ) ) );
+			std::string s = msg.GetParseResult();
+			REQUIRE( strstr( s.c_str(), "String length of argument" ) != nullptr );
 		}
 	}
 }

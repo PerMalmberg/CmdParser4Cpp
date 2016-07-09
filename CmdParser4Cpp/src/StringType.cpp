@@ -68,7 +68,7 @@ StringType::CheckLimits()
 		int len = static_cast<int>( s.length() );
 		res = len >= myLimit->GetLower() && len <= myLimit->GetUpper();
 		if( !res ) {
-			//myParser.GetMessagerParser().InvalidStringLength( myArgument.GetPrimaryName(),  myLimit->GetLower(), myLimit->GetUpper() );
+			myParser.GetMessagerParser().InvalidStringLength( myArgument.GetPrimaryName(),  myLimit->GetLower(), myLimit->GetUpper() );
 		}
 	}
 
