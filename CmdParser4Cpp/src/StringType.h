@@ -11,10 +11,10 @@ namespace cmdparser4cpp {
 class CmdParser4Cpp;
 class Argument;
 
-class StringType : public BaseType
+class StringType : public BaseType<int>
 {
 public:
-	StringType( CmdParser4Cpp& parser, Argument& argument, int minParameterCount, int maxParameterCount );
+	StringType( CmdParser4Cpp& parser, Argument& argument, int minParameterCount, int maxParameterCount, std::unique_ptr<Limit<int>> limit );
 	~StringType();
 
 	const char* GetResult( int index, const char* defaultValue ) const;
@@ -22,6 +22,7 @@ public:
 protected:
 	bool DoTypeParse( const std::string& parameter ) override;
 	void RetrieveResult() override;
+	bool CheckLimits() override;
 
 private:
 	StringType( const StringType& ) = delete;

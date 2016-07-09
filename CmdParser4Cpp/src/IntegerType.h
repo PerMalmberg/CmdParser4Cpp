@@ -11,17 +11,18 @@
 
 namespace cmdparser4cpp {
 
-class IntegerType : public BaseType
+class IntegerType : public BaseType<int>
 {
 public:
 	bool DoTypeParse( const std::string& parameter ) override;
 	int GetResult( int index, int defaultValue ) const;
 
-	IntegerType( CmdParser4Cpp& parser, Argument& argument, int minParameterCount, int maxParameterCount );
+	IntegerType( CmdParser4Cpp& parser, Argument& argument, int minParameterCount, int maxParameterCount, std::unique_ptr<Limit<int>> limit );
 	~IntegerType();
 
 protected:
 	void RetrieveResult() override;
+	bool CheckLimits() override;
 
 private:
 	std::regex myMatcher;

@@ -15,7 +15,7 @@ public:
 	Argument( const std::string& argumentName, IParseResult& parseResult );
 	virtual ~Argument();
 
-	void SetArgumentType( BaseType* type );
+	void SetArgumentType( ITypeParser* type );
 	bool HasArgumentType() const { return myType != nullptr; }
 	bool Parse( VectorOfString& arguments );
 
@@ -45,7 +45,7 @@ public:
 
 private:
 	IParseResult& myParseResult;
-	BaseType* myType = nullptr;
+	ITypeParser* myType = nullptr;
 	bool myExistsOnCommandLine = false;
 	VectorOfString myNames;
 	bool myIsMandatory = false;

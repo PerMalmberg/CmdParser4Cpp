@@ -11,7 +11,7 @@
 //
 //////////////////////////////////////////////////////////////////////////
 SystemOutputParseResult::SystemOutputParseResult()
-	: myLines()
+		: myLines()
 {
 }
 
@@ -31,7 +31,8 @@ std::string
 SystemOutputParseResult::GetParseResult() const
 {
 	std::string res;
-	for( auto& s : myLines ) {
+	for( auto& s : myLines )
+	{
 		res.append( s ).append( "\r\n" );
 	}
 
@@ -46,7 +47,8 @@ void
 SystemOutputParseResult::UnknownArguments( const std::vector<std::string>& leftovers )
 {
 	std::string line = "Unknown arguments:";
-	for( auto s : leftovers ) {
+	for( auto s : leftovers )
+	{
 		line.append( " " ).append( s );
 	}
 	myLines.push_back( line );
@@ -110,7 +112,8 @@ void
 SystemOutputParseResult::NoSuchArgumentDefined( const std::string& argument, const std::string& dependsOn )
 {
 	std::stringstream line;
-	line << "Argument '" << argument << "' depends on '" << dependsOn << "', but no such argument is defined - contact the author of the application";
+	line << "Argument '" << argument << "' depends on '" << dependsOn <<
+	"', but no such argument is defined - contact the author of the application";
 	myLines.push_back( line.str() );
 }
 
@@ -131,10 +134,12 @@ SystemOutputParseResult::MissingDependentArgument( const std::string& argument, 
 //
 //////////////////////////////////////////////////////////////////////////
 void
-SystemOutputParseResult::NoSuchMutuallyExclusiveArgumentDefined( const std::string& argument, const std::string& missing )
+SystemOutputParseResult::NoSuchMutuallyExclusiveArgumentDefined( const std::string& argument,
+                                                                 const std::string& missing )
 {
 	std::stringstream line;
-	line << "Argument '" << argument << "' is mutually exclusive to '" << missing << "', but no such argument is defined - contact the author of the application";
+	line << "Argument '" << argument << "' is mutually exclusive to '" << missing <<
+	"', but no such argument is defined - contact the author of the application";
 	myLines.push_back( line.str() );
 }
 
@@ -157,7 +162,8 @@ SystemOutputParseResult::ArgumentsAreMutuallyExclusive( const std::string& argum
 void SystemOutputParseResult::ArgumentMissingType( const std::string& argument )
 {
 	std::stringstream line;
-	line << "Argument '" << argument << "' is missing type information. This is a programming error - contact the author of the application";
+	line << "Argument '" << argument <<
+	"' is missing type information. This is a programming error - contact the author of the application";
 	myLines.push_back( line.str() );
 }
 
@@ -168,6 +174,28 @@ void SystemOutputParseResult::ArgumentMissingType( const std::string& argument )
 void SystemOutputParseResult::FailedToLoadConfiguration( const std::string& fileNameArgument )
 {
 	std::stringstream line;
-	line << "Could not load the configuration specified by argument '" << fileNameArgument;
+	line << "Could not load the configuration specified by argument '" << fileNameArgument << "'";
 	myLines.push_back( line.str() );
 }
+
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+//void SystemOutputParseResult::InvalidStringLength( const std::string& argument, int lower, int upper )
+//{
+//	std::stringstream line;
+//	line << "String length of argument '" << argument << "' is outside limits " << lower << " - " << upper;
+//	myLines.push_back( line.str() );
+//}
+
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+//void SystemOutputParseResult::InvalidParameterValue( const std::string& argument, int lower, int upper )
+//{
+//	std::stringstream line;
+//	line << "Parameter of argument '" << argument << "' is outside limits " << lower << " - " << upper;
+//	myLines.push_back( line.str() );
+//}

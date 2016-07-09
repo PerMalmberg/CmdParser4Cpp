@@ -15,7 +15,7 @@ const std::string BoolType::FALSE( "false" );
 //
 //////////////////////////////////////////////////////////////////////////
 BoolType::BoolType( CmdParser4Cpp& parser, Argument& argument, int minParameterCount, int maxParameterCount )
-	: BaseType( parser, argument, minParameterCount, maxParameterCount )
+	: BaseType( parser, argument, minParameterCount, maxParameterCount, std::unique_ptr<Limit<bool>>( new Limit<bool>( false, true ) ) )
 {
 }
 

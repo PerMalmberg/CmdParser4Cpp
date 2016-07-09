@@ -5,6 +5,8 @@
 
 #include <string>
 #include <vector>
+#include "NumericLimit.h"
+#include "StringLengthLimit.h"
 #include "Constructor.h"
 
 namespace cmdparser4cpp {
@@ -22,7 +24,8 @@ public:
 	virtual ~TypeConstructor();
 
 	const Constructor AsString( int parameterCount ) const;
-	const Constructor AsString( int minimumParameterCount, int maximumParameterCount ) const;
+	const Constructor AsString( int parameterCount, const StringLengthLimit& lengths ) const;
+	const Constructor AsString( int minimumParameterCount, int maximumParameterCount, const StringLengthLimit& lengths ) const;
 
 	const Constructor AsBoolean( int parameterCount ) const;
 	const Constructor AsBoolean( int minimumParameterCount, int maximumParameterCount ) const;
@@ -30,7 +33,8 @@ public:
 	const Constructor AsSingleBoolean() const;
 
 	const Constructor AsInteger( int parameterCount ) const;
-	const Constructor AsInteger( int minimumParameterCount, int maximumParameterCount ) const;
+	const Constructor AsInteger( int parameterCount, const NumericLimit<int>& limits ) const;
+	const Constructor AsInteger( int minimumParameterCount, int maximumParameterCount, const NumericLimit<int>& limits ) const;
 
 
 private:

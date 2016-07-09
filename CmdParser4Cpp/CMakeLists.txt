@@ -3,11 +3,11 @@ project(CmdParser4Cpp)
 
 set(CMAKE_CXX_STANDARD 11)
 
-if(${CMAKE_MAKE_PROGRAM} MATCHES ".*(MSBuild|msdev|devenv|nmake).*")
+if (${CMAKE_MAKE_PROGRAM} MATCHES ".*(MSBuild|msdev|devenv|nmake).*")
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Wall /wd4514 /wd4820 /wd4710 /wd4711")
-else()
+else ()
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -fno-exceptions")
-endif()
+endif ()
 
 #Disable exceptions in pugixml
 add_definitions(-DPUGIXML_NO_EXCEPTIONS)
@@ -18,7 +18,6 @@ include_directories("dist/include")
 set(SOURCE_FILES
 		src/Argument.cpp
 		src/Argument.h
-		src/BaseType.cpp
 		src/BaseType.h
 		src/BoolType.cpp
 		src/BoolType.h

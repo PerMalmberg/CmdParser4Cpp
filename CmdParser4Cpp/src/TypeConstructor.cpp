@@ -1,6 +1,9 @@
 // Copyright (c) 2016 Per Malmberg
 // Licensed under MIT, see LICENSE file. 
 
+#include <NumericLimit.h>
+#include <UnboundIntegerLimit.h>
+#include <UnboundStringLength.h>
 #include "TypeConstructor.h"
 #include "Argument.h"
 #include "StringType.h"
@@ -35,7 +38,7 @@ TypeConstructor::~TypeConstructor()
 const Constructor
 TypeConstructor::AsString( int parameterCount ) const
 {
-	return AsString( parameterCount, parameterCount );
+	return AsString( parameterCount, UnboundStringLength() );
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -43,9 +46,20 @@ TypeConstructor::AsString( int parameterCount ) const
 //
 //////////////////////////////////////////////////////////////////////////
 const Constructor
-TypeConstructor::AsString( int minimumParameterCount, int maximumParameterCount ) const
+TypeConstructor::AsString( int parameterCount, const StringLengthLimit& lengths ) const
 {
-	myArgument.SetArgumentType( new StringType( myParser, myArgument, minimumParameterCount, maximumParameterCount ) );
+	return AsString( parameterCount, parameterCount, lengths );
+}
+
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+const Constructor
+TypeConstructor::AsString( int minimumParameterCount, int maximumParameterCount,
+                           const StringLengthLimit& lengths ) const
+{
+	myArgument.SetArgumentType( new StringType( myParser, myArgument, minimumParameterCount, maximumParameterCount, std::unique_ptr<Limit<int>>( new NumericLimit<int>( lengths.GetLower(), lengths.GetUpper() ) ) ) );
 	return Constructor( myArgument, myParser );
 }
 
@@ -88,7 +102,7 @@ TypeConstructor::AsSingleBoolean() const
 const Constructor
 TypeConstructor::AsInteger( int parameterCount ) const
 {
-	return AsInteger( parameterCount, parameterCount );
+	return AsInteger( parameterCount, parameterCount, UnboundIntegerLimit() );
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -96,9 +110,20 @@ TypeConstructor::AsInteger( int parameterCount ) const
 //
 //////////////////////////////////////////////////////////////////////////
 const Constructor
-TypeConstructor::AsInteger( int minimumParameterCount, int maximumParameterCount ) const
+TypeConstructor::AsInteger( int parameterCount, const NumericLimit<int>& limits ) const
 {
-	myArgument.SetArgumentType( new IntegerType( myParser, myArgument, minimumParameterCount, maximumParameterCount ) );
+	return AsInteger( parameterCount, parameterCount, limits );
+}
+
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+const Constructor
+TypeConstructor::AsInteger( int minimumParameterCount, int maximumParameterCount,
+                            const NumericLimit<int>& limits ) const
+{
+	myArgument.SetArgumentType( new IntegerType( myParser, myArgument, minimumParameterCount, maximumParameterCount, std::unique_ptr<Limit<int>>( new NumericLimit<int>( limits ) ) ) );
 	return Constructor( myArgument, myParser );
 }
 

@@ -2,11 +2,10 @@
 // Licensed under MIT, see LICENSE file. 
 
 #pragma once
+
 #include "IParseResult.h"
 
-using namespace cmdparser4cpp;
-
-class SystemOutputParseResult : public IParseResult
+class SystemOutputParseResult : public cmdparser4cpp::IParseResult
 {
 public:
 	SystemOutputParseResult();
@@ -25,6 +24,8 @@ public:
 	void ArgumentsAreMutuallyExclusive( const std::string& argument, const std::string& blocker ) override;
 	void ArgumentMissingType( const std::string& argument ) override;
 	void FailedToLoadConfiguration( const std::string& fileNameArgument ) override;
+	//void InvalidStringLength( const std::string& argument, int lower, int upper ) override;
+	//void InvalidParameterValue( const std::string& argument, int lower, int upper ) override;
 private:
 	std::vector<std::string> myLines;
 };

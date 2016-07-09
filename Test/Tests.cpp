@@ -8,6 +8,8 @@
 #include <fstream>
 #include <Catch/include/catch.hpp>
 #include <XMLConfigurationReader.h>
+#include <UnboundIntegerLimit.h>
+#include <UnboundStringLength.h>
 #include "SystemOutputParseResult.h"
 #include "SystemOutputUsageFormatter.h"
 
@@ -359,7 +361,7 @@ SCENARIO( "Description" )
 		p.Accept( "/string" ).AsString( 1 ).DescribedAs( "A string argument" );
 		p.Accept( "/goo" ).AsBoolean( 1 ).SetMandatory().DescribedAs( "Something something" );
 		p.Accept( "/aaa" ).AsString( 1 ).DescribedAs( "Jada Jada Jada" );
-		p.Accept( "/bbb" ).AsString( 1, Constructor::NO_PARAMETER_LIMIT ).DescribedAs(
+		p.Accept( "/bbb" ).AsString( 1, Constructor::NO_PARAMETER_LIMIT, UnboundStringLength() ).DescribedAs(
 				"A long non descriptive description without any meaning what so ever" );
 
 		WHEN( "arguments are parsed" )
@@ -434,7 +436,7 @@ SCENARIO( "Variable parameter in middle" )
 		p.Accept( "/string" ).AsString( 1 ).DescribedAs( "A string argument" );
 		p.Accept( "/goo" ).AsBoolean( 1 ).SetMandatory().DescribedAs( "-gle?" );
 		p.Accept( "/aaa" ).AsString( 3 ).DescribedAs( "Jada Jada Jada" ).WithAlias( "-A" );
-		p.Accept( "/bbb" ).AsString( 1, Constructor::NO_PARAMETER_LIMIT ).DescribedAs(
+		p.Accept( "/bbb" ).AsString( 1, Constructor::NO_PARAMETER_LIMIT, UnboundStringLength() ).DescribedAs(
 				"A long non descriptive description without any meaning what so ever" );
 
 		WHEN( "called with arbitrary number of parameters in the middle of the command line" )
@@ -930,6 +932,60 @@ SCENARIO( "XML configuration from command line" )
 				REQUIRE(
 						strstr( result.c_str(), "Could not load the configuration specified by argument" ) != nullptr );
 			}
+		}
+	}
+}
+
+SCENARIO( "Integer limits" )
+{
+	GIVEN( "Properly setup parser" )
+	{
+		SystemOutputParseResult msg;
+		CmdParser4Cpp p( msg );
+		p.Accept( "-first" ).AsInteger( 1, NumericLimit<int>( 4, 5 ) );
+
+		WHEN( "Called with value inside limits" )
+		{
+			REQUIRE( p.Parse( std::vector<std::string>( {"-first", "4"} ) ) );
+		}
+		AND_WHEN( "Called with value inside limits" )
+		{
+			REQUIRE( p.Parse( std::vector<std::string>( {"-first", "5"} ) ) );
+		}
+		AND_WHEN( "Called with value outside limits" )
+		{
+			REQUIRE_FALSE( p.Parse( std::vector<std::string>( {"-first", "3"} ) ) );
+		}
+		AND_WHEN( "Called with value outside limits" )
+		{
+			REQUIRE_FALSE( p.Parse( std::vector<std::string>( {"-first", "6"} ) ) );
+		}
+	}
+}
+
+SCENARIO( "String lengths" )
+{
+	GIVEN( "Properly setup parser" )
+	{
+		SystemOutputParseResult msg;
+		CmdParser4Cpp p( msg );
+		p.Accept( "-first" ).AsString( 1, StringLengthLimit( 4, 5 ) );
+
+		WHEN( "Called with value inside limits" )
+		{
+			REQUIRE( p.Parse( std::vector<std::string>( {"-first", "AAAA"} ) ) );
+		}
+		AND_WHEN( "Called with value inside limits" )
+		{
+			REQUIRE( p.Parse( std::vector<std::string>( {"-first", "AAAAA"} ) ) );
+		}
+		AND_WHEN( "Called with value outside limits" )
+		{
+			REQUIRE_FALSE( p.Parse( std::vector<std::string>( {"-first", "AAA"} ) ) );
+		}
+		AND_WHEN( "Called with value outside limits" )
+		{
+			REQUIRE_FALSE( p.Parse( std::vector<std::string>( {"-first", "AAAAAA"} ) ) );
 		}
 	}
 }

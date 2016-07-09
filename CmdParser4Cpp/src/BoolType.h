@@ -10,7 +10,7 @@
 
 namespace cmdparser4cpp {
 
-class BoolType : public BaseType
+class BoolType : public BaseType<bool>
 {
 public:
 	static const std::string ZERO;
@@ -19,9 +19,17 @@ public:
 	static const std::string FALSE;
 
 	bool DoTypeParse( const std::string& parameter ) override;
+
 	bool GetResult( int index, bool defaultValue ) const;
 
+	bool CheckLimits() override
+	{
+		// A boolean type can never be outside limits
+		return true;
+	}
+
 	BoolType( CmdParser4Cpp& parser, Argument& argument, int minParameterCount, int maxParameterCount );
+
 	~BoolType();
 
 protected:
@@ -29,9 +37,12 @@ protected:
 
 private:
 	bool icompare( const std::string& s, const std::string& s2 );
-	static bool icomparer( char c, char c2 ) { return std::tolower( c ) == std::tolower( c2 ); }
+
+	static bool icomparer( char c, char c2 )
+	{ return std::tolower( c ) == std::tolower( c2 ); }
 
 	BoolType( const BoolType& ) = delete;
+
 	BoolType& operator=( const BoolType& ) = delete;
 };
 

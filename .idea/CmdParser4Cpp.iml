@@ -17,11 +17,10 @@
       <sourceFolder url="file://$MODULE_DIR$/CmdParser4Cpp/src/TypeConstructor.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CmdParser4Cpp/src/Argument.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CmdParser4Cpp/src/IntegerType.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/CmdParser4Cpp/src/BaseType.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CmdParser4Cpp/src/CmdParser4Cpp.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CmdParser4Cpp/src/BoolType.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CmdParser4Cpp/src/Constructor.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/CmdParser4Cpp/src/BaseType.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/CmdParser4Cpp/src/BaseType.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CmdParser4Cpp/src/SingleBoolType.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CmdParser4Cpp/src/StringType.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CmdParser4Cpp/src/Argument.cpp" isTestSource="false" />

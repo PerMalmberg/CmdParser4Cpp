@@ -4,6 +4,7 @@
     <option name="PER_PROJECT_SETTINGS">
       <value>
         <Objective-C>
+          <option name="INDENT_NAMESPACE_MEMBERS" value="0" />
           <option name="FUNCTION_BRACE_PLACEMENT" value="2" />
           <option name="FUNCTION_CALL_ARGUMENTS_WRAP" value="0" />
           <option name="SPACE_WITHIN_FUNCTION_DECLARATION_PARENTHESES" value="true" />
@@ -46,6 +47,11 @@
         <XML>
           <option name="XML_LEGACY_SETTINGS_IMPORTED" value="true" />
         </XML>
+        <codeStyleSettings language="CMake">
+          <indentOptions>
+            <option name="USE_TAB_CHARACTER" value="true" />
+          </indentOptions>
+        </codeStyleSettings>
         <codeStyleSettings language="ObjectiveC">
           <option name="BRACE_STYLE" value="2" />
           <option name="CLASS_BRACE_STYLE" value="2" />

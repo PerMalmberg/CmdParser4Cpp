@@ -34,7 +34,7 @@ Argument::~Argument()
 //
 //
 //////////////////////////////////////////////////////////////////////////
-void Argument::SetArgumentType( BaseType* type )
+void Argument::SetArgumentType( ITypeParser* type )
 {
 	myType = type;
 }
