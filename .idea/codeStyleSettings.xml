@@ -4,8 +4,16 @@
     <option name="PER_PROJECT_SETTINGS">
       <value>
         <Objective-C>
+          <option name="FUNCTION_BRACE_PLACEMENT" value="2" />
+          <option name="FUNCTION_CALL_ARGUMENTS_WRAP" value="0" />
           <option name="SPACE_WITHIN_FUNCTION_DECLARATION_PARENTHESES" value="true" />
+          <option name="SPACE_WITHIN_FUNCTION_CALL_PARENTHESES" value="true" />
           <option name="SPACE_BEFORE_INIT_LIST" value="true" />
+          <option name="SPACE_BEFORE_POINTER_IN_DECLARATION" value="false" />
+          <option name="SPACE_AFTER_POINTER_IN_DECLARATION" value="true" />
+          <option name="SPACE_BEFORE_REFERENCE_IN_DECLARATION" value="false" />
+          <option name="SPACE_AFTER_REFERENCE_IN_DECLARATION" value="true" />
+          <option name="SPACE_BETWEEN_ADJACENT_BRACKETS" value="true" />
         </Objective-C>
         <Objective-C-extensions>
           <option name="GENERATE_INSTANCE_VARIABLES_FOR_PROPERTIES" value="ASK" />
@@ -39,6 +47,8 @@
           <option name="XML_LEGACY_SETTINGS_IMPORTED" value="true" />
         </XML>
         <codeStyleSettings language="ObjectiveC">
+          <option name="BRACE_STYLE" value="2" />
+          <option name="CLASS_BRACE_STYLE" value="2" />
           <option name="WHILE_ON_NEW_LINE" value="true" />
           <option name="CATCH_ON_NEW_LINE" value="true" />
           <option name="SPACE_WITHIN_IF_PARENTHESES" value="true" />

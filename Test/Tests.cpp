@@ -35,7 +35,7 @@ TEST_CASE( "Basic parsing" )
 				REQUIRE( 1 == p.GetAvailableBooleanParameterCount( "-b" ) );
 				REQUIRE( string( "one" ) == p.GetString( "-m" ) );
 				REQUIRE( string( "two" ) == p.GetString( "-m", 1 ) );
-				REQUIRE( true == p.GetBool( "-b" ) );
+				REQUIRE( p.GetBool( "-b" ) );
 			}
 			AND_WHEN( "asked for unknown argument it returns null" )
 			{
@@ -313,7 +313,7 @@ SCENARIO( "Missing parameters, part 3" )
 			THEN( "Argument is reported as problematic" )
 			{
 				REQUIRE( strstr( msg.GetParseResult().c_str(), "Not enough parameters, argument '/b' requires 3" ) !=
-						 nullptr );
+				         nullptr );
 			}
 		}
 	}
@@ -390,7 +390,7 @@ SCENARIO( "Description" )
 				// Can't test outputed text so just verify that it contains the descriptions
 				REQUIRE( strstr( output.c_str(), "/aaa" ) != nullptr );
 				REQUIRE( strstr( output.c_str(),
-								 "A long non descriptive description without any meaning what so ever" ) != nullptr );
+				                 "A long non descriptive description without any meaning what so ever" ) != nullptr );
 			}
 		}
 	}
@@ -535,7 +535,7 @@ SCENARIO( "Missing dependency" )
 			THEN( "Missing dependency is reported" )
 			{
 				REQUIRE( strstr( msg.GetParseResult().c_str(),
-								 "Argument '-first' depends on '-second', but the latter is missing" ) != nullptr );
+				                 "Argument '-first' depends on '-second', but the latter is missing" ) != nullptr );
 			}
 		}
 	}
@@ -583,7 +583,7 @@ SCENARIO( "Two-way dependency fails" )
 			THEN( "Missing dependancy reported" )
 			{
 				REQUIRE( strstr( msg.GetParseResult().c_str(),
-								 "Argument '-second' depends on '-first', but the latter is missing" ) != nullptr );
+				                 "Argument '-second' depends on '-first', but the latter is missing" ) != nullptr );
 			}
 		}
 	}
@@ -604,8 +604,8 @@ SCENARIO( "Two-way dependency programming error" )
 			THEN( "Missing dependancy reported" )
 			{
 				REQUIRE( strstr( msg.GetParseResult().c_str(),
-								 "Argument '-first' depends on '-second', but no such argument is defined - contact the author of the application" ) !=
-						 nullptr );
+				                 "Argument '-first' depends on '-second', but no such argument is defined - contact the author of the application" ) !=
+				         nullptr );
 			}
 		}
 	}
@@ -791,7 +791,7 @@ SCENARIO( "XML configuration" )
 
 			std::shared_ptr<XMLConfigurationReader> cfg = std::make_shared<XMLConfigurationReader>( cfgStr );
 			cfg->SetMatcher( "-first",
-							 XMLConfigurationReader::NodeMatcher( "/Settings/First", "Value", "Key", "KeyName" ) );
+			                 XMLConfigurationReader::NodeMatcher( "/Settings/First", "Value", "Key", "KeyName" ) );
 
 			REQUIRE( p.Parse( std::vector<std::string>(), cfg ) );
 
@@ -838,7 +838,7 @@ SCENARIO( "XML configuration" )
 
 			std::shared_ptr<XMLConfigurationReader> cfg = std::make_shared<XMLConfigurationReader>( cfgStr );
 			cfg->SetMatcher( "-first",
-							 XMLConfigurationReader::NodeMatcher( "/Settings/First", "Key", "KeyName" ) );
+			                 XMLConfigurationReader::NodeMatcher( "/Settings/First", "Key", "KeyName" ) );
 
 			REQUIRE( p.Parse( std::vector<std::string>(), cfg ) );
 
@@ -881,7 +881,7 @@ SCENARIO( "XML configuration from command line" )
 		SystemOutputParseResult msg;
 		CmdParser4Cpp p( msg );
 		p.Accept( "-first" ).AsInteger( 3 );
-		p.Accept("-config").AsString(1).SetMandatory();
+		p.Accept( "-config" ).AsString( 1 ).SetMandatory();
 
 		const std::string file = "./config.xml";
 		std::string cfgStr =
@@ -912,7 +912,7 @@ SCENARIO( "XML configuration from command line" )
 		{
 			THEN( "Parsing succeeds" )
 			{
-				REQUIRE( p.Parse( std::vector<std::string>( { "-config", file } ), cfg, "-config" ) );
+				REQUIRE( p.Parse( std::vector<std::string>( {"-config", file} ), cfg, "-config" ) );
 				REQUIRE( p.GetInteger( "-first" ) == 88 );
 				REQUIRE( p.GetInteger( "-first", 1 ) == 89 );
 				REQUIRE( p.GetInteger( "-first", 2 ) == 90 );
@@ -920,13 +920,15 @@ SCENARIO( "XML configuration from command line" )
 
 			remove( file.c_str() );
 		}
-		AND_WHEN("Configuration file is missing")
+		AND_WHEN( "Configuration file is missing" )
 		{
-			THEN("Parsing fails")
+			THEN( "Parsing fails" )
 			{
-				REQUIRE_FALSE( p.Parse( std::vector<std::string>( { "-config", "./non-existingFile.xml" } ), cfg, "-config" ) );
+				REQUIRE_FALSE( p.Parse( std::vector<std::string>( {"-config",
+				                                                   "./non-existingFile.xml"} ), cfg, "-config" ) );
 				std::string result = msg.GetParseResult();
-				REQUIRE( strstr( result.c_str(), "Could not load the configuration specified by argument" ) != nullptr );
+				REQUIRE(
+						strstr( result.c_str(), "Could not load the configuration specified by argument" ) != nullptr );
 			}
 		}
 	}
