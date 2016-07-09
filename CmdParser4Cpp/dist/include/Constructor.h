@@ -22,17 +22,6 @@ public:
 	Constructor( Argument& argument, CmdParser4Cpp& parser );
 	virtual ~Constructor();
 
-	const Constructor& AsString( int parameterCount ) const;
-	const Constructor& AsString( int minimumParameterCount, int maximumParameterCount ) const;
-
-	const Constructor& AsBoolean( int parameterCount ) const;
-	const Constructor& AsBoolean( int minimumParameterCount, int maximumParameterCount ) const;
-
-	const Constructor& AsSingleBoolean() const;
-
-	const Constructor& AsInteger( int parameterCount ) const;
-	const Constructor& AsInteger( int minimumParameterCount, int maximumParameterCount ) const;
-
 	const Constructor& WithAlias( const std::string& alias ) const;
 	const Constructor& WithAlias( const VectorOfString& alias ) const;
 	const Constructor& SetMandatory() const;

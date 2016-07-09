@@ -23,6 +23,7 @@ set(SOURCE_FILES
 		src/BoolType.cpp
 		src/BoolType.h
 		src/CmdParser4Cpp.cpp
+		src/TypeConstructor.cpp
 		src/Constructor.cpp
 		src/SingleBoolType.cpp
 		src/SingleBoolType.h

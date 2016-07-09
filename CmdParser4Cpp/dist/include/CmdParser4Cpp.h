@@ -8,7 +8,7 @@
 #include <unordered_map>
 #include <memory>
 #include "IParseResult.h"
-#include "Constructor.h"
+#include <TypeConstructor.h>
 #include "IUsageFormatter.h"
 #include "IConfigurationReader.h"
 
@@ -31,7 +31,7 @@ public:
 
 	// Defines an argument with the provided argument name.
 	// Use the returned Constructor object to further define the argument properties.
-	const Constructor Accept( const std::string& argumentName );
+	const TypeConstructor Accept( const std::string& argumentName );
 
 	// Parses the command line arguments
 	bool Parse( const std::vector<std::string>& arguments, std::shared_ptr<IConfigurationReader> cfgReader = nullptr, const std::string& pathToConfigFile = "" );

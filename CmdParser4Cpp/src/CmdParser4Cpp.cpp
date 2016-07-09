@@ -26,12 +26,12 @@ CmdParser4Cpp::CmdParser4Cpp(IParseResult& parseResult)
 //
 //
 //////////////////////////////////////////////////////////////////////////
-const Constructor
+const TypeConstructor
 CmdParser4Cpp::Accept(const std::string& argumentName)
 {
 	std::shared_ptr<Argument> a( std::make_shared<Argument>( argumentName, myParseResult ) );
 	myArguments.insert( { argumentName, a } );
-	Constructor c( *a, *this );
+	TypeConstructor c( *a, *this );
 
 	// Return a copy for further use.
 	return c;

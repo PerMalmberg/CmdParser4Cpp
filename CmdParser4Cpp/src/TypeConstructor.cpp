@@ -1,8 +1,7 @@
 // Copyright (c) 2016 Per Malmberg
 // Licensed under MIT, see LICENSE file. 
 
-#include <limits>
-#include "Constructor.h"
+#include "TypeConstructor.h"
 #include "Argument.h"
 #include "StringType.h"
 #include "BoolType.h"
@@ -11,15 +10,13 @@
 
 namespace cmdparser4cpp {
 
-const int Constructor::NO_PARAMETER_LIMIT = std::numeric_limits<int>::max();
-
 //////////////////////////////////////////////////////////////////////////
 //
 //
 //////////////////////////////////////////////////////////////////////////
-Constructor::Constructor( Argument& argument, CmdParser4Cpp& parser )
-	: myParser(parser),
-	myArgument(argument)
+TypeConstructor::TypeConstructor( Argument& argument, CmdParser4Cpp& parser )
+		: myParser( parser ),
+		  myArgument( argument )
 {
 }
 
@@ -27,7 +24,7 @@ Constructor::Constructor( Argument& argument, CmdParser4Cpp& parser )
 //
 //
 //////////////////////////////////////////////////////////////////////////
-Constructor::~Constructor()
+TypeConstructor::~TypeConstructor()
 {
 }
 
@@ -35,79 +32,74 @@ Constructor::~Constructor()
 //
 //
 //////////////////////////////////////////////////////////////////////////
-const Constructor&
-Constructor::WithAlias( const std::string& alias ) const
+const Constructor
+TypeConstructor::AsString( int parameterCount ) const
 {
-	myArgument.AddAlias( alias );
-	return *this;
+	return AsString( parameterCount, parameterCount );
 }
 
 //////////////////////////////////////////////////////////////////////////
 //
 //
 //////////////////////////////////////////////////////////////////////////
-const Constructor&
-Constructor::WithAlias( const VectorOfString& alias ) const
+const Constructor
+TypeConstructor::AsString( int minimumParameterCount, int maximumParameterCount ) const
 {
-	for( const auto& a : alias ) {
-		myArgument.AddAlias( a );
-	}
-	return *this;
+	myArgument.SetArgumentType( new StringType( myParser, myArgument, minimumParameterCount, maximumParameterCount ) );
+	return Constructor( myArgument, myParser );
 }
 
 //////////////////////////////////////////////////////////////////////////
 //
 //
 //////////////////////////////////////////////////////////////////////////
-const Constructor&
-Constructor::SetMandatory() const
+const Constructor
+TypeConstructor::AsBoolean( int parameterCount ) const
 {
-	myArgument.SetMandatory();
-	return *this;
+	return AsBoolean( parameterCount, parameterCount );
 }
 
 //////////////////////////////////////////////////////////////////////////
 //
 //
 //////////////////////////////////////////////////////////////////////////
-const Constructor&
-Constructor::DescribedAs( const std::string& desc ) const
+const Constructor
+TypeConstructor::AsBoolean( int minimumParameterCount, int maximumParameterCount ) const
 {
-	myArgument.SetDescription( desc );
-	return *this;
+	myArgument.SetArgumentType( new BoolType( myParser, myArgument, minimumParameterCount, maximumParameterCount ) );
+	return Constructor( myArgument, myParser );
 }
 
 //////////////////////////////////////////////////////////////////////////
 //
 //
 //////////////////////////////////////////////////////////////////////////
-const Constructor&
-Constructor::DependsOn( const std::string& primaryName ) const
+const Constructor
+TypeConstructor::AsSingleBoolean() const
 {
-	myArgument.AddDependency( primaryName );
-	return *this;
+	myArgument.SetArgumentType( new SingleBoolType( myParser, myArgument ) );
+	return Constructor( myArgument, myParser );
 }
 
 //////////////////////////////////////////////////////////////////////////
 //
 //
 //////////////////////////////////////////////////////////////////////////
-const Constructor&
-Constructor::BlockedBy( const std::string& primaryName ) const
+const Constructor
+TypeConstructor::AsInteger( int parameterCount ) const
 {
-	myArgument.AddBlockedBy( primaryName );
-	return *this;
+	return AsInteger( parameterCount, parameterCount );
 }
 
 //////////////////////////////////////////////////////////////////////////
 //
 //
 //////////////////////////////////////////////////////////////////////////
-const Constructor&
-Constructor::SetHidden() const
+const Constructor
+TypeConstructor::AsInteger( int minimumParameterCount, int maximumParameterCount ) const
 {
-	myArgument.SetHidden();
-	return *this;
+	myArgument.SetArgumentType( new IntegerType( myParser, myArgument, minimumParameterCount, maximumParameterCount ) );
+	return Constructor( myArgument, myParser );
 }
 
 

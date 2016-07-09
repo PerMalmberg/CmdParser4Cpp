@@ -144,7 +144,7 @@ SCENARIO( "Using boolean arguments" )
 		SystemOutputParseResult msg;
 		CmdParser4Cpp p( msg );
 		p.Accept( "/b" ).AsBoolean( 4 );
-		p.Accept( "/bar" ).WithAlias( "/foo" ).AsBoolean( 1 );
+		p.Accept( "/bar" ).AsBoolean( 1 ).WithAlias( "/foo" );
 
 		WHEN( "called with valid parameters" )
 		{
@@ -525,7 +525,7 @@ SCENARIO( "Missing dependency" )
 	{
 		SystemOutputParseResult msg;
 		CmdParser4Cpp p( msg );
-		p.Accept( "-first" ).DependsOn( "-second" ).AsBoolean( 1 );
+		p.Accept( "-first" ).AsBoolean( 1 ).DependsOn( "-second" );
 		p.Accept( "-second" ).AsBoolean( 1 );
 
 		WHEN( "Called without dependency" )
@@ -547,8 +547,8 @@ SCENARIO( "Two-way dependency" )
 	{
 		SystemOutputParseResult msg;
 		CmdParser4Cpp p( msg );
-		p.Accept( "-first" ).DependsOn( "-second" ).AsBoolean( 1 );
-		p.Accept( "-second" ).DependsOn( "-first" ).AsBoolean( 1 );
+		p.Accept( "-first" ).AsBoolean( 1 ).DependsOn( "-second" );
+		p.Accept( "-second" ).AsBoolean( 1 ).DependsOn( "-first" );
 
 		WHEN( "Called with dependency" )
 		{
@@ -573,8 +573,8 @@ SCENARIO( "Two-way dependency fails" )
 	{
 		SystemOutputParseResult msg;
 		CmdParser4Cpp p( msg );
-		p.Accept( "-first" ).DependsOn( "-second" ).AsBoolean( 1 );
-		p.Accept( "-second" ).DependsOn( "-first" ).AsBoolean( 1 );
+		p.Accept( "-first" ).AsBoolean( 1 ).DependsOn( "-second" );
+		p.Accept( "-second" ).AsBoolean( 1 ).DependsOn( "-first" );
 
 		WHEN( "Called without dependency" )
 		{
@@ -595,7 +595,7 @@ SCENARIO( "Two-way dependency programming error" )
 	{
 		SystemOutputParseResult msg;
 		CmdParser4Cpp p( msg );
-		p.Accept( "-first" ).DependsOn( "-second" ).AsBoolean( 1 );
+		p.Accept( "-first" ).AsBoolean( 1 ).DependsOn( "-second" );
 
 		WHEN( "Called without dependency" )
 		{
@@ -617,8 +617,8 @@ SCENARIO( "Blocking arguments" )
 	{
 		SystemOutputParseResult msg;
 		CmdParser4Cpp p( msg );
-		p.Accept( "-first" ).BlockedBy( "-second" ).AsSingleBoolean();
-		p.Accept( "-second" ).BlockedBy( "-first" ).AsSingleBoolean();
+		p.Accept( "-first" ).AsSingleBoolean().BlockedBy( "-second" );
+		p.Accept( "-second" ).AsSingleBoolean().BlockedBy( "-first" );
 
 		WHEN( "Called with only one argument" )
 		{
@@ -645,8 +645,8 @@ SCENARIO( "Blocking argument missing" )
 	{
 		SystemOutputParseResult msg;
 		CmdParser4Cpp p( msg );
-		p.Accept( "-first" ).BlockedBy( "-doesnotexist" ).AsSingleBoolean();
-		p.Accept( "-second" ).BlockedBy( "-first" ).AsSingleBoolean();
+		p.Accept( "-first" ).AsSingleBoolean().BlockedBy( "-doesnotexist" );
+		p.Accept( "-second" ).AsSingleBoolean().BlockedBy( "-first" );
 
 		WHEN( "Parse attempted" )
 		{
@@ -694,7 +694,7 @@ SCENARIO( "Missing argument type" )
 	{
 		SystemOutputParseResult msg;
 		CmdParser4Cpp p( msg );
-		p.Accept( "-first" ).DescribedAs( "The first argument" );
+		p.Accept( "-first" );
 
 		WHEN( "parsing is done" )
 		{
@@ -908,7 +908,7 @@ SCENARIO( "XML configuration from command line" )
 		std::shared_ptr<XMLConfigurationReader> cfg = std::make_shared<XMLConfigurationReader>();
 		cfg->SetMatcher( "-first", XMLConfigurationReader::NodeMatcher( "/Settings/Foo/First" ) );
 
-		WHEN( "Configuration file is specified available" )
+		WHEN( "Configuration file is specified and available" )
 		{
 			THEN( "Parsing succeeds" )
 			{
