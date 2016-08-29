@@ -24,6 +24,7 @@ public:
 	const std::string& GetPrimaryName() const;
 	void AddAlias( const std::string& alias ) { myNames.push_back( alias ); }
 	const VectorOfString GetAliases() const;
+	const VectorOfString& GetDependencies() const { return myDependencies; }
 
 	bool HasVariableParameterCount() const { return myType->HasVariableParameterCount(); }
 	int GetMaxParameterCount() const { return myType->GetMaxParameterCount(); }

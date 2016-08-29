@@ -8,7 +8,6 @@
 #include <fstream>
 #include <Catch/include/catch.hpp>
 #include <XMLConfigurationReader.h>
-#include <UnboundIntegerLimit.h>
 #include <UnboundStringLength.h>
 #include "SystemOutputParseResult.h"
 #include "SystemOutputUsageFormatter.h"

@@ -17,8 +17,9 @@ int main(int argc, const char* argv[])
 	SystemOutputParseResult res;
 
 	CmdParser4Cpp parser( res );
-	parser.Accept( "opa" ).AsSingleBoolean().DescribedAs( "Operation A" ).BlockedBy( "opb" );
+	parser.Accept( "opa" ).AsSingleBoolean().DescribedAs( "Operation A" ).BlockedBy( "opb" ).DependsOn("--opc");
 	parser.Accept( "opb" ).AsSingleBoolean().DescribedAs( "Operation B" );
+	parser.Accept( "--opc" ).AsSingleBoolean().DescribedAs( "A depends on this" );
 	parser.Accept( "--hidden" ).AsSingleBoolean().DescribedAs( "Very secret command" ).SetHidden();
 	parser.Accept( "-?" ).AsSingleBoolean().WithAlias( vector<string>( { "/?", "-help", "--help" } ) ).DescribedAs(
 			"Displays this help message" );
@@ -36,7 +37,7 @@ int main(int argc, const char* argv[])
 		{
 			SystemOutputUsageFormatter usage( "CmdExample usage" );
 			parser.GetUsage( usage );
-			cout << usage.ToString();
+			cout << usage.ToString() << std::endl;
 		}
 		else if( parser.GetBool( "opa" ) )
 		{

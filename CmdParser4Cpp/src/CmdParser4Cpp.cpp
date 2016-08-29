@@ -414,7 +414,7 @@ CmdParser4Cpp::GetUsage(IUsageFormatter& formatter) const
 		if( arg.IsMandatory() && !arg.IsHidden() )
 		{
 			formatter.PrepareMandatory( arg.GetPrimaryName(), arg.HasVariableParameterCount(),
-			                            arg.GetMaxParameterCount(), arg.GetAliases(), arg.GetDescription() );
+			                            arg.GetMaxParameterCount(), arg.GetAliases(), arg.GetDependencies(), arg.GetDescription() );
 		}
 	}
 
@@ -424,7 +424,7 @@ CmdParser4Cpp::GetUsage(IUsageFormatter& formatter) const
 		if( !arg.IsMandatory() && !arg.IsHidden() )
 		{
 			formatter.PrepareMandatory( arg.GetPrimaryName(), arg.HasVariableParameterCount(),
-			                            arg.GetMaxParameterCount(), arg.GetAliases(), arg.GetDescription() );
+			                            arg.GetMaxParameterCount(), arg.GetAliases(), arg.GetDependencies(), arg.GetDescription() );
 		}
 	}
 }
