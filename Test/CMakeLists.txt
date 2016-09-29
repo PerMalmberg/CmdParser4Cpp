@@ -1,7 +1,9 @@
 cmake_minimum_required(VERSION 3.4)
 project(Test)
 
-if(${CMAKE_MAKE_PROGRAM} MATCHES ".*(MSBuild|msdev|devenv|nmake).*")
+include(../externals/CMakeUtils/CMakeUtils.txt)
+
+if( IS_WINDOWS )
 	# Build at warning level 4 on Windows.
 	# Treat all warnings as errors
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4 /WX /wd4711 /wd4702")

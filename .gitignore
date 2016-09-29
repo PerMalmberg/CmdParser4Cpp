@@ -33,3 +33,7 @@ Debug/
 *.opendb
 *.sdf
 ipch/
+
+.idea/workspace.xml
+CmdExample/dist/*
+
