@@ -27,8 +27,8 @@
       <sourceFolder url="file://$MODULE_DIR$/CmdParser4Cpp/src/Argument.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CmdParser4Cpp/src/BoolType.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CmdParser4Cpp/src/IntegerType.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/CmdParser4Cpp/dist/include/XMLConfigurationReader.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/CmdParser4Cpp/dist/include/IConfigurationReader.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/CmdParser4Cpp/src/ITypeParser.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/CmdParser4Cpp/dist/include/CmdParser4Cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CmdParser4Cpp/CMakeLists.txt" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CmdExample/SystemOutputParseResult.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CmdExample/CMakeLists.txt" isTestSource="false" />

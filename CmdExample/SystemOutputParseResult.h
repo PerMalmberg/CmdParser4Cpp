@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "IParseResult.h"
+#include "CmdParser4Cpp/IParseResult.h"
 
 class SystemOutputParseResult : public cmdparser4cpp::IParseResult
 {

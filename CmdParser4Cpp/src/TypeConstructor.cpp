@@ -1,10 +1,11 @@
 // Copyright (c) 2016 Per Malmberg
-// Licensed under MIT, see LICENSE file. 
+// Licensed under MIT, see LICENSE file.
+// Give credit where credit is due.
 
-#include <NumericLimit.h>
-#include <UnboundIntegerLimit.h>
-#include <UnboundStringLength.h>
-#include "TypeConstructor.h"
+#include <CmdParser4Cpp/NumericLimit.h>
+#include <CmdParser4Cpp/UnboundIntegerLimit.h>
+#include <CmdParser4Cpp/UnboundStringLength.h>
+#include "CmdParser4Cpp/TypeConstructor.h"
 #include "Argument.h"
 #include "StringType.h"
 #include "BoolType.h"

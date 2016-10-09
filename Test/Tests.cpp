@@ -1,14 +1,14 @@
-//
-// Created by perma on 2016-04-23.
-//
+// Copyright (c) 2016 Per Malmberg
+// Licensed under MIT, see LICENSE file.
+// Give credit where credit is due.
 
-#include <CmdParser4Cpp.h>
+#include <CmdParser4Cpp/CmdParser4Cpp.h>
 #include <cstring>
 #include <iostream>
 #include <fstream>
 #include <Catch/include/catch.hpp>
-#include <XMLConfigurationReader.h>
-#include <UnboundStringLength.h>
+#include <CmdParser4Cpp/XMLConfigurationReader.h>
+#include <CmdParser4Cpp/UnboundStringLength.h>
 #include "SystemOutputParseResult.h"
 #include "SystemOutputUsageFormatter.h"
 

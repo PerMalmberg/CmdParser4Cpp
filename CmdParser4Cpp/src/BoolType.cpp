@@ -1,14 +1,10 @@
 // Copyright (c) 2016 Per Malmberg
-// Licensed under MIT, see LICENSE file. 
+// Licensed under MIT, see LICENSE file.
+// Give credit where credit is due.
 
 #include "BoolType.h"
 
 namespace cmdparser4cpp {
-
-const std::string BoolType::ZERO( "0" );
-const std::string BoolType::ONE( "1" );
-const std::string BoolType::TRUE( "true" );
-const std::string BoolType::FALSE( "false" );
 
 //////////////////////////////////////////////////////////////////////////
 //

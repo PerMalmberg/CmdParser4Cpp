@@ -1,7 +1,7 @@
 #pragma once
 
 #include <sstream>
-#include "IUsageFormatter.h"
+#include "CmdParser4Cpp/IUsageFormatter.h"
 
 
 using namespace cmdparser4cpp;

@@ -2,7 +2,6 @@
 // Licensed under MIT, see LICENSE file. 
 
 #include <iostream>
-#include <string>
 #include <sstream>
 #include "SystemOutputParseResult.h"
 

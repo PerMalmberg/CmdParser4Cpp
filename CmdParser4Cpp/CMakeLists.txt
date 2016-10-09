@@ -31,9 +31,21 @@ set(SOURCE_FILES
 		src/StringType.h
 		src/IntegerType.cpp
 		src/IntegerType.h
+		src/ITypeParser.h
 		src/XMLConfigurationReader.cpp
-		dist/include/IConfigurationReader.h
-		dist/include/XMLConfigurationReader.h
+		dist/include/CmdParser4Cpp
+		dist/include/CmdParser4Cpp/TypeConstructor.h
+		dist/include/CmdParser4Cpp/UnboundStringLength.h
+		dist/include/CmdParser4Cpp/CmdParser4Cpp.h
+		dist/include/CmdParser4Cpp/IUsageFormatter.h
+		dist/include/CmdParser4Cpp/XMLConfigurationReader.h
+		dist/include/CmdParser4Cpp/IParseResult.h
+		dist/include/CmdParser4Cpp/Limit.h
+		dist/include/CmdParser4Cpp/NumericLimit.h
+		dist/include/CmdParser4Cpp/UnboundIntegerLimit.h
+		dist/include/CmdParser4Cpp/Constructor.h
+		dist/include/CmdParser4Cpp/StringLengthLimit.h
+		dist/include/CmdParser4Cpp/IConfigurationReader.h
 		../externals/pugixml/src/pugixml.cpp
 		)
 

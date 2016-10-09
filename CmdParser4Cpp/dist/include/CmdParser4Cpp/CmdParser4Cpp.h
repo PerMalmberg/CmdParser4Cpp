@@ -1,5 +1,6 @@
 // Copyright (c) 2016 Per Malmberg
-// Licensed under MIT, see LICENSE file. 
+// Licensed under MIT, see LICENSE file.
+// Give credit where credit is due.
 
 #pragma once
 
@@ -8,7 +9,7 @@
 #include <unordered_map>
 #include <memory>
 #include "IParseResult.h"
-#include <TypeConstructor.h>
+#include <CmdParser4Cpp/TypeConstructor.h>
 #include "IUsageFormatter.h"
 #include "IConfigurationReader.h"
 

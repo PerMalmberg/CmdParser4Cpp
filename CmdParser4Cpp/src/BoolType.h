@@ -1,11 +1,12 @@
 // Copyright (c) 2016 Per Malmberg
-// Licensed under MIT, see LICENSE file. 
+// Licensed under MIT, see LICENSE file.
+// Give credit where credit is due.
 
 #pragma once
 
 #include <cctype>
 #include "BaseType.h"
-#include "CmdParser4Cpp.h"
+#include "CmdParser4Cpp/CmdParser4Cpp.h"
 #include "Argument.h"
 
 namespace cmdparser4cpp {
@@ -13,10 +14,10 @@ namespace cmdparser4cpp {
 class BoolType : public BaseType<bool>
 {
 public:
-	static const std::string ZERO;
-	static const std::string ONE;
-	static const std::string TRUE;
-	static const std::string FALSE;
+	static constexpr const char* ZERO{"0"};
+	static constexpr const char* ONE{"1"};
+	static constexpr const char* TRUE{"true"};
+	static constexpr const char* FALSE{"false"};
 
 	bool DoTypeParse( const std::string& parameter ) override;
 

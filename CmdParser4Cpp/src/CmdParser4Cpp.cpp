@@ -1,9 +1,10 @@
 // Copyright (c) 2016 Per Malmberg
-// Licensed under MIT, see LICENSE file. 
+// Licensed under MIT, see LICENSE file.
+// Give credit where credit is due.
 
 #include <algorithm>
 #include <memory>
-#include "CmdParser4Cpp.h"
+#include "CmdParser4Cpp/CmdParser4Cpp.h"
 #include "Argument.h"
 #include "StringType.h"
 #include "BoolType.h"

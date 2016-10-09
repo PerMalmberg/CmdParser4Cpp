@@ -1,9 +1,11 @@
-// CmdExample.cpp : Defines the entry point for the console application.
-//
+// Copyright (c) 2016 Per Malmberg
+// Licensed under MIT, see LICENSE file.
+// Give credit where credit is due.
+
 #include <vector>
 #include <iostream>
 
-#include "CmdParser4Cpp.h"
+#include "CmdParser4Cpp/CmdParser4Cpp.h"
 #include "SystemOutputParseResult.h"
 #include "SystemOutputUsageFormatter.h"
 

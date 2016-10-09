@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="Project, no externals" pattern="(file[CmdParser4Cpp]:CmdExample/*||file[CmdParser4Cpp]:CmdParser4Cpp/*||file[CmdParser4Cpp]:Test/*)&amp;&amp;!file:Test/CMakeLists.txt&amp;&amp;!file[CmdParser4Cpp]:Test/dist//*&amp;&amp;!file[CmdParser4Cpp]:CmdParser4Cpp/dist/bin/*&amp;&amp;!file:CmdExample/CMakeLists.txt" />
+</component>
