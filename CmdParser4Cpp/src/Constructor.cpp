@@ -6,8 +6,6 @@
 #include "CmdParser4Cpp/Constructor.h"
 #include "Argument.h"
 #include "StringType.h"
-#include "BoolType.h"
-#include "SingleBoolType.h"
 #include "IntegerType.h"
 
 namespace cmdparser4cpp {
@@ -18,9 +16,8 @@ const int Constructor::NO_PARAMETER_LIMIT = std::numeric_limits<int>::max();
 //
 //
 //////////////////////////////////////////////////////////////////////////
-Constructor::Constructor( Argument& argument, CmdParser4Cpp& parser )
-	: myParser(parser),
-	myArgument(argument)
+Constructor::Constructor( Argument& argument )
+		: myArgument( argument )
 {
 }
 
@@ -50,7 +47,8 @@ Constructor::WithAlias( const std::string& alias ) const
 const Constructor&
 Constructor::WithAlias( const VectorOfString& alias ) const
 {
-	for( const auto& a : alias ) {
+	for( const auto& a : alias )
+	{
 		myArgument.AddAlias( a );
 	}
 	return *this;

@@ -61,7 +61,7 @@ TypeConstructor::AsString( int minimumParameterCount, int maximumParameterCount,
                            const StringLengthLimit& lengths ) const
 {
 	myArgument.SetArgumentType( new StringType( myParser, myArgument, minimumParameterCount, maximumParameterCount, std::unique_ptr<Limit<int>>( new NumericLimit<int>( lengths.GetLower(), lengths.GetUpper() ) ) ) );
-	return Constructor( myArgument, myParser );
+	return Constructor( myArgument );
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -82,7 +82,7 @@ const Constructor
 TypeConstructor::AsBoolean( int minimumParameterCount, int maximumParameterCount ) const
 {
 	myArgument.SetArgumentType( new BoolType( myParser, myArgument, minimumParameterCount, maximumParameterCount ) );
-	return Constructor( myArgument, myParser );
+	return Constructor( myArgument );
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -93,7 +93,7 @@ const Constructor
 TypeConstructor::AsSingleBoolean() const
 {
 	myArgument.SetArgumentType( new SingleBoolType( myParser, myArgument ) );
-	return Constructor( myArgument, myParser );
+	return Constructor( myArgument );
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -125,7 +125,7 @@ TypeConstructor::AsInteger( int minimumParameterCount, int maximumParameterCount
                             const NumericLimit<int>& limits ) const
 {
 	myArgument.SetArgumentType( new IntegerType( myParser, myArgument, minimumParameterCount, maximumParameterCount, std::unique_ptr<Limit<int>>( new NumericLimit<int>( limits ) ) ) );
-	return Constructor( myArgument, myParser );
+	return Constructor( myArgument );
 }
 
 

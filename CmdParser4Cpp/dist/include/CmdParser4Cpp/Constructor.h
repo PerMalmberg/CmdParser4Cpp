@@ -20,7 +20,7 @@ class Constructor
 public:
 	static const int NO_PARAMETER_LIMIT;
 
-	Constructor( Argument& argument, CmdParser4Cpp& parser );
+	Constructor( Argument& argument );
 	virtual ~Constructor();
 
 	const Constructor& WithAlias( const std::string& alias ) const;
@@ -32,7 +32,6 @@ public:
 	const Constructor& SetHidden() const;
 
 private:
-	CmdParser4Cpp& myParser;
 	Argument& myArgument;
 
 	Constructor& operator=( const Constructor& ) = delete;
