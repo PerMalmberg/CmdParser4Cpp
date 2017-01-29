@@ -30,6 +30,7 @@ public:
 	const Constructor& DependsOn( const std::string& primaryName ) const;
 	const Constructor& BlockedBy( const std::string& primaryName ) const;
 	const Constructor& SetHidden() const;
+	const Constructor& SetHelpCommand() const;
 
 private:
 	Argument& myArgument;

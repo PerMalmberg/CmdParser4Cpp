@@ -44,6 +44,8 @@ public:
 	bool CheckMutualExclusion( const std::unordered_map<std::string, std::shared_ptr<Argument>>& testAgainst, const std::unordered_map<std::string, std::shared_ptr<Argument>>& alreadyTested ) const;
 	void SetHidden() { myIsHidden = true; }
 	bool IsHidden() const { return myIsHidden; }
+	void SetHelpCommand() { myIsHelpCommand = true; }
+	bool IsHelpCommand() const { return myIsHelpCommand; }
 
 private:
 	IParseResult& myParseResult;
@@ -55,6 +57,7 @@ private:
 	VectorOfString myDependencies;
 	VectorOfString myBlocks;
 	bool myIsHidden = false;
+	bool myIsHelpCommand = false;
 	
 	Argument( const Argument& ) = delete;
 	Argument& operator=( const Argument& ) = delete;

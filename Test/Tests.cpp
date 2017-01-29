@@ -996,3 +996,19 @@ SCENARIO( "String lengths" )
 		}
 	}
 }
+
+SCENARIO( "Help command with mandatory parameters")
+{
+	GIVEN("Properly setup parser")
+	{
+		SystemOutputParseResult msg;
+		CmdParser4Cpp p( msg );
+		p.Accept( "-h" ).AsSingleBoolean().SetHelpCommand();
+		p.Accept("--mandatory").AsSingleBoolean().SetMandatory();
+
+		WHEN( "Called with help command" )
+		{
+			REQUIRE( p.Parse( std::vector<std::string>( {"-h" } ) ) );
+		}
+	}
+}

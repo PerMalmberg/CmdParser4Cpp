@@ -116,16 +116,38 @@ CmdParser4Cpp::Parse(const std::vector<std::string>& arguments, std::shared_ptr<
 				}
 			}
 
-			result = result
-			         && LoadConfigFile( fileNameArgument, cfgReader )
-			         && FallbackToConfiguration( cfgReader )
-			         && CheckDependencies()
-			         && CheckMandatory()
-			         && CheckMutualExclusion();
+			// If a help argument is provided, then we don't check anything else
+			if( !HelpCommandProvided() )
+			{
+				result = result
+				         && LoadConfigFile( fileNameArgument, cfgReader )
+				         && FallbackToConfiguration( cfgReader )
+				         && CheckDependencies()
+				         && CheckMandatory()
+				         && CheckMutualExclusion();
+			}
 		}
 
 	}
 	return result;
+}
+
+//////////////////////////////////////////////////////////////////////////
+//
+//
+//////////////////////////////////////////////////////////////////////////
+bool
+CmdParser4Cpp::HelpCommandProvided() const {
+	bool res = false;
+
+	for (const auto& pair : myArguments) {
+		auto arg = pair.second;
+		if (arg->IsHelpCommand() && arg->IsSuccessFullyParsed()) {
+			res = true;
+		}
+	}
+
+	return res;
 }
 
 //////////////////////////////////////////////////////////////////////////
