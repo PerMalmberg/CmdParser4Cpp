@@ -14,7 +14,6 @@ endif ()
 add_definitions(-DPUGIXML_NO_EXCEPTIONS)
 
 include_directories("${CMAKE_CURRENT_LIST_DIR}/../externals/")
-include_directories("dist/include")
 
 set(SOURCE_FILES
 		src/Argument.cpp
@@ -51,6 +50,7 @@ set(SOURCE_FILES
 
 # Create a static library
 add_library(${PROJECT_NAME} STATIC ${SOURCE_FILES})
+target_include_directories(${PROJECT_NAME} PUBLIC "dist/include")
 
 # Output final binaries in the dist folder so they easily can be distributed together with the header files.
 set_target_properties(${PROJECT_NAME}

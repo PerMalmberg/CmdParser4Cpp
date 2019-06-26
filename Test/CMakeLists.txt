@@ -1,7 +1,9 @@
 cmake_minimum_required(VERSION 3.4)
 project(Test)
 
-include(../externals/CMakeUtils/CMakeUtils.txt)
+set(EXTERNALS ${CMAKE_CURRENT_LIST_DIR}/../externals)
+
+include(${EXTERNALS}/CMakeUtils/CMakeUtils.txt)
 
 if( IS_WINDOWS )
 	# Build at warning level 4 on Windows.
@@ -11,12 +13,6 @@ else()
 	# Build with all warnings
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -std=c++11")
 endif()
-
-# Use CMAKE_CURRENT_LIST_DIR instead of CMAKE_SOURCE_DIR to specify relative to where this CMakeLists.txt is located
-# as opposed to where the 'main' CMakeLists.txt file is located.
-include_directories("${CMAKE_CURRENT_LIST_DIR}/../CmdParser4Cpp/dist/include")
-
-include_directories("${CMAKE_CURRENT_LIST_DIR}/../externals")
 
 set(SOURCE_FILES
 		main.cpp
@@ -29,6 +25,11 @@ set(SOURCE_FILES
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 target_link_libraries(${PROJECT_NAME} CmdParser4Cpp)
+
+set(EXTERNALS ${CMAKE_CURRENT_LIST_DIR}/../externals)
+target_include_directories(${PROJECT_NAME} PRIVATE
+											${EXTERNALS}/Catch2/single_include
+											${EXTERNALS})
 
 # Output final binaries in the dist folder so they easily can be distributed together with the header files.
 set_target_properties(${PROJECT_NAME}

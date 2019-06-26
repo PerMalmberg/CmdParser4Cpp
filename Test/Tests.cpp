@@ -6,7 +6,7 @@
 #include <cstring>
 #include <iostream>
 #include <fstream>
-#include <Catch/include/catch.hpp>
+#include <Catch2/include/catch.hpp>
 #include <CmdParser4Cpp/XMLConfigurationReader.h>
 #include <CmdParser4Cpp/UnboundStringLength.h>
 #include "SystemOutputParseResult.h"
