@@ -1,9 +1,9 @@
 [submodule "pugixml"]
 	path = externals/pugixml
-	url = https://github.com/zeux/pugixml.git
+	url = ../../zeux/pugixml.git
 [submodule "externals/CMakeUtils"]
 	path = externals/CMakeUtils
-	url = https://github.com/PerMalmberg/CMakeUtils.git
+	url = ../../PerMalmberg/CMakeUtils.git
 [submodule "externals/Catch2"]
 	path = externals/Catch2
-	url = git@github.com:catchorg/Catch2.git
+	url = ../../catchorg/Catch2.git
